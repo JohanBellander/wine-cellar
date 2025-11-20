@@ -1,5 +1,7 @@
 # Wine Cellar Inventory App
 
+![CI](https://github.com/JohanBellander/wine-cellar/actions/workflows/ci.yml/badge.svg)
+
 This is a Wine Cellar Inventory application built with Go.
 
 ## Prerequisites
