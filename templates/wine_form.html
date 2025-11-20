@@ -52,7 +52,7 @@
 <main class="flex-1">
 <div class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-8">
 <div class="layout-content-container flex flex-col w-full max-w-7xl">
-<form action="{{if .ID}}/edit/{{.ID}}{{else}}/add{{end}}" method="POST">
+<form action="{{if .ID}}/edit/{{.ID}}{{else}}/add{{end}}" method="POST" enctype="multipart/form-data">
 {{if .ID}}<input type="hidden" name="id" value="{{.ID}}">{{end}}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 <div class="lg:col-span-1">
@@ -60,11 +60,12 @@
 <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-black/5 dark:border-white/5 p-6 text-center">
 <div class="flex max-w-[480px] flex-col items-center gap-2">
 <p class="text-base font-semibold">Upload Bottle Image</p>
-<p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Drag and drop an image here or click to browse</p>
+<p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Click to browse</p>
 </div>
-<button type="button" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<label class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
 <span class="truncate">Browse Files</span>
-</button>
+<input type="file" name="image" accept="image/*" class="hidden">
+</label>
 <div class="w-full">
 <div class="border-t border-black/5 dark:border-white/5 my-4"></div>
 <p class="text-prose-light/70 dark:text-prose-dark/70 text-sm mb-2">Or</p>

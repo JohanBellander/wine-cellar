@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -102,7 +104,8 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		err := r.ParseForm()
+		// Parse multipart form, 10MB max
+		err := r.ParseMultipartForm(10 << 20)
 		if err != nil {
 			http.Error(w, "Error parsing form", http.StatusBadRequest)
 			return
@@ -111,6 +114,23 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		vintage, _ := strconv.Atoi(r.FormValue("vintage"))
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
+
+		imageURL := "https://via.placeholder.com/150"
+		
+		// Handle image upload
+		file, _, err := r.FormFile("image")
+		if err == nil {
+			defer file.Close()
+			// Read file content
+			fileBytes, err := io.ReadAll(file)
+			if err == nil {
+				// Convert to base64
+				base64Str := base64.StdEncoding.EncodeToString(fileBytes)
+				// Determine mime type (simple check)
+				mimeType := http.DetectContentType(fileBytes)
+				imageURL = fmt.Sprintf("data:%s;base64,%s", mimeType, base64Str)
+			}
+		}
 
 		newWine := Wine{
 			Name:           r.FormValue("name"),
@@ -123,7 +143,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 			Price:          price,
 			DrinkingWindow: r.FormValue("drinking_window"),
 			Type:           "Red", // Defaulting for now, or could infer
-			ImageURL:       "https://via.placeholder.com/150", // Placeholder
+			ImageURL:       imageURL,
 		}
 		
 		DB.Create(&newWine)
@@ -274,7 +294,8 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		err := r.ParseForm()
+		// Parse multipart form, 10MB max
+		err := r.ParseMultipartForm(10 << 20)
 		if err != nil {
 			http.Error(w, "Error parsing form", http.StatusBadRequest)
 			return
@@ -307,6 +328,21 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 		wine.Price = price
 		wine.DrinkingWindow = r.FormValue("drinking_window")
 		
+		// Handle image upload
+		file, _, err := r.FormFile("image")
+		if err == nil {
+			defer file.Close()
+			// Read file content
+			fileBytes, err := io.ReadAll(file)
+			if err == nil {
+				// Convert to base64
+				base64Str := base64.StdEncoding.EncodeToString(fileBytes)
+				// Determine mime type (simple check)
+				mimeType := http.DetectContentType(fileBytes)
+				wine.ImageURL = fmt.Sprintf("data:%s;base64,%s", mimeType, base64Str)
+			}
+		}
+
 		DB.Save(&wine)
 
 		http.Redirect(w, r, fmt.Sprintf("/details/%d", id), http.StatusSeeOther)
