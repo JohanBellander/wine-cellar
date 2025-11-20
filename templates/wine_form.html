@@ -150,13 +150,22 @@ function previewImage(event) {
 </div>
 </div>
 </div>
-<div class="flex items-center gap-2 mt-8 lg:col-span-3 justify-end">
-<a href="{{if .ID}}/details/{{.ID}}{{else}}/{{end}}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-<span class="truncate">Cancel</span>
-</a>
-<button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-semibold leading-normal tracking-wide shadow-sm hover:bg-primary/90 transition-colors">
-<span class="truncate">{{if .ID}}Update Wine{{else}}Save Wine{{end}}</span>
-</button>
+<div class="flex items-center gap-2 mt-8 lg:col-span-3 justify-between">
+    {{if .ID}}
+    <button type="submit" formaction="/delete" formnovalidate onclick="return confirm('Are you sure you want to delete this wine? This action cannot be undone.');" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-semibold leading-normal tracking-wide hover:bg-red-500/20 transition-colors">
+        <span class="truncate">Delete Wine</span>
+    </button>
+    {{else}}
+    <div></div>
+    {{end}}
+    <div class="flex items-center gap-2">
+        <a href="{{if .ID}}/details/{{.ID}}{{else}}/{{end}}" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+            <span class="truncate">Cancel</span>
+        </a>
+        <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-semibold leading-normal tracking-wide shadow-sm hover:bg-primary/90 transition-colors">
+            <span class="truncate">{{if .ID}}Update Wine{{else}}Save Wine{{end}}</span>
+        </button>
+    </div>
 </div>
 </div>
 </div>
