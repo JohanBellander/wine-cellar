@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/edit/", editHandler)
 	http.HandleFunc("/update-quantity", updateQuantityHandler)
 	http.HandleFunc("/add-review", addReviewHandler)
+	http.HandleFunc("/delete", deleteHandler)
 	http.HandleFunc("/health", healthHandler)
 
 	// Serve static files if we had any, but we are using CDNs mostly.
@@ -355,6 +356,39 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, fmt.Sprintf("/details/%d", id), http.StatusSeeOther)
 	}
+}
+
+func deleteHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Parse multipart form explicitly to ensure we get the ID
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		// If multipart parsing fails, try regular ParseForm just in case
+		r.ParseForm()
+	}
+
+	idStr := r.FormValue("id")
+	if idStr == "" {
+		http.Error(w, "Missing ID", http.StatusBadRequest)
+		return
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	// Perform the delete
+	if result := DB.Delete(&Wine{}, id); result.Error != nil {
+		http.Error(w, "Database error: "+result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
