@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VinoCellar - My Wine Cellar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#bfa884",
+              "background-light": "#fdfcf7",
+              "background-dark": "#2a2621",
+              "champagne-light": "#f5eadd",
+              "champagne-dark": "#3c352a",
+              "prose-light": "#4a4137",
+              "prose-dark": "#d1c7b8",
+            },
+            fontFamily: {
+              "display": ["Playfair Display", "serif"],
+              "body": ["Manrope", "sans-serif"],
+              "script": ["Great Vibes", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Manrope', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="flex flex-1">
+<aside class="sticky top-0 h-screen w-72 flex-shrink-0 border-r border-black/5 dark:border-white/5 p-4 hidden lg:flex flex-col justify-between">
+<div class="flex flex-col gap-4">
+<div class="flex flex-col mb-2">
+<h1 class="font-display text-gray-900 dark:text-white text-lg font-semibold leading-normal">Filters</h1>
+<p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Refine your collection</p>
+</div>
+<div class="flex flex-col">
+<details class="flex flex-col border-t border-black/5 dark:border-white/5 py-2 group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+<p class="text-gray-900 dark:text-white text-sm font-medium leading-normal">Region</p>
+<span class="material-symbols-outlined text-prose-light/60 dark:text-prose-dark/60 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="flex flex-col gap-2 pt-2">
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Bordeaux, France</label>
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Napa Valley, USA</label>
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Tuscany, Italy</label>
+</div>
+</details>
+<details class="flex flex-col border-t border-black/5 dark:border-white/5 py-2 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+<p class="text-gray-900 dark:text-white text-sm font-medium leading-normal">Grape Varietal</p>
+<span class="material-symbols-outlined text-prose-light/60 dark:text-prose-dark/60 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="flex flex-col gap-2 pt-2">
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Cabernet Sauvignon</label>
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Chardonnay</label>
+<label class="flex items-center gap-2 text-sm text-prose-light dark:text-prose-dark"><input class="form-checkbox rounded-sm bg-transparent border-gray-400/50 text-primary focus:ring-primary/50" type="checkbox"/>Pinot Noir</label>
+</div>
+</details>
+<details class="flex flex-col border-t border-black/5 dark:border-white/5 py-2 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+<p class="text-gray-900 dark:text-white text-sm font-medium leading-normal">Vintage</p>
+<span class="material-symbols-outlined text-prose-light/60 dark:text-prose-dark/60 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-2">
+<input class="w-full h-2 bg-champagne-light dark:bg-champagne-dark rounded-lg appearance-none cursor-pointer [&amp;::-webkit-slider-thumb]:bg-primary [&amp;::-moz-range-thumb]:bg-primary" type="range"/>
+<div class="flex justify-between text-xs text-prose-light/70 dark:text-prose-dark/70 mt-1"><span>1990</span><span>2024</span></div>
+</div>
+</details>
+<details class="flex flex-col border-t border-black/5 dark:border-white/5 py-2 group">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+<p class="text-gray-900 dark:text-white text-sm font-medium leading-normal">Price Range</p>
+<span class="material-symbols-outlined text-prose-light/60 dark:text-prose-dark/60 group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="pt-2">
+<input class="w-full h-2 bg-champagne-light dark:bg-champagne-dark rounded-lg appearance-none cursor-pointer [&amp;::-webkit-slider-thumb]:bg-primary [&amp;::-moz-range-thumb]:bg-primary" type="range"/>
+<div class="flex justify-between text-xs text-prose-light/70 dark:text-prose-dark/70 mt-1"><span>$10</span><span>$500+</span></div>
+</div>
+</details>
+</div>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary/20 hover:bg-primary/30 text-primary text-sm font-bold leading-normal tracking-[0.015em] transition-colors">
+<span class="truncate">Clear All Filters</span>
+</button>
+</aside>
+<main class="flex-1 p-4 sm:p-6 lg:p-8">
+<div class="flex justify-between items-center gap-4 py-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined !text-xl">add</span>
+<span class="truncate">Add New Wine</span>
+</button>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-sm text-prose-light/80 dark:text-prose-dark/80">Sort by:</span>
+<div class="relative">
+<select class="form-select appearance-none bg-black/5 dark:bg-white/5 border-none rounded-md pl-3 pr-8 py-1.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50">
+<option>Recently Added</option>
+<option>Vintage (Newest)</option>
+<option>Vintage (Oldest)</option>
+<option>Name (A-Z)</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-prose-light/60 dark:text-prose-dark/60 !text-xl">unfold_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-background-light dark:bg-background-dark border border-black/5 dark:border-white/5 rounded-xl overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
+<tr>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Wine</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Producer</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Region</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Vintage</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Qty</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Rating</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-black/5 dark:divide-white/5">
+<tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 align-middle">
+<div class="flex items-center gap-4">
+<img alt="Bottle of Sangre de Toro" class="h-16 w-12 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZBBeDWwP7V0Ul-1_r1JRlubGA6xngAJ-QRlQNMcY-GiwZmc-ltzftzu5Oda2fRtqixLB9PUho7Gu2p-R5dzrxuLl6xlsuNd_rPnYPozfHCIbciHnDrrerbcVf_X6q2bnJAJ4K6b2Hd7jM5iXz7f9bpauuhpctucH20652we_7_8n4It4-PinO2kFeZeHtjybIsPwkLy9cfSZvce55qCbO6e9x98Yib_Wl7bK7bBjzxRpPDCRJSuPbGyeRl-uCQLPR1weRNmp6nFB"/>
+<div>
+<div class="font-display font-semibold text-gray-900 dark:text-white">Sangre de Toro</div>
+<div class="text-sm text-prose-light/70 dark:text-prose-dark/70">Red</div>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm">Torres</td>
+<td class="p-4 align-middle text-sm">Catalunya, Spain</td>
+<td class="p-4 align-middle text-sm text-center">2019</td>
+<td class="p-4 align-middle text-sm text-center">2</td>
+<td class="p-4 align-middle text-sm text-center font-semibold text-gray-900 dark:text-white">88</td>
+<td class="p-4 align-middle text-right">
+<button class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-prose-light/70 dark:text-prose-dark/70 transition-colors"><span class="material-symbols-outlined !text-xl">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 align-middle">
+<div class="flex items-center gap-4">
+<img alt="Bottle of Viña Sol" class="h-16 w-12 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjb9k2iqRivRNC_RFqF9OTfltf0Uf-JmEjBSk6f1712OMefedNYcghKDlRWvsHhMbIs6ue-LYhZPqU2NbHqFsurG2eyieBo1rcdX7CzV5rrH_ixWvtUQcudQTbZ1BpgxZv5D-9hYmZDssU4CtpQfc905C7NPR5MEaJsdrguiKQfC3C-2xyywuH4hfDFxNrdWr8tEFR-N0IfK01jMMJg0g1FXaqOarls2ML8S0Uh6vmT0_szFUWYcfftmZ1ltlyQCHK0-eEBa6dHaCV"/>
+<div>
+<div class="font-display font-semibold text-gray-900 dark:text-white">Viña Sol</div>
+<div class="text-sm text-prose-light/70 dark:text-prose-dark/70">White</div>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm">Torres</td>
+<td class="p-4 align-middle text-sm">Penedès, Spain</td>
+<td class="p-4 align-middle text-sm text-center">2022</td>
+<td class="p-4 align-middle text-sm text-center">4</td>
+<td class="p-4 align-middle text-sm text-center font-semibold text-gray-900 dark:text-white">90</td>
+<td class="p-4 align-middle text-right">
+<button class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-prose-light/70 dark:text-prose-dark/70 transition-colors"><span class="material-symbols-outlined !text-xl">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 align-middle">
+<div class="flex items-center gap-4">
+<img alt="Bottle of Celeste Crianza" class="h-16 w-12 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvxAKKR0zWJQ2-tMZ8nX73NYU0y4rwMCGIzeqBNU7brIrM_nXOxNaXBDkSg0yPzTw_opw3AIUFj0r-wslLcmd6d9lO8Z_IxvGIdkQtvwgiCAyH0Aq5RNnaE_clWTBIVi0JPHwYp795owlRWiSnuJyqf_VS3l3HRZ9PyOTQWVhpfIgLJ_SJoLL-f1Rcaykm7hY9RDqJ7P3XjwnQJ_A0X7YPItiEY4GAU9RXUpj18qGvNtxVycgXDTyLgm_QBl2qkq_guPe_Cd69y6d3"/>
+<div>
+<div class="font-display font-semibold text-gray-900 dark:text-white">Celeste Crianza</div>
+<div class="text-sm text-prose-light/70 dark:text-prose-dark/70">Red</div>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm">Torres</td>
+<td class="p-4 align-middle text-sm">Ribera del Duero, Spain</td>
+<td class="p-4 align-middle text-sm text-center">2018</td>
+<td class="p-4 align-middle text-sm text-center">1</td>
+<td class="p-4 align-middle text-sm text-center font-semibold text-gray-900 dark:text-white">95</td>
+<td class="p-4 align-middle text-right">
+<button class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-prose-light/70 dark:text-prose-dark/70 transition-colors"><span class="material-symbols-outlined !text-xl">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 align-middle">
+<div class="flex items-center gap-4">
+<img alt="Bottle of Gran Coronas" class="h-16 w-12 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwrG6hfCIh9_S3X3PF8sJPgSmXMew0hJEO75SkKnCrCCIlSF0qznSBrcnX2lS_-HEoZ248s1nt_trvCjYHARn8TY4TDSKjJ9IFF1k5q8PYwr_vaGi40ltvXMcWSeybAnfvA0D3LDtR9VsNsdGOVoMp7f3kvbtbmMQ9YUeiMJmJSolQDRWMT3hUxWSd6hsMp-UnBGwm_TdNZGmh6lHP0m_X1RvSJGiFNuTwzWWKriYW5MECsyTJ1tVHvQLkeIv39uF3pI7QM60nag6F"/>
+<div>
+<div class="font-display font-semibold text-gray-900 dark:text-white">Gran Coronas</div>
+<div class="text-sm text-prose-light/70 dark:text-prose-dark/70">Red</div>
+</div>
+</div>
+</td>
+<td class="p-4 align-middle text-sm">Torres</td>
+<td class="p-4 align-middle text-sm">Penedès, Spain</td>
+<td class="p-4 align-middle text-sm text-center">2016</td>
+<td class="p-4 align-middle text-sm text-center">3</td>
+<td class="p-4 align-middle text-sm text-center font-semibold text-gray-900 dark:text-white">92</td>
+<td class="p-4 align-middle text-right">
+<button class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-prose-light/70 dark:text-prose-dark/70 transition-colors"><span class="material-symbols-outlined !text-xl">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex justify-center items-center gap-2 mt-8">
+<button class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined !text-xl">chevron_left</span>
+</button>
+<button class="h-9 w-9 flex items-center justify-center rounded-full bg-primary text-white text-sm font-bold">1</button>
+<button class="h-9 w-9 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-sm font-medium text-prose-light dark:text-prose-dark transition-colors">2</button>
+<button class="h-9 w-9 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-sm font-medium text-prose-light dark:text-prose-dark transition-colors">3</button>
+<span class="text-prose-light/60 dark:text-prose-dark/60">...</span>
+<button class="h-9 w-9 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-sm font-medium text-prose-light dark:text-prose-dark transition-colors">8</button>
+<button class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined !text-xl">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+</div>
+</body></html>

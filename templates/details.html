@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wine Detail Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#bfa884",
+              "background-light": "#fdfcf7",
+              "background-dark": "#2a2621",
+              "champagne-light": "#f5eadd",
+              "champagne-dark": "#3c352a",
+              "prose-light": "#4a4137",
+              "prose-dark": "#d1c7b8",
+            },
+            fontFamily: {
+              "display": ["Playfair Display", "serif"],
+              "body": ["Manrope", "sans-serif"],
+              "script": ["Great Vibes", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">
+<div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+{{template "header" .}}
+<div class="layout-container flex h-full grow flex-col">
+<main class="flex flex-1 justify-center py-8 px-4 sm:px-6 lg:px-8">
+<div class="layout-content-container flex flex-col w-full max-w-6xl flex-1">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+<div class="flex flex-col gap-6">
+<div class="w-full flex justify-center items-start bg-black/5 dark:bg-white/5 p-4 rounded-xl shadow-sm">
+<img class="max-h-[500px] object-contain" data-alt="A dark glass bottle of {{.Name}} wine with an elegant white label." src="{{.ImageURL}}"/>
+</div>
+<div class="flex flex-col gap-2">
+<p class="font-display text-gray-900 dark:text-white text-4xl sm:text-5xl font-bold leading-tight tracking-tight">{{.Name}} {{.Vintage}}</p>
+<p class="text-prose-light/70 dark:text-prose-dark/70 text-base font-normal leading-normal">{{.Region}}, {{.Country}}</p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary/10 dark:bg-primary/20 px-3">
+<p class="text-primary dark:text-primary text-sm font-medium leading-normal">{{.Type}}</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary/10 dark:bg-primary/20 px-3">
+<p class="text-primary dark:text-primary text-sm font-medium leading-normal">{{.Grape}}</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary/10 dark:bg-primary/20 px-3">
+<p class="text-primary dark:text-primary text-sm font-medium leading-normal">{{.Rating}}</p>
+</div>
+</div>
+<div class="mt-2">
+    <a href="/edit/{{.ID}}" class="inline-flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-semibold leading-normal tracking-wide shadow-sm hover:bg-primary/90 transition-colors">
+        Edit Wine
+    </a>
+</div>
+</div>
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-4 p-6 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+    <div class="flex justify-between items-center">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white">My Cellar</h3>
+    </div>
+    <div class="flex items-center justify-between">
+        <span class="text-prose-light dark:text-prose-dark">Quantity in stock:</span>
+        <div class="flex items-center gap-3">
+            <form action="/update-quantity" method="POST" class="inline">
+                <input type="hidden" name="id" value="{{.ID}}">
+                <input type="hidden" name="action" value="decrement">
+                <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition-colors text-xl font-bold" {{if le .Quantity 0}}disabled{{end}}>-</button>
+            </form>
+            <span class="text-xl font-bold text-gray-900 dark:text-white">{{.Quantity}}</span>
+            <form action="/update-quantity" method="POST" class="inline">
+                <input type="hidden" name="id" value="{{.ID}}">
+                <input type="hidden" name="action" value="increment">
+                <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition-colors text-xl font-bold">+</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-4">
+<details class="group border-b border-black/5 dark:border-white/5 py-4" open="">
+<summary class="flex justify-between items-center cursor-pointer list-none">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Details</h3>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="mt-4 text-prose-light dark:text-prose-dark space-y-2 leading-relaxed">
+<p><strong>Aging Potential:</strong> {{.DrinkingWindow}}</p>
+<p><strong>Serving Temperature:</strong> 16-18°C (60-65°F)</p>
+<p><strong>Food Pairings:</strong> Roasted lamb, prime rib, duck confit, aged cheeses.</p>
+</div>
+</details>
+<details class="group border-b border-black/5 dark:border-white/5 py-4">
+<summary class="flex justify-between items-center cursor-pointer list-none">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Producer Info</h3>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="mt-4 text-prose-light dark:text-prose-dark space-y-2 leading-relaxed">
+<p>{{.Producer}} is one of only four wines to achieve Premier Cru status in the 1855 Bordeaux Classification. With a history stretching back to the 12th century, the estate is renowned for producing wines of unparalleled finesse and elegance.</p>
+</div>
+</details>
+</div>
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <h3 class="text-2xl font-script text-gray-900 dark:text-white">Reviews</h3>
+        <div class="flex items-center gap-2">
+            <label class="text-sm text-prose-light/70 dark:text-prose-dark/70" for="sort">Sort by:</label>
+            <select class="bg-white/0 dark:bg-background-dark/0 border-black/20 dark:border-white/20 rounded-md text-sm focus:ring-primary focus:border-primary" id="sort">
+                <option>Most Recent</option>
+                <option>Highest Score</option>
+                <option>Lowest Score</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Add Review Form -->
+    <form action="/add-review" method="POST" class="flex flex-col gap-4 p-4 rounded-lg bg-black/5 dark:bg-white/5">
+        <input type="hidden" name="id" value="{{.ID}}">
+        <h4 class="font-bold text-gray-900 dark:text-white">Add a Review</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" name="reviewer" placeholder="Reviewer Name" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
+            <input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
+        </div>
+        <textarea name="content" placeholder="Review Content" rows="3" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required></textarea>
+        <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
+    </form>
+
+    <div class="flex flex-col gap-6">
+        {{range .Reviews}}
+        <div class="flex gap-4 p-4 rounded-lg bg-black/5 dark:bg-white/5">
+            <div class="flex flex-col gap-2 flex-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="font-bold text-gray-900 dark:text-white">{{.Reviewer}}</p>
+                        <p class="text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Date}}</p>
+                    </div>
+                    <div class="flex h-8 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary font-bold text-sm px-3">
+                        {{.Rating}}
+                    </div>
+                </div>
+                <p class="text-prose-light dark:text-prose-dark leading-relaxed">{{.Content}}</p>
+            </div>
+        </div>
+        {{else}}
+        <p class="text-prose-light/70 dark:text-prose-dark/70 italic">No reviews yet.</p>
+        {{end}}
+    </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

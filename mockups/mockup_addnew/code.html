@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add a New Wine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Playfair+Display:wght@700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#C0A172",
+              "primary-darker": "#a88d60",
+              "background-light": "#F8F5EE",
+              "background-dark": "#2a231a",
+              "text-light": "#362e25",
+              "text-dark": "#d1c7bc",
+              "border-light": "#e0d9ce",
+              "border-dark": "#4a4035",
+              "surface-dark": "#362e25"
+            },
+            fontFamily: {
+              "display": ["Cormorant Garamond", "serif"],
+              "script": ["Playfair Display", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<main class="flex-1">
+<div class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col w-full max-w-7xl">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+<div class="lg:col-span-1">
+<h3 class="font-script text-xl font-bold leading-tight tracking-tight pb-4">Bottle Image</h3>
+<div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-border-light dark:border-border-dark p-6 text-center">
+<div class="flex max-w-[480px] flex-col items-center gap-2">
+<p class="text-base font-semibold">Upload Bottle Image</p>
+<p class="text-text-light/70 dark:text-text-dark/70 text-sm font-normal leading-normal">Drag and drop an image here or click to browse</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-border-light dark:bg-surface-dark text-text-light dark:text-text-dark text-sm font-semibold leading-normal tracking-wide hover:bg-border-light/80 dark:hover:bg-surface-dark/80 transition-colors">
+<span class="truncate">Browse Files</span>
+</button>
+<div class="w-full">
+<div class="border-t border-border-light dark:border-border-dark my-4"></div>
+<p class="text-text-light/70 dark:text-text-dark/70 text-sm mb-2">Or</p>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-border-light dark:bg-surface-dark text-text-light dark:text-text-dark text-sm font-semibold leading-normal tracking-wide hover:bg-border-light/80 dark:hover:bg-surface-dark/80 transition-colors w-full">
+<span class="material-symbols-outlined mr-2 !text-xl">photo_camera</span>
+<span class="truncate">Take Photo</span>
+</button>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2">
+<div class="flex flex-col gap-8">
+<div>
+<h3 class="font-script text-xl font-bold leading-tight tracking-tight pb-4 border-b border-border-light dark:border-border-dark mb-4">Core Identity</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Wine Name</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Quintessa" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Winery</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Quintessa" value=""/>
+</label>
+</div>
+</div>
+<div>
+<h3 class="font-script text-xl font-bold leading-tight tracking-tight pb-4 border-b border-border-light dark:border-border-dark mb-4">Origin &amp; Type</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Vintage</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., 2018" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Grape</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Cabernet Sauvignon" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Country</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., USA" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Region</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Napa Valley" value=""/>
+</label>
+</div>
+</div>
+<div>
+<h3 class="font-script text-xl font-bold leading-tight tracking-tight pb-4 border-b border-border-light dark:border-border-dark mb-4">Inventory &amp; Purchase</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Quantity</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" type="number" value="1"/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Price</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., 200.00" step="0.01" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">ABV %</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., 14.5" step="0.1" type="number" value=""/>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Location</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Rack A, Shelf 3" value=""/>
+</label>
+</div>
+</div>
+<div>
+<h3 class="font-script text-xl font-bold leading-tight tracking-tight pb-4 border-b border-border-light dark:border-border-dark mb-4">Personal Rating &amp; Notes</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+<div>
+<p class="text-base font-semibold leading-normal pb-2">Rating</p>
+<div class="flex items-center gap-1 text-border-light dark:text-border-dark">
+<button class="material-symbols-outlined text-3xl hover:text-primary transition-colors">star</button>
+<button class="material-symbols-outlined text-3xl hover:text-primary transition-colors">star</button>
+<button class="material-symbols-outlined text-3xl hover:text-primary transition-colors">star</button>
+<button class="material-symbols-outlined text-3xl hover:text-primary transition-colors">star</button>
+<button class="material-symbols-outlined text-3xl hover:text-primary transition-colors">star</button>
+</div>
+</div>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Drinking Window</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary h-12 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., 2025-2035" value=""/>
+</label>
+</div>
+<div class="mt-5">
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Tasting Notes</p>
+<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-transparent dark:bg-surface-dark focus:border-primary dark:focus:border-primary min-h-32 placeholder:text-text-light/50 dark:placeholder:text-text-dark/50 p-3 text-base font-normal leading-normal" placeholder="Describe the aroma, flavor, and finish..."></textarea>
+</label>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-8 lg:col-span-3 justify-end">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-transparent text-text-light dark:text-text-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="truncate">Cancel</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-semibold leading-normal tracking-wide shadow-sm hover:bg-primary-darker transition-colors">
+<span class="truncate">Save Wine</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div></main>
+</div>
+</div>
+</body></html>
