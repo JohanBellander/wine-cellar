@@ -41,7 +41,9 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		
 		// Add user ID to context for easy access in handlers
 		userID := session.Values["user_id"].(uint)
-		ctx := context.WithValue(r.Context(), "userID", userID)
+		email := session.Values["email"].(string)
+		ctx := context.WithValue(r.Context(), "user_id", userID)
+		ctx = context.WithValue(ctx, "email", email)
 		next(w, r.WithContext(ctx))
 	}
 }

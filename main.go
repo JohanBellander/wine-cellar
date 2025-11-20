@@ -16,13 +16,17 @@ func main() {
 	InitDB()
 	Seed(DB)
 
-	http.HandleFunc("/", listHandler)
-	http.HandleFunc("/add", addHandler)
-	http.HandleFunc("/details/", detailsHandler)
-	http.HandleFunc("/edit/", editHandler)
-	http.HandleFunc("/update-quantity", updateQuantityHandler)
-	http.HandleFunc("/add-review", addReviewHandler)
-	http.HandleFunc("/delete", deleteHandler)
+	http.HandleFunc("/signup", signupHandler)
+	http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/logout", logoutHandler)
+
+	http.HandleFunc("/", AuthMiddleware(listHandler))
+	http.HandleFunc("/add", AuthMiddleware(addHandler))
+	http.HandleFunc("/details/", AuthMiddleware(detailsHandler))
+	http.HandleFunc("/edit/", AuthMiddleware(editHandler))
+	http.HandleFunc("/update-quantity", AuthMiddleware(updateQuantityHandler))
+	http.HandleFunc("/add-review", AuthMiddleware(addReviewHandler))
+	http.HandleFunc("/delete", AuthMiddleware(deleteHandler))
 	http.HandleFunc("/health", healthHandler)
 
 	// Serve static files if we had any, but we are using CDNs mostly.
@@ -51,6 +55,9 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userID := r.Context().Value("user_id").(uint)
+	userEmail := r.Context().Value("email").(string)
+
 	// Pagination logic
 	pageStr := r.FormValue("page")
 	page, _ := strconv.Atoi(pageStr)
@@ -60,7 +67,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 	limit := 5 // Items per page
 
 	var totalWines int64
-	DB.Model(&Wine{}).Count(&totalWines)
+	DB.Model(&Wine{}).Where("user_id = ?", userID).Count(&totalWines)
 	totalPages := int((totalWines + int64(limit) - 1) / int64(limit))
 
 	if page > totalPages && totalPages > 0 {
@@ -70,7 +77,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 	offset := (page - 1) * limit
 
 	var paginatedWines []Wine
-	DB.Limit(limit).Offset(offset).Find(&paginatedWines)
+	DB.Where("user_id = ?", userID).Limit(limit).Offset(offset).Find(&paginatedWines)
 
 	// Generate page numbers
 	var pages []int
@@ -87,6 +94,8 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		PrevPage    int
 		NextPage    int
 		Pages       []int
+		LoggedIn    bool
+		UserEmail   string
 	}{
 		Wines:       paginatedWines,
 		CurrentPage: page,
@@ -96,19 +105,33 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		PrevPage:    page - 1,
 		NextPage:    page + 1,
 		Pages:       pages,
+		LoggedIn:    true,
+		UserEmail:   userEmail,
 	}
 
 	tmpl.Execute(w, data)
 }
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
+	userEmail := r.Context().Value("email").(string)
+
 	if r.Method == http.MethodGet {
 		tmpl, err := template.New("wine_form.html").Funcs(funcMap).ParseFiles("templates/wine_form.html", "templates/header.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, Wine{})
+		data := struct {
+			Wine      Wine
+			LoggedIn  bool
+			UserEmail string
+		}{
+			Wine:      Wine{},
+			LoggedIn:  true,
+			UserEmail: userEmail,
+		}
+		tmpl.Execute(w, data)
 		return
 	}
 
@@ -151,10 +174,10 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 			Quantity:       quantity,
 			Price:          price,
 			DrinkingWindow: r.FormValue("drinking_window"),
-			Type:           "Red", // Defaulting for now, or could infer
 			ImageURL:       imageURL,
+			UserID:         userID,
 		}
-		
+
 		DB.Create(&newWine)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -162,6 +185,8 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func detailsHandler(w http.ResponseWriter, r *http.Request) {
+	userEmail := r.Context().Value("email").(string)
+
 	pathParts := strings.Split(r.URL.Path, "/")
 	if len(pathParts) < 3 {
 		http.NotFound(w, r)
@@ -187,7 +212,17 @@ func detailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl.Execute(w, wine)
+	data := struct {
+		Wine      Wine
+		LoggedIn  bool
+		UserEmail string
+	}{
+		Wine:      wine,
+		LoggedIn:  true,
+		UserEmail: userEmail,
+	}
+
+	tmpl.Execute(w, data)
 }
 
 func updateQuantityHandler(w http.ResponseWriter, r *http.Request) {
@@ -274,6 +309,8 @@ func addReviewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func editHandler(w http.ResponseWriter, r *http.Request) {
+	userEmail := r.Context().Value("email").(string)
+
 	if r.Method == http.MethodGet {
 		pathParts := strings.Split(r.URL.Path, "/")
 		if len(pathParts) < 3 {
@@ -298,7 +335,16 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, wine)
+		data := struct {
+			Wine      Wine
+			LoggedIn  bool
+			UserEmail string
+		}{
+			Wine:      wine,
+			LoggedIn:  true,
+			UserEmail: userEmail,
+		}
+		tmpl.Execute(w, data)
 		return
 	}
 
@@ -394,4 +440,82 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
+}
+
+func signupHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		tmpl, err := template.ParseFiles("templates/signup.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		email := r.FormValue("email")
+		password := r.FormValue("password")
+
+		hashedPassword, err := HashPassword(password)
+		if err != nil {
+			http.Error(w, "Server error", http.StatusInternalServerError)
+			return
+		}
+
+		user := User{Email: email, PasswordHash: hashedPassword}
+		result := DB.Create(&user)
+		if result.Error != nil {
+			http.Error(w, "Could not create user", http.StatusInternalServerError)
+			return
+		}
+
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	}
+}
+
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		tmpl, err := template.ParseFiles("templates/login.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		email := r.FormValue("email")
+		password := r.FormValue("password")
+
+		var user User
+		result := DB.Where("email = ?", email).First(&user)
+		if result.Error != nil {
+			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+			return
+		}
+
+		if !CheckPasswordHash(password, user.PasswordHash) {
+			http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+			return
+		}
+
+		session, _ := store.Get(r, "session-name")
+		session.Values["authenticated"] = true
+		session.Values["user_id"] = user.ID
+		session.Values["email"] = user.Email
+		session.Save(r, w)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "session-name")
+	session.Values["authenticated"] = false
+	session.Values["user_id"] = nil
+	session.Values["email"] = nil
+	session.Save(r, w)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }

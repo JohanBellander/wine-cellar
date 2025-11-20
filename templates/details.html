@@ -47,107 +47,96 @@
 {{template "header" .}}
 <div class="layout-container flex h-full grow flex-col">
 <main class="flex flex-1 justify-center py-8 px-4 sm:px-6 lg:px-8">
-<div class="layout-content-container flex flex-col w-full max-w-6xl flex-1">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-<div class="flex flex-col gap-6">
-<div class="w-full flex justify-center items-start bg-black/5 dark:bg-white/5 p-4 rounded-xl shadow-sm">
-<img class="max-h-[500px] object-contain" data-alt="A dark glass bottle of {{.Name}} wine with an elegant white label." src="{{.ImageURL | safeURL}}"/>
-</div>
-<div class="flex flex-col gap-2">
-<p class="font-display text-gray-900 dark:text-white text-4xl sm:text-5xl font-bold leading-tight tracking-tight">{{.Producer}} {{.Name}} {{.Vintage}}</p>
-<p class="text-prose-light/70 dark:text-prose-dark/70 text-base font-normal leading-normal">{{.Region}}, {{.Country}}</p>
-</div>
-<div class="flex gap-2 flex-wrap">
-<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary/10 dark:bg-primary/20 px-3">
-<p class="text-primary dark:text-primary text-sm font-medium leading-normal">{{.Grape}}</p>
-</div>
-</div>
-<div class="mt-2">
-    <a href="/edit/{{.ID}}" class="inline-flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-semibold leading-normal tracking-wide shadow-sm hover:bg-primary/90 transition-colors">
-        Edit Wine
-    </a>
-</div>
+<div class="layout-content-container flex flex-col w-full max-w-7xl">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+<div class="flex flex-col items-center justify-center p-8 bg-white dark:bg-white/5 rounded-xl shadow-sm border border-black/5 dark:border-white/5">
+<img alt="{{.Wine.Name}}" class="max-h-[500px] object-contain drop-shadow-xl" src="{{if .Wine.ImageURL}}{{.Wine.ImageURL | safeURL}}{{else}}https://via.placeholder.com/150{{end}}"/>
 </div>
 <div class="flex flex-col gap-8">
-<div class="flex flex-col gap-4 p-6 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
-    <div class="flex justify-between items-center">
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white">My Cellar</h3>
-    </div>
-    <div class="flex items-center justify-between">
-        <span class="text-prose-light dark:text-prose-dark">Quantity in stock:</span>
-        <div class="flex items-center gap-3">
-            <form action="/update-quantity" method="POST" class="inline">
-                <input type="hidden" name="id" value="{{.ID}}">
-                <input type="hidden" name="action" value="decrement">
-                <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition-colors text-xl font-bold" {{if le .Quantity 0}}disabled{{end}}>-</button>
-            </form>
-            <span class="text-xl font-bold text-gray-900 dark:text-white">{{.Quantity}}</span>
-            <form action="/update-quantity" method="POST" class="inline">
-                <input type="hidden" name="id" value="{{.ID}}">
-                <input type="hidden" name="action" value="increment">
-                <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition-colors text-xl font-bold">+</button>
-            </form>
-        </div>
-    </div>
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold tracking-wider uppercase text-primary">{{.Wine.Vintage}}</span>
+<div class="flex items-center gap-2">
+<a href="/edit/{{.Wine.ID}}" class="text-sm font-medium text-prose-light hover:text-primary dark:text-prose-dark dark:hover:text-primary transition-colors">Edit</a>
 </div>
-
-<div class="flex flex-col gap-4">
-<details class="group border-b border-black/5 dark:border-white/5 py-4" open="">
-<summary class="flex justify-between items-center cursor-pointer list-none">
-<h3 class="text-lg font-bold text-gray-900 dark:text-white">Details</h3>
-<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-</summary>
-<div class="mt-4 text-prose-light dark:text-prose-dark space-y-2 leading-relaxed">
-<p><strong>Aging Potential:</strong> {{.DrinkingWindow}}</p>
 </div>
-</details>
-<details class="group border-b border-black/5 dark:border-white/5 py-4">
-<summary class="flex justify-between items-center cursor-pointer list-none">
-<h3 class="text-lg font-bold text-gray-900 dark:text-white">Producer Info</h3>
-<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
-</summary>
-<div class="mt-4 text-prose-light dark:text-prose-dark space-y-2 leading-relaxed">
-<p>{{.Producer}} is one of only four wines to achieve Premier Cru status in the 1855 Bordeaux Classification. With a history stretching back to the 12th century, the estate is renowned for producing wines of unparalleled finesse and elegance.</p>
+<h1 class="font-display text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-2">{{.Wine.Name}}</h1>
+<p class="text-xl text-prose-light/80 dark:text-prose-dark/80 font-display italic">{{.Wine.Producer}}</p>
 </div>
-</details>
+<div class="grid grid-cols-2 gap-6 py-6 border-y border-black/5 dark:border-white/5">
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Region</p>
+<p class="text-lg font-medium">{{.Wine.Region}}, {{.Wine.Country}}</p>
 </div>
-<div class="flex flex-col gap-6">
-    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-        <h3 class="text-2xl font-script text-gray-900 dark:text-white">Reviews</h3>
-    </div>
-
-    <div class="flex flex-col gap-6">
-        {{range .Reviews}}
-        <div class="flex gap-4 p-4 rounded-lg bg-black/5 dark:bg-white/5">
-            <div class="flex flex-col gap-2 flex-1">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="font-bold text-gray-900 dark:text-white">{{.Reviewer}}</p>
-                        <p class="text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Date}}</p>
-                    </div>
-                    <div class="flex h-8 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary font-bold text-sm px-3">
-                        {{.Rating}}
-                    </div>
-                </div>
-                <p class="text-prose-light dark:text-prose-dark leading-relaxed">{{.Content}}</p>
-            </div>
-        </div>
-        {{else}}
-        <p class="text-prose-light/70 dark:text-prose-dark/70 italic">No reviews yet.</p>
-        {{end}}
-    </div>
-
-    <!-- Add Review Form -->
-    <form action="/add-review" method="POST" class="flex flex-col gap-4 p-4 rounded-lg bg-black/5 dark:bg-white/5">
-        <input type="hidden" name="id" value="{{.ID}}">
-        <h4 class="font-bold text-gray-900 dark:text-white">Add a Review</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input type="text" name="reviewer" placeholder="Reviewer Name" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
-            <input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
-        </div>
-        <textarea name="content" placeholder="Review Content" rows="3" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required></textarea>
-        <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
-    </form>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Grape</p>
+<p class="text-lg font-medium">{{.Wine.Grape}}</p>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Price</p>
+<p class="text-lg font-medium">${{printf "%.2f" .Wine.Price}}</p>
+</div>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Drinking Window</p>
+<p class="text-lg font-medium">{{.Wine.DrinkingWindow}}</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-6 bg-champagne-light/30 dark:bg-champagne-dark/30 rounded-xl border border-primary/10">
+<div>
+<p class="text-sm font-bold text-gray-900 dark:text-white mb-1">In Stock</p>
+<p class="text-3xl font-display font-bold text-primary">{{.Wine.Quantity}} <span class="text-base font-body font-normal text-prose-light/70 dark:text-prose-dark/70">bottles</span></p>
+</div>
+<div class="flex items-center gap-3">
+<form action="/update-quantity" method="POST" class="contents">
+<input type="hidden" name="id" value="{{.Wine.ID}}">
+<button name="action" value="decrement" class="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:bg-gray-50 dark:hover:bg-white/20 transition-colors text-xl font-bold">-</button>
+<button name="action" value="increment" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white shadow-sm hover:bg-primary/90 transition-colors text-xl font-bold">+</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-12 lg:mt-16">
+<h2 class="font-display text-2xl font-bold mb-8 pb-4 border-b border-black/5 dark:border-white/5">Tasting Notes &amp; Reviews</h2>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+<div class="lg:col-span-2 space-y-6">
+{{range .Wine.Reviews}}
+<div class="p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+{{slice .Reviewer 0 1}}
+</div>
+<div>
+<p class="font-bold text-gray-900 dark:text-white">{{.Reviewer}}</p>
+<p class="text-xs text-prose-light/50 dark:text-prose-dark/50">{{.Date}}</p>
+</div>
+</div>
+<div class="flex items-center gap-1 text-primary">
+<span class="font-bold">{{.Rating}}</span>
+<span class="material-symbols-outlined text-sm">star</span>
+</div>
+</div>
+<p class="text-prose-light/80 dark:text-prose-dark/80 leading-relaxed">{{.Content}}</p>
+</div>
+{{else}}
+<div class="text-center py-12 bg-black/5 dark:bg-white/5 rounded-xl border border-dashed border-black/10 dark:border-white/10">
+<p class="text-prose-light/50 dark:text-prose-dark/50">No reviews yet. Be the first to review this wine!</p>
+</div>
+{{end}}
+</div>
+<div class="lg:col-span-1">
+<div class="sticky top-24 p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5 shadow-sm">
+<h3 class="font-bold text-lg mb-4">Add a Review</h3>
+<form action="/add-review" method="POST" class="space-y-4">
+<input type="hidden" name="id" value="{{.Wine.ID}}">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<input type="text" name="reviewer" placeholder="Reviewer Name" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
+<input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
+</div>
+<textarea name="content" placeholder="Review Content" rows="3" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required></textarea>
+<button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
+</form>
 </div>
 </div>
 </div>
