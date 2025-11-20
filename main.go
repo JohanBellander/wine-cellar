@@ -12,6 +12,7 @@ import (
 
 func main() {
 	InitDB()
+	Seed(DB)
 
 	http.HandleFunc("/", listHandler)
 	http.HandleFunc("/add", addHandler)
