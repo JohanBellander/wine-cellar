@@ -58,23 +58,38 @@
 <div class="lg:col-span-1">
 <h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4">Bottle Image</h3>
 <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-black/5 dark:border-white/5 p-6 text-center">
-<div class="flex max-w-[480px] flex-col items-center gap-2">
-<p class="text-base font-semibold">Upload Bottle Image</p>
-<p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Click to browse</p>
+    <!-- Preview Area -->
+    <div id="image-preview-container" class="{{if .ImageURL}}block{{else}}hidden{{end}}">
+        <img id="image-preview" src="{{if .ImageURL}}{{.ImageURL}}{{end}}" class="max-h-64 object-contain rounded-lg shadow-sm mx-auto">
+    </div>
+
+    <div class="flex max-w-[480px] flex-col items-center gap-2">
+        <p class="text-base font-semibold">Upload Bottle Image</p>
+        <p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Click to browse</p>
+    </div>
+    
+    <label for="image-upload" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+        <span class="truncate">Browse Files</span>
+    </label>
+    <input id="image-upload" type="file" name="image" accept="image/*" class="hidden" onchange="previewImage(event)">
 </div>
-<label class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
-<span class="truncate">Browse Files</span>
-<input type="file" name="image" accept="image/*" class="hidden">
-</label>
-<div class="w-full">
-<div class="border-t border-black/5 dark:border-white/5 my-4"></div>
-<p class="text-prose-light/70 dark:text-prose-dark/70 text-sm mb-2">Or</p>
-<button type="button" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors w-full">
-<span class="material-symbols-outlined mr-2 !text-xl">photo_camera</span>
-<span class="truncate">Take Photo</span>
-</button>
-</div>
-</div>
+
+<script>
+function previewImage(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('image-preview');
+            const container = document.getElementById('image-preview-container');
+            preview.src = e.target.result;
+            container.classList.remove('hidden');
+            container.classList.add('block');
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 </div>
 <div class="lg:col-span-2">
 <div class="flex flex-col gap-8">
