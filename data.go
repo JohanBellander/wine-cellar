@@ -2,7 +2,34 @@ package main
 
 import (
 	"gorm.io/gorm"
+	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
+	"os"
+	"log"
 )
+
+var DB *gorm.DB
+
+func InitDB() {
+	var err error
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn != "" {
+		// Use PostgreSQL
+		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err != nil {
+			log.Fatal("Failed to connect to database: ", err)
+		}
+	} else {
+		// Use SQLite
+		DB, err = gorm.Open(sqlite.Open("wines.db"), &gorm.Config{})
+		if err != nil {
+			log.Fatal("Failed to connect to database: ", err)
+		}
+	}
+
+	// Auto Migrate the schema
+	DB.AutoMigrate(&Wine{}, &Review{})
+}
 
 type Wine struct {
 	gorm.Model

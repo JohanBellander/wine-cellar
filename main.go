@@ -258,16 +258,7 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var wine Wine
-		found := false
-		for _, w := range wines {
-			if w.ID == id {
-				wine = w
-				found = true
-				break
-			}
-		}
-
-		if !found {
+		if result := DB.First(&wine, id); result.Error != nil {
 			http.NotFound(w, r)
 			return
 		}
@@ -295,28 +286,27 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		mu.Lock()
-		defer mu.Unlock()
-
-		for i, wine := range wines {
-			if wine.ID == id {
-				vintage, _ := strconv.Atoi(r.FormValue("vintage"))
-				quantity, _ := strconv.Atoi(r.FormValue("quantity"))
-				price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
-
-				wines[i].Name = r.FormValue("name")
-				wines[i].Producer = r.FormValue("producer")
-				wines[i].Vintage = vintage
-				wines[i].Grape = r.FormValue("grape")
-				wines[i].Country = r.FormValue("country")
-				wines[i].Region = r.FormValue("region")
-				wines[i].Quantity = quantity
-				wines[i].Price = price
-				wines[i].DrinkingWindow = r.FormValue("drinking_window")
-				// Keep existing Type, ImageURL, Reviews
-				break
-			}
+		var wine Wine
+		if result := DB.First(&wine, id); result.Error != nil {
+			http.NotFound(w, r)
+			return
 		}
+
+		vintage, _ := strconv.Atoi(r.FormValue("vintage"))
+		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
+		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
+
+		wine.Name = r.FormValue("name")
+		wine.Producer = r.FormValue("producer")
+		wine.Vintage = vintage
+		wine.Grape = r.FormValue("grape")
+		wine.Country = r.FormValue("country")
+		wine.Region = r.FormValue("region")
+		wine.Quantity = quantity
+		wine.Price = price
+		wine.DrinkingWindow = r.FormValue("drinking_window")
+		
+		DB.Save(&wine)
 
 		http.Redirect(w, r, fmt.Sprintf("/details/%d", id), http.StatusSeeOther)
 	}
