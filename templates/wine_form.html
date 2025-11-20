@@ -68,10 +68,10 @@
         <p class="text-prose-light/70 dark:text-prose-dark/70 text-sm font-normal leading-normal">Click to browse</p>
     </div>
     
-    <label for="image-upload" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+    <label class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-semibold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
         <span class="truncate">Browse Files</span>
+        <input type="file" name="image" accept="image/*" class="hidden" onchange="previewImage(event)">
     </label>
-    <input id="image-upload" type="file" name="image" accept="image/*" class="hidden" onchange="previewImage(event)">
 </div>
 
 <script>
