@@ -75,6 +75,8 @@
 <img alt="Bottle of {{.Name}}" class="h-16 w-12 object-contain" src="{{.ImageURL | safeURL}}"/>
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
+<div class="md:hidden text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Producer}}</div>
+<div class="md:hidden text-xs text-prose-light/50 dark:text-prose-dark/50">{{.Region}}</div>
 </div>
 </div>
 </td>
