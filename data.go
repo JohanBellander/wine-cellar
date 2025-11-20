@@ -28,11 +28,18 @@ func InitDB() {
 	}
 
 	// Auto Migrate the schema
-	DB.AutoMigrate(&Wine{}, &Review{})
+	DB.AutoMigrate(&User{}, &Wine{}, &Review{})
+}
+
+type User struct {
+	gorm.Model
+	Email        string `gorm:"uniqueIndex;not null"`
+	PasswordHash string `gorm:"not null"`
 }
 
 type Wine struct {
 	gorm.Model
+	UserID         uint `gorm:"index"` // Foreign key to User
 	Name           string
 	Producer       string
 	Vintage        int
