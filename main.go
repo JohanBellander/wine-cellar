@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/edit/", editHandler)
 	http.HandleFunc("/update-quantity", updateQuantityHandler)
 	http.HandleFunc("/add-review", addReviewHandler)
+	http.HandleFunc("/health", healthHandler)
 
 	// Serve static files if we had any, but we are using CDNs mostly.
 	// If we had local images, we would serve them here.
@@ -347,4 +348,9 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, fmt.Sprintf("/details/%d", id), http.StatusSeeOther)
 	}
+}
+
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }

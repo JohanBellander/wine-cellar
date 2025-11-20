@@ -1,5 +1,5 @@
-# Start from the official Go image
-FROM golang:1.25
+# Build stage
+FROM golang:1.25-alpine AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,7 +14,17 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
+# Run stage
+FROM alpine:latest
+WORKDIR /root/
+
+# Copy the binary from the builder stage
+COPY --from=builder /app/main .
+
+# Copy templates directory
+COPY --from=builder /app/templates ./templates
 
 # Expose the port the app runs on
 EXPOSE 8080
