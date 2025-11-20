@@ -36,8 +36,15 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
+// Define a FuncMap with the safeURL function
+var funcMap = template.FuncMap{
+	"safeURL": func(s string) template.URL {
+		return template.URL(s)
+	},
+}
+
 func listHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/list.html", "templates/header.html")
+	tmpl, err := template.New("list.html").Funcs(funcMap).ParseFiles("templates/list.html", "templates/header.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -95,7 +102,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 
 func addHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		tmpl, err := template.ParseFiles("templates/wine_form.html", "templates/header.html")
+		tmpl, err := template.New("wine_form.html").Funcs(funcMap).ParseFiles("templates/wine_form.html", "templates/header.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -173,7 +180,7 @@ func detailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl, err := template.ParseFiles("templates/details.html", "templates/header.html")
+	tmpl, err := template.New("details.html").Funcs(funcMap).ParseFiles("templates/details.html", "templates/header.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -285,7 +292,7 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tmpl, err := template.ParseFiles("templates/wine_form.html", "templates/header.html")
+		tmpl, err := template.New("wine_form.html").Funcs(funcMap).ParseFiles("templates/wine_form.html", "templates/header.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

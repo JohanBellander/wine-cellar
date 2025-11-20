@@ -51,7 +51,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 <div class="flex flex-col gap-6">
 <div class="w-full flex justify-center items-start bg-black/5 dark:bg-white/5 p-4 rounded-xl shadow-sm">
-<img class="max-h-[500px] object-contain" data-alt="A dark glass bottle of {{.Name}} wine with an elegant white label." src="{{.ImageURL}}"/>
+<img class="max-h-[500px] object-contain" data-alt="A dark glass bottle of {{.Name}} wine with an elegant white label." src="{{.ImageURL | safeURL}}"/>
 </div>
 <div class="flex flex-col gap-2">
 <p class="font-display text-gray-900 dark:text-white text-4xl sm:text-5xl font-bold leading-tight tracking-tight">{{.Name}} {{.Vintage}}</p>

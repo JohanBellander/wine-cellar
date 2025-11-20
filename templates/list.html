@@ -88,7 +88,7 @@
 <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" onclick="window.location.href='/details/{{.ID}}'">
 <td class="p-4 align-middle">
 <div class="flex items-center gap-4">
-<img alt="Bottle of {{.Name}}" class="h-16 w-12 object-contain" src="{{.ImageURL}}"/>
+<img alt="Bottle of {{.Name}}" class="h-16 w-12 object-contain" src="{{.ImageURL | safeURL}}"/>
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
 <div class="text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Type}}</div>

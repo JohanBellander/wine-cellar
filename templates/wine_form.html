@@ -60,7 +60,7 @@
 <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-black/5 dark:border-white/5 p-6 text-center">
     <!-- Preview Area -->
     <div id="image-preview-container" class="{{if .ImageURL}}block{{else}}hidden{{end}}">
-        <img id="image-preview" src="{{if .ImageURL}}{{.ImageURL}}{{end}}" class="max-h-64 object-contain rounded-lg shadow-sm mx-auto">
+        <img id="image-preview" src="{{if .ImageURL}}{{.ImageURL | safeURL}}{{end}}" class="max-h-64 object-contain rounded-lg shadow-sm mx-auto">
     </div>
 
     <div class="flex max-w-[480px] flex-col items-center gap-2">
