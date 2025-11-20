@@ -55,20 +55,6 @@
 <span class="material-symbols-outlined !text-xl">add</span>
 <span class="truncate">Add New Wine</span>
 </a>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2">
-<span class="text-sm text-prose-light/80 dark:text-prose-dark/80">Sort by:</span>
-<div class="relative">
-<select class="form-select appearance-none bg-black/5 dark:bg-white/5 border-none rounded-md pl-3 pr-8 py-1.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/50">
-<option>Recently Added</option>
-<option>Vintage (Newest)</option>
-<option>Vintage (Oldest)</option>
-<option>Name (A-Z)</option>
-</select>
-<span class="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-prose-light/60 dark:text-prose-dark/60 !text-xl">unfold_more</span>
-</div>
-</div>
-</div>
 </div>
 <div class="bg-background-light dark:bg-background-dark border border-black/5 dark:border-white/5 rounded-xl overflow-hidden">
 <table class="w-full text-left">
@@ -79,8 +65,6 @@
 <th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Region</th>
 <th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Vintage</th>
 <th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Qty</th>
-<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Rating</th>
-<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-black/5 dark:divide-white/5">
@@ -91,7 +75,6 @@
 <img alt="Bottle of {{.Name}}" class="h-16 w-12 object-contain" src="{{.ImageURL | safeURL}}"/>
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
-<div class="text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Type}}</div>
 </div>
 </div>
 </td>
@@ -99,10 +82,6 @@
 <td class="p-4 align-middle text-sm">{{.Region}}</td>
 <td class="p-4 align-middle text-sm text-center">{{.Vintage}}</td>
 <td class="p-4 align-middle text-sm text-center">{{.Quantity}}</td>
-<td class="p-4 align-middle text-sm text-center font-semibold text-gray-900 dark:text-white">{{.Rating}}</td>
-<td class="p-4 align-middle text-right">
-<button class="h-8 w-8 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-prose-light/70 dark:text-prose-dark/70 transition-colors"><span class="material-symbols-outlined !text-xl">more_vert</span></button>
-</td>
 </tr>
 {{end}}
 </tbody>
