@@ -20,6 +20,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 FROM alpine:latest
 WORKDIR /root/
 
+# Install CA certificates for SSL database connections
+RUN apk --no-cache add ca-certificates
+
 # Copy the binary from the builder stage
 COPY --from=builder /app/main .
 
