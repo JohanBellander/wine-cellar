@@ -2,7 +2,7 @@ package main
 
 import (
 	"gorm.io/gorm"
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/driver/postgres"
 	"os"
 	"log"
