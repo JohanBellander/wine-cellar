@@ -17,11 +17,11 @@ type User struct {
 
 type Wine struct {
 	gorm.Model
-	UserID         uint `gorm:"index"` // Foreign key to User
+	UserID         uint    `gorm:"index"` // Foreign key to User
 	Name           string
 	Producer       string
 	Vintage        int
-	Grape          string
+	Grape          string  `json:"grape"`
 	Country        string
 	Region         string
 	Quantity       int
@@ -31,8 +31,10 @@ type Wine struct {
 	Rating         string
 	DrinkingWindow string
 	Notes          string
-	Type           string // Red, White, etc.
 	ImageURL       string
+	Type           string  `json:"type"`
+	Category       string  `json:"category"`
+	SubCategory    string  `json:"sub_category"`
 	Reviews        []Review
 }
 

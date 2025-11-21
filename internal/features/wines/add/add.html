@@ -233,6 +233,23 @@ function previewImage(event) {
 <h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Origin &amp; Type</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
 <label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Category</p>
+<select name="category" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal">
+    <option value="" {{if eq .Wine.Category ""}}selected{{end}}>Select Category</option>
+    <option value="Red" {{if eq .Wine.Category "Red"}}selected{{end}}>Red</option>
+    <option value="White" {{if eq .Wine.Category "White"}}selected{{end}}>White</option>
+    <option value="Sparkling" {{if eq .Wine.Category "Sparkling"}}selected{{end}}>Sparkling</option>
+    <option value="Rose" {{if eq .Wine.Category "Rose"}}selected{{end}}>Rosé</option>
+    <option value="Dessert" {{if eq .Wine.Category "Dessert"}}selected{{end}}>Dessert</option>
+    <option value="Fortified" {{if eq .Wine.Category "Fortified"}}selected{{end}}>Fortified</option>
+    <option value="Other" {{if eq .Wine.Category "Other"}}selected{{end}}>Other</option>
+</select>
+</label>
+<label class="flex flex-col w-full">
+<p class="text-base font-semibold leading-normal pb-2">Subcategory</p>
+<input name="sub_category" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Dry, Sweet, Brut" value="{{.Wine.SubCategory}}"/>
+</label>
+<label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Vintage</p>
 <input name="vintage" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., 2018" type="number" value="{{if .Wine.Vintage}}{{.Wine.Vintage}}{{end}}"/>
 </label>

@@ -65,6 +65,10 @@
 </div>
 <div class="grid grid-cols-2 gap-6 py-6 border-y border-black/5 dark:border-white/5">
 <div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Category</p>
+<p class="text-lg font-medium">{{.Wine.Category}}{{if .Wine.SubCategory}} - {{.Wine.SubCategory}}{{end}}</p>
+</div>
+<div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Region</p>
 <p class="text-lg font-medium">{{.Wine.Region}}, {{.Wine.Country}}</p>
 </div>

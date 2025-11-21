@@ -61,6 +61,7 @@
 <thead class="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
 <tr>
 <th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Wine</th>
+<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Type</th>
 <th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Producer</th>
 <th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Region</th>
 <th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Vintage</th>
@@ -76,10 +77,11 @@
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
 <div class="md:hidden text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Producer}}</div>
-<div class="md:hidden text-xs text-prose-light/50 dark:text-prose-dark/50">{{.Region}}</div>
+<div class="md:hidden text-xs text-prose-light/50 dark:text-prose-dark/50">{{.Category}} • {{.Region}}</div>
 </div>
 </div>
 </td>
+<td class="hidden md:table-cell p-4 align-middle text-sm">{{.Category}}{{if .SubCategory}} <span class="text-xs opacity-70">({{.SubCategory}})</span>{{end}}</td>
 <td class="hidden md:table-cell p-4 align-middle text-sm">{{.Producer}}</td>
 <td class="hidden md:table-cell p-4 align-middle text-sm">{{.Region}}</td>
 <td class="p-4 align-middle text-sm text-center">{{.Vintage}}</td>

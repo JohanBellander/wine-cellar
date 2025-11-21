@@ -94,6 +94,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			Grape:          r.FormValue("grape"),
 			Country:        r.FormValue("country"),
 			Region:         r.FormValue("region"),
+			Category:       r.FormValue("category"),
+			SubCategory:    r.FormValue("sub_category"),
 			Quantity:       quantity,
 			Price:          price,
 			DrinkingWindow: r.FormValue("drinking_window"),
