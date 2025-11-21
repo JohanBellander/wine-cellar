@@ -44,12 +44,13 @@ jobs:
           STRIPE_PRICE_ID: ${{ secrets.STRIPE_PRICE_ID }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           DOMAIN: ${{ secrets.DOMAIN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           if [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
             echo "Syncing environment variables to Render..."
             # Construct JSON payload
             # Note: This replaces all existing env vars on the service!
-            DATA="[{\"key\":\"STRIPE_SECRET_KEY\",\"value\":\"$STRIPE_SECRET_KEY\"},{\"key\":\"STRIPE_PUBLISHABLE_KEY\",\"value\":\"$STRIPE_PUBLISHABLE_KEY\"},{\"key\":\"STRIPE_PRICE_ID\",\"value\":\"$STRIPE_PRICE_ID\"},{\"key\":\"STRIPE_WEBHOOK_SECRET\",\"value\":\"$STRIPE_WEBHOOK_SECRET\"},{\"key\":\"DOMAIN\",\"value\":\"$DOMAIN\"}]"
+            DATA="[{\"key\":\"STRIPE_SECRET_KEY\",\"value\":\"$STRIPE_SECRET_KEY\"},{\"key\":\"STRIPE_PUBLISHABLE_KEY\",\"value\":\"$STRIPE_PUBLISHABLE_KEY\"},{\"key\":\"STRIPE_PRICE_ID\",\"value\":\"$STRIPE_PRICE_ID\"},{\"key\":\"STRIPE_WEBHOOK_SECRET\",\"value\":\"$STRIPE_WEBHOOK_SECRET\"},{\"key\":\"DOMAIN\",\"value\":\"$DOMAIN\"},{\"key\":\"DATABASE_URL\",\"value\":\"$DATABASE_URL\"}]"
             
             curl -X PUT "https://api.render.com/v1/services/$RENDER_SERVICE_ID/env-vars" \
               -H "Authorization: Bearer $RENDER_API_KEY" \
