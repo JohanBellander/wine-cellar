@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
@@ -25,6 +26,9 @@ func CreateCheckoutSession(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("user_id").(uint)
 	userEmail := r.Context().Value("email").(string)
 	domainURL := os.Getenv("DOMAIN")
+	if !strings.HasPrefix(domainURL, "http") {
+		domainURL = "https://" + domainURL
+	}
 	priceID := os.Getenv("STRIPE_PRICE_ID")
 
 	params := &stripe.CheckoutSessionParams{
@@ -54,6 +58,9 @@ func CreateCheckoutSession(w http.ResponseWriter, r *http.Request) {
 func CreatePortalSession(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("user_id").(uint)
 	domainURL := os.Getenv("DOMAIN")
+	if !strings.HasPrefix(domainURL, "http") {
+		domainURL = "https://" + domainURL
+	}
 
 	var user domain.User
 	if result := database.DB.First(&user, userID); result.Error != nil {
