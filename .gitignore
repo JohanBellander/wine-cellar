@@ -3,3 +3,4 @@ main.exe
 wines.db
 *.log
 .env
+*.exe

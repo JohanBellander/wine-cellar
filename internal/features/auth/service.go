@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"context"
@@ -30,8 +30,8 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-// AuthMiddleware checks if the user is logged in
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
+// Middleware checks if the user is logged in
+func Middleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "session-name")
 		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
@@ -63,4 +63,15 @@ func GetUserIDFromSession(r *http.Request) uint {
 		return userID
 	}
 	return 0
+}
+
+// GetSessionUser returns the user ID and email if authenticated
+func GetSessionUser(r *http.Request) (uint, string, bool) {
+	session, _ := store.Get(r, "session-name")
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		userID := session.Values["user_id"].(uint)
+		email := session.Values["email"].(string)
+		return userID, email, true
+	}
+	return 0, "", false
 }
