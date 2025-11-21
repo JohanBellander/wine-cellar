@@ -6,9 +6,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Email        string `gorm:"uniqueIndex;not null"`
-	PasswordHash string `gorm:"not null"`
-	Currency     string `gorm:"default:'USD'"`
+	Email              string `gorm:"uniqueIndex;not null"`
+	PasswordHash       string `gorm:"not null"`
+	Currency           string `gorm:"default:'USD'"`
+	SubscriptionTier   string `gorm:"default:'free'"` // "free" or "pro"
+	StripeCustomerID   string
+	SubscriptionStatus string // "active", "past_due", "canceled", etc.
+	SubscriptionID     string
 }
 
 type Wine struct {
