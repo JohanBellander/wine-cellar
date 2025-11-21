@@ -11,6 +11,7 @@ import (
 	"wine-cellar/internal/features/auth"
 	"wine-cellar/internal/features/reviews/add"
 	"wine-cellar/internal/features/settings"
+	"wine-cellar/internal/features/subscription"
 	addWine "wine-cellar/internal/features/wines/add"
 	deleteWine "wine-cellar/internal/features/wines/delete"
 	"wine-cellar/internal/features/wines/details"
@@ -18,9 +19,16 @@ import (
 	"wine-cellar/internal/features/wines/list"
 	"wine-cellar/internal/features/wines/update"
 	"wine-cellar/internal/shared/database"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load .env file
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+
 	database.InitDB()
 	database.Seed(database.DB)
 
@@ -36,6 +44,9 @@ func main() {
 	http.HandleFunc("/add-review", auth.Middleware(add.Handler))
 	http.HandleFunc("/settings", auth.Middleware(settings.Handler))
 	http.HandleFunc("/delete", auth.Middleware(deleteWine.Handler))
+	http.HandleFunc("/create-checkout-session", auth.Middleware(subscription.CreateCheckoutSession))
+	http.HandleFunc("/create-portal-session", auth.Middleware(subscription.CreatePortalSession))
+	http.HandleFunc("/webhook/stripe", subscription.WebhookHandler)
 	http.HandleFunc("/health", healthHandler)
 
 	// Serve static files if we had any, but we are using CDNs mostly.

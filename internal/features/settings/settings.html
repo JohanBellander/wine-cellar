@@ -48,38 +48,72 @@
                 <div class="layout-content-container flex flex-col w-full max-w-3xl">
                     <h1 class="font-display text-3xl font-bold leading-tight tracking-tight pb-8 text-gray-900 dark:text-white">Settings</h1>
                     
-                    <form action="/settings" method="POST" class="space-y-8">
+                    <div class="space-y-8">
+                        <!-- Subscription Section -->
                         <div class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-black/5 dark:border-white/5">
-                            <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Preferences</h2>
-                            
-                            <div class="flex flex-col gap-4">
-                                <label class="flex flex-col w-full max-w-xs">
-                                    <span class="text-base font-semibold leading-normal pb-2">Currency</span>
-                                    <select name="currency" class="form-select w-full rounded-lg border-black/10 dark:border-white/10 bg-transparent text-prose-light dark:text-prose-dark focus:border-primary focus:ring-primary">
-                                        <option value="USD" {{if eq .User.Currency "USD"}}selected{{end}}>USD ($)</option>
-                                        <option value="EUR" {{if eq .User.Currency "EUR"}}selected{{end}}>EUR (€)</option>
-                                        <option value="GBP" {{if eq .User.Currency "GBP"}}selected{{end}}>GBP (£)</option>
-                                        <option value="SEK" {{if eq .User.Currency "SEK"}}selected{{end}}>SEK (kr)</option>
-                                        <option value="NOK" {{if eq .User.Currency "NOK"}}selected{{end}}>NOK (kr)</option>
-                                        <option value="DKK" {{if eq .User.Currency "DKK"}}selected{{end}}>DKK (kr)</option>
-                                        <option value="AUD" {{if eq .User.Currency "AUD"}}selected{{end}}>AUD ($)</option>
-                                        <option value="CAD" {{if eq .User.Currency "CAD"}}selected{{end}}>CAD ($)</option>
-                                        <option value="JPY" {{if eq .User.Currency "JPY"}}selected{{end}}>JPY (¥)</option>
-                                    </select>
-                                    <p class="mt-2 text-sm text-prose-light/70 dark:text-prose-dark/70">This currency will be used to display prices throughout the application.</p>
-                                </label>
+                            <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Subscription</h2>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-base font-medium text-prose-light dark:text-prose-dark">Current Plan: <span class="font-bold uppercase">{{if eq .User.SubscriptionTier ""}}Free{{else}}{{.User.SubscriptionTier}}{{end}}</span></p>
+                                    <p class="mt-1 text-sm text-prose-light/70 dark:text-prose-dark/70">
+                                        {{if eq .User.SubscriptionTier "pro"}}
+                                        You have unlimited access to all features.
+                                        {{else}}
+                                        You are on the free plan (limited to 10 wines).
+                                        {{end}}
+                                    </p>
+                                </div>
+                                <div>
+                                    {{if eq .User.SubscriptionTier "pro"}}
+                                    <form action="/create-portal-session" method="POST">
+                                        <button type="submit" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-bold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+                                            Manage Subscription
+                                        </button>
+                                    </form>
+                                    {{else}}
+                                    <form action="/create-checkout-session" method="POST">
+                                        <button type="submit" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors">
+                                            Upgrade to Pro
+                                        </button>
+                                    </form>
+                                    {{end}}
+                                </div>
                             </div>
                         </div>
 
-                        <div class="flex justify-end gap-4">
-                            <a href="/" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-bold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
-                                Cancel
-                            </a>
-                            <button type="submit" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors">
-                                Save Changes
-                            </button>
-                        </div>
-                    </form>
+                        <form action="/settings" method="POST">
+                            <div class="bg-white dark:bg-white/5 rounded-xl p-6 shadow-sm border border-black/5 dark:border-white/5">
+                                <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Preferences</h2>
+                                
+                                <div class="flex flex-col gap-4">
+                                    <label class="flex flex-col w-full max-w-xs">
+                                        <span class="text-base font-semibold leading-normal pb-2">Currency</span>
+                                        <select name="currency" class="form-select w-full rounded-lg border-black/10 dark:border-white/10 bg-transparent text-prose-light dark:text-prose-dark focus:border-primary focus:ring-primary">
+                                            <option value="USD" {{if eq .User.Currency "USD"}}selected{{end}}>USD ($)</option>
+                                            <option value="EUR" {{if eq .User.Currency "EUR"}}selected{{end}}>EUR (€)</option>
+                                            <option value="GBP" {{if eq .User.Currency "GBP"}}selected{{end}}>GBP (£)</option>
+                                            <option value="SEK" {{if eq .User.Currency "SEK"}}selected{{end}}>SEK (kr)</option>
+                                            <option value="NOK" {{if eq .User.Currency "NOK"}}selected{{end}}>NOK (kr)</option>
+                                            <option value="DKK" {{if eq .User.Currency "DKK"}}selected{{end}}>DKK (kr)</option>
+                                            <option value="AUD" {{if eq .User.Currency "AUD"}}selected{{end}}>AUD ($)</option>
+                                            <option value="CAD" {{if eq .User.Currency "CAD"}}selected{{end}}>CAD ($)</option>
+                                            <option value="JPY" {{if eq .User.Currency "JPY"}}selected{{end}}>JPY (¥)</option>
+                                        </select>
+                                        <p class="mt-2 text-sm text-prose-light/70 dark:text-prose-dark/70">This currency will be used to display prices throughout the application.</p>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end gap-4 mt-8">
+                                <a href="/" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/5 dark:bg-white/5 text-prose-light dark:text-prose-dark text-sm font-bold leading-normal tracking-wide hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-colors">
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
