@@ -100,15 +100,15 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Verify the signature
 	endpointSecret := os.Getenv("STRIPE_WEBHOOK_SECRET")
-	// If no secret is set (e.g. local dev without CLI), we might skip verification or fail.
-	// For security, we should verify. For this setup, we'll assume it's set or we log a warning.
 	
-	event, err := webhook.ConstructEvent(payload, r.Header.Get("Stripe-Signature"), endpointSecret)
+	// Use ConstructEventWithOptions to ignore API version mismatch
+	// This is necessary because the Stripe Go SDK version might lag behind the API version used by the webhook
+	event, err := webhook.ConstructEventWithOptions(payload, r.Header.Get("Stripe-Signature"), endpointSecret, webhook.ConstructEventOptions{
+		IgnoreAPIVersionMismatch: true,
+	})
 	if err != nil {
-		// If secret is missing/invalid, we might want to allow it for now if in dev mode?
-		// But strictly speaking:
 		log.Printf("Error verifying webhook signature: %v\n", err)
-		w.WriteHeader(http.StatusBadRequest) // Return 400 or 500
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
