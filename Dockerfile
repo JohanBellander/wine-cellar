@@ -28,6 +28,7 @@ COPY --from=builder /app/main .
 
 # Copy templates directory
 COPY --from=builder /app/templates ./templates
+COPY --from=builder /app/internal ./internal
 
 # Expose the port the app runs on
 EXPOSE 8080
