@@ -39,6 +39,33 @@ func main() {
 	http.HandleFunc("/login", auth.LoginHandler)
 	http.HandleFunc("/logout", auth.LogoutHandler)
 
+	http.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("templates/privacy.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
+
+	http.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("templates/terms.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
+
+	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("templates/contact.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, nil)
+	})
+
 	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/add", auth.Middleware(addWine.Handler))
 	http.HandleFunc("/details/", auth.Middleware(details.Handler))

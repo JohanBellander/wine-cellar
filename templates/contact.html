@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us - Winetrackr</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Dancing+Script:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#8B6F4E",
+              "background-light": "#F9F6F2",
+              "background-dark": "#2C2823",
+              "champagne-gold": "#C0A88F",
+              "champagne-dark": "#4A3F35",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "serif": ["Playfair Display", "serif"],
+              "script": ["Dancing Script", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
+    <header class="w-full z-10 px-4 sm:px-6 lg:px-8 py-4 border-b border-zinc-200 dark:border-white/10">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <a class="text-2xl font-script text-zinc-900 dark:text-white" href="/">Winetrackr</a>
+            <nav class="flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-champagne-gold transition-colors" href="/">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="font-serif text-4xl mb-8 text-center">Contact Us</h1>
+            <p class="text-lg mb-12 text-center text-zinc-600 dark:text-zinc-400">Have questions or feedback? We'd love to hear from you.</p>
+            
+            <div class="bg-white dark:bg-white/5 p-8 rounded-xl shadow-sm border border-zinc-200 dark:border-white/10">
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="Your name">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="How can we help?"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3 px-6 rounded-lg bg-primary text-white font-bold hover:bg-primary/90 transition-colors">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-zinc-900 text-white py-12 border-t border-white/10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <a class="text-2xl font-script text-white mb-2 block" href="/">Winetrackr</a>
+                    <p class="text-zinc-400 text-sm">© 2025 Winetrackr. All rights reserved.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a href="/privacy" class="text-zinc-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="/terms" class="text-zinc-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="/contact" class="text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

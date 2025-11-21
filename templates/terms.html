@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terms of Service - Winetrackr</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Dancing+Script:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#8B6F4E",
+              "background-light": "#F9F6F2",
+              "background-dark": "#2C2823",
+              "champagne-gold": "#C0A88F",
+              "champagne-dark": "#4A3F35",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"],
+              "serif": ["Playfair Display", "serif"],
+              "script": ["Dancing Script", "cursive"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
+    <header class="w-full z-10 px-4 sm:px-6 lg:px-8 py-4 border-b border-zinc-200 dark:border-white/10">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <a class="text-2xl font-script text-zinc-900 dark:text-white" href="/">Winetrackr</a>
+            <nav class="flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary dark:hover:text-champagne-gold transition-colors" href="/">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto prose dark:prose-invert">
+            <h1 class="font-serif text-4xl mb-8">Terms of Service</h1>
+            <p class="text-lg mb-6">Last updated: November 21, 2025</p>
+            
+            <h2 class="text-2xl font-serif mt-8 mb-4">1. Agreement to Terms</h2>
+            <p class="mb-4">By accessing our website at Winetrackr, you agree to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">2. Use License</h2>
+            <p class="mb-4">Permission is granted to temporarily download one copy of the materials (information or software) on Winetrackr's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+            <ul class="list-disc pl-6 mb-4 space-y-2">
+                <li>modify or copy the materials;</li>
+                <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
+                <li>attempt to decompile or reverse engineer any software contained on Winetrackr's website;</li>
+                <li>remove any copyright or other proprietary notations from the materials; or</li>
+                <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+            </ul>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">3. Disclaimer</h2>
+            <p class="mb-4">The materials on Winetrackr's website are provided on an 'as is' basis. Winetrackr makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">4. Limitations</h2>
+            <p class="mb-4">In no event shall Winetrackr or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Winetrackr's website, even if Winetrackr or a Winetrackr authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">5. Governing Law</h2>
+            <p class="mb-4">These terms and conditions are governed by and construed in accordance with the laws and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
+        </div>
+    </main>
+
+    <footer class="bg-zinc-900 text-white py-12 border-t border-white/10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <a class="text-2xl font-script text-white mb-2 block" href="/">Winetrackr</a>
+                    <p class="text-zinc-400 text-sm">© 2025 Winetrackr. All rights reserved.</p>
+                </div>
+                <div class="flex gap-8">
+                    <a href="/privacy" class="text-zinc-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="/terms" class="text-white transition-colors">Terms of Service</a>
+                    <a href="/contact" class="text-zinc-400 hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
