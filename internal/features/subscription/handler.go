@@ -17,7 +17,7 @@ import (
 	"github.com/stripe/stripe-go/v74/webhook"
 )
 
-func init() {
+func Init() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 }
 

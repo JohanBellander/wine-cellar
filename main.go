@@ -29,6 +29,9 @@ func main() {
 		log.Println("No .env file found")
 	}
 
+	// Initialize Stripe
+	subscription.Init()
+
 	database.InitDB()
 	database.Seed(database.DB)
 
