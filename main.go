@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"html/template"
@@ -20,7 +21,7 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 
-	http.HandleFunc("/", AuthMiddleware(listHandler))
+	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/add", AuthMiddleware(addHandler))
 	http.HandleFunc("/details/", AuthMiddleware(detailsHandler))
 	http.HandleFunc("/edit/", AuthMiddleware(editHandler))
@@ -46,6 +47,43 @@ var funcMap = template.FuncMap{
 	"safeURL": func(s string) template.URL {
 		return template.URL(s)
 	},
+}
+
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	// Check if user is authenticated
+	session, _ := store.Get(r, "session-name")
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		// User is authenticated
+		// We need to inject user_id into context like AuthMiddleware does
+		userID := session.Values["user_id"].(uint)
+		email := session.Values["email"].(string)
+		ctx := context.WithValue(r.Context(), "user_id", userID)
+		ctx = context.WithValue(ctx, "email", email)
+
+		listHandler(w, r.WithContext(ctx))
+		return
+	}
+
+	// User is not authenticated
+	landingHandler(w, r)
+}
+
+func landingHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("landing.html").Funcs(funcMap).ParseFiles("templates/landing.html", "templates/header.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data := struct {
+		LoggedIn  bool
+		UserEmail string
+	}{
+		LoggedIn:  false,
+		UserEmail: "",
+	}
+
+	tmpl.Execute(w, data)
 }
 
 func listHandler(w http.ResponseWriter, r *http.Request) {
@@ -517,5 +555,5 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["user_id"] = nil
 	session.Values["email"] = nil
 	session.Save(r, w)
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
