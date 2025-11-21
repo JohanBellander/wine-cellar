@@ -11,6 +11,7 @@
 <nav class="flex items-center gap-4">
     {{if .LoggedIn}}
         <span class="hidden sm:inline text-sm text-prose-light dark:text-prose-dark">{{.UserEmail}}</span>
+        <a href="/settings" class="text-sm font-medium text-prose-light hover:text-primary dark:text-prose-dark dark:hover:text-primary">Settings</a>
         <a href="/logout" class="text-sm font-medium text-prose-light hover:text-primary dark:text-prose-dark dark:hover:text-primary">Log out</a>
     {{else}}
         <a href="/login" class="text-sm font-medium text-prose-light hover:text-primary dark:text-prose-dark dark:hover:text-primary">Log in</a>

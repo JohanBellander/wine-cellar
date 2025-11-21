@@ -74,7 +74,9 @@
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Price</p>
-<p class="text-lg font-medium">${{printf "%.2f" .Wine.Price}}</p>
+<p class="text-lg font-medium">
+    {{if eq .User.Currency "USD"}}${{else if eq .User.Currency "EUR"}}€{{else if eq .User.Currency "GBP"}}£{{else if eq .User.Currency "JPY"}}¥{{else if eq .User.Currency "SEK"}}kr {{else if eq .User.Currency "NOK"}}kr {{else if eq .User.Currency "DKK"}}kr {{else}}{{if .User.Currency}}{{.User.Currency}} {{else}}${{end}}{{end}}{{printf "%.2f" .Wine.Price}}
+</p>
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Drinking Window</p>

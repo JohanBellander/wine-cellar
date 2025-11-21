@@ -35,6 +35,7 @@ type User struct {
 	gorm.Model
 	Email        string `gorm:"uniqueIndex;not null"`
 	PasswordHash string `gorm:"not null"`
+	Currency     string `gorm:"default:'USD'"`
 }
 
 type Wine struct {

@@ -27,6 +27,7 @@ func main() {
 	http.HandleFunc("/edit/", AuthMiddleware(editHandler))
 	http.HandleFunc("/update-quantity", AuthMiddleware(updateQuantityHandler))
 	http.HandleFunc("/add-review", AuthMiddleware(addReviewHandler))
+	http.HandleFunc("/settings", AuthMiddleware(settingsHandler))
 	http.HandleFunc("/delete", AuthMiddleware(deleteHandler))
 	http.HandleFunc("/health", healthHandler)
 
@@ -155,6 +156,12 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	userEmail := r.Context().Value("email").(string)
 
 	if r.Method == http.MethodGet {
+		var user User
+		if result := DB.First(&user, userID); result.Error != nil {
+			http.Error(w, "User not found", http.StatusInternalServerError)
+			return
+		}
+
 		tmpl, err := template.New("wine_form.html").Funcs(funcMap).ParseFiles("templates/wine_form.html", "templates/header.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -162,10 +169,12 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		data := struct {
 			Wine      Wine
+			User      User
 			LoggedIn  bool
 			UserEmail string
 		}{
 			Wine:      Wine{},
+			User:      user,
 			LoggedIn:  true,
 			UserEmail: userEmail,
 		}
@@ -223,6 +232,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func detailsHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
 	userEmail := r.Context().Value("email").(string)
 
 	pathParts := strings.Split(r.URL.Path, "/")
@@ -244,6 +254,12 @@ func detailsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var user User
+	if result := DB.First(&user, userID); result.Error != nil {
+		http.Error(w, "User not found", http.StatusInternalServerError)
+		return
+	}
+
 	tmpl, err := template.New("details.html").Funcs(funcMap).ParseFiles("templates/details.html", "templates/header.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -252,10 +268,12 @@ func detailsHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := struct {
 		Wine      Wine
+		User      User
 		LoggedIn  bool
 		UserEmail string
 	}{
 		Wine:      wine,
+		User:      user,
 		LoggedIn:  true,
 		UserEmail: userEmail,
 	}
@@ -347,6 +365,7 @@ func addReviewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func editHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
 	userEmail := r.Context().Value("email").(string)
 
 	if r.Method == http.MethodGet {
@@ -368,6 +387,12 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		var user User
+		if result := DB.First(&user, userID); result.Error != nil {
+			http.Error(w, "User not found", http.StatusInternalServerError)
+			return
+		}
+
 		tmpl, err := template.New("wine_form.html").Funcs(funcMap).ParseFiles("templates/wine_form.html", "templates/header.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -375,10 +400,12 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		data := struct {
 			Wine      Wine
+			User      User
 			LoggedIn  bool
 			UserEmail string
 		}{
 			Wine:      wine,
+			User:      user,
 			LoggedIn:  true,
 			UserEmail: userEmail,
 		}
@@ -556,4 +583,51 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["email"] = nil
 	session.Save(r, w)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func settingsHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
+	userEmail := r.Context().Value("email").(string)
+
+	if r.Method == http.MethodGet {
+		var user User
+		if result := DB.First(&user, userID); result.Error != nil {
+			http.Error(w, "User not found", http.StatusInternalServerError)
+			return
+		}
+
+		tmpl, err := template.New("settings.html").Funcs(funcMap).ParseFiles("templates/settings.html", "templates/header.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		data := struct {
+			User      User
+			LoggedIn  bool
+			UserEmail string
+		}{
+			User:      user,
+			LoggedIn:  true,
+			UserEmail: userEmail,
+		}
+
+		tmpl.Execute(w, data)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		currency := r.FormValue("currency")
+		
+		var user User
+		if result := DB.First(&user, userID); result.Error != nil {
+			http.Error(w, "User not found", http.StatusInternalServerError)
+			return
+		}
+
+		user.Currency = currency
+		DB.Save(&user)
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
 }
