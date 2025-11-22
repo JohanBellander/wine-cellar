@@ -28,6 +28,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.New("settings.html").Funcs(ui.FuncMap).ParseFiles(
 			"internal/features/settings/settings.html",
 			"templates/header.html",
+			"templates/footer.html",
 		)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

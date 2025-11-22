@@ -27,7 +27,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Count(&wineCount)
 
 	if r.Method == http.MethodGet {
-		tmpl, err := template.New("add.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/add/add.html", "templates/header.html")
+		tmpl, err := template.New("add.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/add/add.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

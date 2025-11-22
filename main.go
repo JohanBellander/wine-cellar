@@ -40,7 +40,7 @@ func main() {
 	http.HandleFunc("/logout", auth.LogoutHandler)
 
 	http.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/privacy.html")
+		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -49,7 +49,7 @@ func main() {
 	})
 
 	http.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/terms.html")
+		tmpl, err := template.ParseFiles("templates/terms.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -58,7 +58,7 @@ func main() {
 	})
 
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/contact.html")
+		tmpl, err := template.ParseFiles("templates/contact.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -118,7 +118,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func landingHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("landing.html").Funcs(funcMap).ParseFiles("templates/landing.html", "templates/header.html")
+	tmpl, err := template.New("landing.html").Funcs(funcMap).ParseFiles("templates/landing.html", "templates/header.html", "templates/footer.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

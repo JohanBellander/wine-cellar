@@ -43,7 +43,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tmpl, err := template.New("edit.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/edit/edit.html", "templates/header.html")
+		tmpl, err := template.New("edit.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/edit/edit.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

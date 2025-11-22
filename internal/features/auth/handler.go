@@ -9,7 +9,7 @@ import (
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		tmpl, err := template.ParseFiles("internal/features/auth/signup.html")
+		tmpl, err := template.ParseFiles("internal/features/auth/signup.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -41,7 +41,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		tmpl, err := template.ParseFiles("internal/features/auth/login.html")
+		tmpl, err := template.ParseFiles("internal/features/auth/login.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
