@@ -50,11 +50,109 @@
 {{template "header" .}}
 <div class="flex flex-1">
 <main class="flex-1 p-4 sm:p-6 lg:p-8">
-<div class="flex justify-between items-center gap-4 py-3">
-<a href="/add" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
-<span class="material-symbols-outlined !text-xl">add</span>
-<span class="truncate">Add New Wine</span>
-</a>
+<div class="flex flex-col gap-6 py-4">
+    {{if .IsPro}}
+    <form method="GET" action="/" class="w-full">
+        <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+            <!-- Search Bar -->
+            <div class="relative flex-1 w-full sm:max-w-md">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-prose-light/40 dark:text-prose-dark/40">
+                    <span class="material-symbols-outlined !text-xl">search</span>
+                </span>
+                <input type="text" name="q" value="{{.SearchQuery}}" placeholder="Search your collection..." 
+                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark placeholder-prose-light/40 dark:placeholder-prose-dark/40 shadow-sm transition-all">
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3 w-full sm:w-auto">
+                <a href="/add" class="flex-1 sm:flex-none min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">
+                    <span class="material-symbols-outlined !text-xl">add</span>
+                    <span>Add Wine</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Filters Toggle -->
+        <details class="group mt-4" {{if or .FilterCategory .FilterCountry .FilterRegion .FilterProducer .FilterVintage}}open{{end}}>
+            <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-sm font-bold text-prose-light/60 dark:text-prose-dark/60 hover:text-primary transition-colors select-none">
+                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-black/5 dark:bg-white/5 group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined !text-lg transition-transform group-open:rotate-180">filter_list</span>
+                </div>
+                <span>Filter Collection</span>
+                {{if or .FilterCategory .FilterCountry .FilterRegion .FilterProducer .FilterVintage}}
+                <span class="flex h-2 w-2 rounded-full bg-primary"></span>
+                {{end}}
+            </summary>
+            
+            <div class="mt-4 p-5 bg-black/5 dark:bg-white/5 rounded-2xl border border-black/5 dark:border-white/5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Type</label>
+                        <select name="category" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
+                            <option value="">All Types</option>
+                            {{range .FilterCategories}}
+                            <option value="{{.}}" {{if eq . $.FilterCategory}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Country</label>
+                        <select name="country" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
+                            <option value="">All Countries</option>
+                            {{range .FilterCountries}}
+                            <option value="{{.}}" {{if eq . $.FilterCountry}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Region</label>
+                        <select name="region" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
+                            <option value="">All Regions</option>
+                            {{range .FilterRegions}}
+                            <option value="{{.}}" {{if eq . $.FilterRegion}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Producer</label>
+                        <select name="producer" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
+                            <option value="">All Producers</option>
+                            {{range .FilterProducers}}
+                            <option value="{{.}}" {{if eq . $.FilterProducer}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Vintage</label>
+                        <select name="vintage" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
+                            <option value="">All Vintages</option>
+                            {{range .FilterVintages}}
+                            <option value="{{.}}" {{if eq (printf "%d" .) $.FilterVintage}}selected{{end}}>{{.}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end mt-6 pt-4 border-t border-black/5 dark:border-white/5">
+                    <a href="/" class="text-sm font-bold text-red-500 hover:text-red-600 flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                        <span class="material-symbols-outlined !text-lg">restart_alt</span>
+                        Reset Filters
+                    </a>
+                </div>
+            </div>
+        </details>
+    </form>
+    {{else}}
+    <div class="flex justify-between items-center gap-4">
+        <a href="/add" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+            <span class="material-symbols-outlined !text-xl">add</span>
+            <span class="truncate">Add New Wine</span>
+        </a>
+        <div class="text-sm text-prose-light/60 dark:text-prose-dark/60 bg-black/5 dark:bg-white/5 px-3 py-2 rounded-lg">
+            <span class="font-medium">Pro tip:</span> Upgrade to search & filter your collection
+        </div>
+    </div>
+    {{end}}
 </div>
 <div class="bg-background-light dark:bg-background-dark border border-black/5 dark:border-white/5 rounded-xl overflow-hidden">
 <table class="w-full text-left">
@@ -73,7 +171,7 @@
 <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" onclick="window.location.href='/details/{{.ID}}'">
 <td class="p-4 align-middle">
 <div class="flex items-center gap-4">
-<img alt="Bottle of {{.Name}}" class="h-16 w-12 object-contain" src="{{.ImageURL | safeURL}}"/>
+<img alt="Bottle of {{.Name}}" class="h-16 w-16 object-cover rounded-lg" src="{{if .ImageURL}}{{.ImageURL | safeURL}}{{else}}/static/images/wine-placeholder.svg{{end}}" onerror="this.onerror=null;this.src='/static/images/wine-placeholder.svg';"/>
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
 <div class="md:hidden text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Producer}}</div>
@@ -93,7 +191,7 @@
 </div>
 <div class="flex justify-center items-center gap-2 mt-8">
 {{if .HasPrev}}
-<a class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors" href="/?page={{.PrevPage}}">
+<a class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors" href="/?page={{.PrevPage}}{{if .BaseQueryString}}&{{.BaseQueryString}}{{end}}">
 <span class="material-symbols-outlined !text-xl">chevron_left</span>
 </a>
 {{end}}
@@ -102,12 +200,12 @@
     {{if eq . $.CurrentPage}}
         <button class="h-9 w-9 flex items-center justify-center rounded-full bg-primary text-white text-sm font-bold">{{.}}</button>
     {{else}}
-        <a class="h-9 w-9 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-sm font-medium text-prose-light dark:text-prose-dark transition-colors" href="/?page={{.}}">{{.}}</a>
+        <a class="h-9 w-9 flex items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10 text-sm font-medium text-prose-light dark:text-prose-dark transition-colors" href="/?page={{.}}{{if $.BaseQueryString}}&{{$.BaseQueryString}}{{end}}">{{.}}</a>
     {{end}}
 {{end}}
 
 {{if .HasNext}}
-<a class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors" href="/?page={{.NextPage}}">
+<a class="h-9 w-9 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/5 text-prose-light/60 dark:text-prose-dark/60 hover:bg-black/10 dark:hover:bg-white/10 transition-colors" href="/?page={{.NextPage}}{{if .BaseQueryString}}&{{.BaseQueryString}}{{end}}">
 <span class="material-symbols-outlined !text-xl">chevron_right</span>
 </a>
 {{end}}

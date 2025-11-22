@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strconv"
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
@@ -14,6 +15,7 @@ import (
 func Handler(w http.ResponseWriter, r *http.Request) {
 	userID := r.Context().Value("user_id").(uint)
 	userEmail := r.Context().Value("email").(string)
+	isDev := os.Getenv("APP_ENV") == "dev"
 
 	if r.Method == http.MethodGet {
 		var user domain.User
@@ -36,10 +38,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			User      domain.User
 			LoggedIn  bool
 			UserEmail string
+			IsDev     bool
 		}{
 			User:      user,
 			LoggedIn:  true,
 			UserEmail: userEmail,
+			IsDev:     isDev,
 		}
 
 		tmpl.Execute(w, data)
@@ -47,6 +51,22 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
+		// Debug: Set subscription tier
+		if isDev {
+			debugTier := r.FormValue("debug_tier")
+			if debugTier != "" {
+				var user domain.User
+				if result := database.DB.First(&user, userID); result.Error != nil {
+					http.Error(w, "User not found", http.StatusInternalServerError)
+					return
+				}
+				user.SubscriptionTier = debugTier
+				database.DB.Save(&user)
+				http.Redirect(w, r, "/settings", http.StatusSeeOther)
+				return
+			}
+		}
+
 		currency := r.FormValue("currency")
 		
 		var user domain.User

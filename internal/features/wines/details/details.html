@@ -50,7 +50,7 @@
 <div class="layout-content-container flex flex-col w-full max-w-7xl">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 <div class="flex flex-col items-center justify-center p-8 bg-white dark:bg-white/5 rounded-xl shadow-sm border border-black/5 dark:border-white/5">
-<img alt="{{.Wine.Name}}" class="max-h-[500px] object-contain drop-shadow-xl" src="{{if .Wine.ImageURL}}{{.Wine.ImageURL | safeURL}}{{else}}https://via.placeholder.com/150{{end}}"/>
+<img alt="{{.Wine.Name}}" class="w-full max-w-[500px] aspect-square object-cover rounded-xl shadow-md" src="{{if .Wine.ImageURL}}{{.Wine.ImageURL | safeURL}}{{else}}/static/images/wine-placeholder.svg{{end}}" onerror="this.onerror=null;this.src='/static/images/wine-placeholder.svg';"/>
 </div>
 <div class="flex flex-col gap-8">
 <div>

@@ -80,8 +80,9 @@ func main() {
 	http.HandleFunc("/webhook/stripe", subscription.WebhookHandler)
 	http.HandleFunc("/health", healthHandler)
 
-	// Serve static files if we had any, but we are using CDNs mostly.
-	// If we had local images, we would serve them here.
+	// Serve static files
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	port := os.Getenv("PORT")
 	if port == "" {

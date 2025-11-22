@@ -145,6 +145,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{if .IsDev}}
+                        <!-- Debug Section -->
+                        <div class="bg-red-50 dark:bg-red-900/10 rounded-xl p-6 shadow-sm border border-red-200 dark:border-red-900/20">
+                            <h2 class="text-xl font-bold mb-4 text-red-700 dark:text-red-400">Developer Debug</h2>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-base font-medium text-red-600 dark:text-red-300">Override Subscription Tier</p>
+                                    <p class="mt-1 text-sm text-red-600/70 dark:text-red-300/70">
+                                        Force set your subscription tier for testing purposes.
+                                    </p>
+                                </div>
+                                <form action="/settings" method="POST" class="flex gap-2">
+                                    <button type="submit" name="debug_tier" value="free" class="px-4 py-2 rounded-lg bg-white dark:bg-black/20 border border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-400 text-sm font-bold hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors {{if ne .User.SubscriptionTier "pro"}}ring-2 ring-red-500{{end}}">
+                                        Free
+                                    </button>
+                                    <button type="submit" name="debug_tier" value="pro" class="px-4 py-2 rounded-lg bg-white dark:bg-black/20 border border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-400 text-sm font-bold hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors {{if eq .User.SubscriptionTier "pro"}}ring-2 ring-red-500{{end}}">
+                                        Pro
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {{end}}
                     </div>
                 </div>
             </div>
