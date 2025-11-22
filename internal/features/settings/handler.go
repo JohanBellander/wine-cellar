@@ -1,8 +1,11 @@
 package settings
 
 import (
+	"encoding/csv"
+	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
 	"wine-cellar/internal/shared/ui"
@@ -56,5 +59,60 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		database.DB.Save(&user)
 
 		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+func ExportHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
+
+	var user domain.User
+	if result := database.DB.First(&user, userID); result.Error != nil {
+		http.Error(w, "User not found", http.StatusInternalServerError)
+		return
+	}
+
+	if user.SubscriptionTier != "pro" {
+		http.Error(w, "Export feature is only available for Pro users", http.StatusForbidden)
+		return
+	}
+
+	var wines []domain.Wine
+	if result := database.DB.Where("user_id = ?", userID).Find(&wines); result.Error != nil {
+		http.Error(w, "Error fetching wines", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", "attachment; filename=wines.csv")
+
+	writer := csv.NewWriter(w)
+	defer writer.Flush()
+
+	// Write header
+	header := []string{"Name", "Producer", "Vintage", "Grape", "Country", "Region", "Quantity", "Price", "Location", "Rating", "Notes"}
+	if err := writer.Write(header); err != nil {
+		http.Error(w, "Error writing CSV header", http.StatusInternalServerError)
+		return
+	}
+
+	// Write data
+	for _, wine := range wines {
+		record := []string{
+			wine.Name,
+			wine.Producer,
+			strconv.Itoa(wine.Vintage),
+			wine.Grape,
+			wine.Country,
+			wine.Region,
+			strconv.Itoa(wine.Quantity),
+			fmt.Sprintf("%.2f", wine.Price),
+			wine.Location,
+			wine.Rating,
+			wine.Notes,
+		}
+		if err := writer.Write(record); err != nil {
+			http.Error(w, "Error writing CSV record", http.StatusInternalServerError)
+			return
+		}
 	}
 }
