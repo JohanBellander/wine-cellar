@@ -8,14 +8,7 @@
 <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
-    <header class="w-full z-10 px-4 sm:px-6 lg:px-8 py-4 border-b border-zinc-200 dark:border-white/10">
-        <div class="flex items-center justify-between max-w-7xl mx-auto">
-            <a class="text-2xl font-script text-zinc-900 dark:text-white" href="/">Winetrackr</a>
-            <nav class="flex items-center gap-6">
-                <a class="text-sm font-medium hover:text-primary dark:hover:text-champagne-gold transition-colors" href="/">Back to Home</a>
-            </nav>
-        </div>
-    </header>
+    {{template "header" .}}
 
     <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto prose dark:prose-invert">
@@ -42,7 +35,21 @@
                 <li>Communicate with you about service updates.</li>
             </ul>
 
-            <h2 class="text-2xl font-serif mt-8 mb-4">4. Your Rights (GDPR)</h2>
+            <h2 class="text-2xl font-serif mt-8 mb-4">4. Cookies and Tracking Technologies</h2>
+            <p class="mb-4">We use cookies and similar tracking technologies to track the activity on our Service and hold certain information. Cookies are files with small amount of data which may include an anonymous unique identifier. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.</p>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">5. Third-Party Service Providers</h2>
+            <p class="mb-4">We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used. These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
+            <p class="mb-4">We use the following third-party providers:</p>
+            <ul class="list-disc pl-6 mb-4 space-y-2">
+                <li><strong>Render:</strong> For hosting and infrastructure services.</li>
+                <li><strong>Neon:</strong> For database hosting and management.</li>
+            </ul>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">6. Data Retention</h2>
+            <p class="mb-4">We will retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
+
+            <h2 class="text-2xl font-serif mt-8 mb-4">7. Your Rights (GDPR)</h2>
             <p class="mb-4">Under the General Data Protection Regulation (GDPR), you have the following rights:</p>
             <ul class="list-disc pl-6 mb-4 space-y-2">
                 <li><strong>Right to Access:</strong> You can view your personal data at any time by logging into your account.</li>
@@ -51,10 +58,10 @@
                 <li><strong>Right to Data Portability:</strong> You can export your wine collection data as a CSV file from the Settings page.</li>
             </ul>
 
-            <h2 class="text-2xl font-serif mt-8 mb-4">4. Data Security</h2>
+            <h2 class="text-2xl font-serif mt-8 mb-4">8. Data Security</h2>
             <p class="mb-4">We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way, altered or disclosed.</p>
 
-            <h2 class="text-2xl font-serif mt-8 mb-4">5. Contact Us</h2>
+            <h2 class="text-2xl font-serif mt-8 mb-4">9. Contact Us</h2>
             <p class="mb-4">If you have any questions about this privacy policy or our privacy practices, please contact us at privacy@winetrackr.com.</p>
         </div>
     </main>

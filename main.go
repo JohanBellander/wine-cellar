@@ -41,30 +41,60 @@ func main() {
 	http.HandleFunc("/logout", auth.LogoutHandler)
 
 	http.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, nil)
+
+		_, email, authenticated := auth.GetSessionUser(r)
+		data := struct {
+			LoggedIn  bool
+			UserEmail string
+		}{
+			LoggedIn:  authenticated,
+			UserEmail: email,
+		}
+
+		tmpl.Execute(w, data)
 	})
 
 	http.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/terms.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/terms.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, nil)
+
+		_, email, authenticated := auth.GetSessionUser(r)
+		data := struct {
+			LoggedIn  bool
+			UserEmail string
+		}{
+			LoggedIn:  authenticated,
+			UserEmail: email,
+		}
+
+		tmpl.Execute(w, data)
 	})
 
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/contact.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/contact.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, nil)
+
+		_, email, authenticated := auth.GetSessionUser(r)
+		data := struct {
+			LoggedIn  bool
+			UserEmail string
+		}{
+			LoggedIn:  authenticated,
+			UserEmail: email,
+		}
+
+		tmpl.Execute(w, data)
 	})
 
 	http.HandleFunc("/", rootHandler)

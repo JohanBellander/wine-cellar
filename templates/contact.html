@@ -8,14 +8,7 @@
 <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
-    <header class="w-full z-10 px-4 sm:px-6 lg:px-8 py-4 border-b border-zinc-200 dark:border-white/10">
-        <div class="flex items-center justify-between max-w-7xl mx-auto">
-            <a class="text-2xl font-script text-zinc-900 dark:text-white" href="/">Winetrackr</a>
-            <nav class="flex items-center gap-6">
-                <a class="text-sm font-medium hover:text-primary dark:hover:text-champagne-gold transition-colors" href="/">Back to Home</a>
-            </nav>
-        </div>
-    </header>
+    {{template "header" .}}
 
     <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto">
