@@ -74,6 +74,8 @@ The project uses **GORM** for database interactions. The connection is initializ
 
 -   **Source Code**: Hosted on **GitHub**.
 -   **CI/CD**: Pushes to the `master` branch trigger a deployment on **Render**.
+    -   **Secrets Management**: Sensitive configuration (Stripe keys, Database URL, Domain) is stored in **GitHub Secrets**.
+    -   **Auto-Sync**: The GitHub Actions workflow (`.github/workflows/ci.yml`) automatically syncs these secrets to Render's environment variables during every deployment. This ensures the production environment is always up-to-date with the configuration in GitHub.
 -   **Containerization**: The application is packaged using **Docker**. The `Dockerfile` builds a lightweight Alpine-based image.
     -   *Note*: The `static/` directory is copied into the image to serve assets in production.
 -   **Database**: A managed PostgreSQL instance hosted on **Neon**. Connection string is provided via environment variables.
