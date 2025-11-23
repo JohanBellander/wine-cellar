@@ -92,11 +92,6 @@ func ExportHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.SubscriptionTier != "pro" {
-		http.Error(w, "Export feature is only available for Pro users", http.StatusForbidden)
-		return
-	}
-
 	var wines []domain.Wine
 	if result := database.DB.Where("user_id = ?", userID).Find(&wines); result.Error != nil {
 		http.Error(w, "Error fetching wines", http.StatusInternalServerError)
@@ -136,4 +131,36 @@ func ExportHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func DeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userID := r.Context().Value("user_id").(uint)
+
+	// Start transaction
+	tx := database.DB.Begin()
+
+	// Delete all wines belonging to user
+	if err := tx.Where("user_id = ?", userID).Delete(&domain.Wine{}).Error; err != nil {
+		tx.Rollback()
+		http.Error(w, "Could not delete wines", http.StatusInternalServerError)
+		return
+	}
+
+	// Delete user
+	if err := tx.Delete(&domain.User{}, userID).Error; err != nil {
+		tx.Rollback()
+		http.Error(w, "Could not delete user", http.StatusInternalServerError)
+		return
+	}
+
+	tx.Commit()
+
+	// Clear session (redirect to logout handler or do it here)
+	// For simplicity, we'll just redirect to logout which handles session clearing
+	http.Redirect(w, r, "/logout", http.StatusSeeOther)
 }

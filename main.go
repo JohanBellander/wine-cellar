@@ -74,6 +74,7 @@ func main() {
 	http.HandleFunc("/add-review", auth.Middleware(add.Handler))
 	http.HandleFunc("/settings", auth.Middleware(settings.Handler))
 	http.HandleFunc("/export", auth.Middleware(settings.ExportHandler))
+	http.HandleFunc("/delete-account", auth.Middleware(settings.DeleteAccountHandler))
 	http.HandleFunc("/delete", auth.Middleware(deleteWine.Handler))
 	http.HandleFunc("/create-checkout-session", auth.Middleware(subscription.CreateCheckoutSession))
 	http.HandleFunc("/create-portal-session", auth.Middleware(subscription.CreatePortalSession))
