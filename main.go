@@ -12,6 +12,7 @@ import (
 	"wine-cellar/internal/features/reviews/add"
 	"wine-cellar/internal/features/settings"
 	"wine-cellar/internal/features/subscription"
+	addTastingNote "wine-cellar/internal/features/tastingnotes/add"
 	addWine "wine-cellar/internal/features/wines/add"
 	deleteWine "wine-cellar/internal/features/wines/delete"
 	"wine-cellar/internal/features/wines/details"
@@ -72,6 +73,7 @@ func main() {
 	http.HandleFunc("/edit/", auth.Middleware(edit.Handler))
 	http.HandleFunc("/update-quantity", auth.Middleware(update.QuantityHandler))
 	http.HandleFunc("/add-review", auth.Middleware(add.Handler))
+	http.HandleFunc("/add-tasting-note", auth.Middleware(addTastingNote.Handler))
 	http.HandleFunc("/settings", auth.Middleware(settings.Handler))
 	http.HandleFunc("/export", auth.Middleware(settings.ExportHandler))
 	http.HandleFunc("/delete-account", auth.Middleware(settings.DeleteAccountHandler))

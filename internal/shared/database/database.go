@@ -30,7 +30,7 @@ func InitDB() {
 	}
 
 	// Auto Migrate the schema
-	DB.AutoMigrate(&domain.User{}, &domain.Wine{}, &domain.Review{})
+	DB.AutoMigrate(&domain.User{}, &domain.Wine{}, &domain.Review{}, &domain.TastingNote{})
 }
 
 func Seed(db *gorm.DB) {

@@ -28,7 +28,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var wine domain.Wine
-	result := database.DB.Preload("Reviews").First(&wine, id)
+	result := database.DB.Preload("Reviews").Preload("TastingNotes").First(&wine, id)
 	if result.Error != nil {
 		http.NotFound(w, r)
 		return

@@ -102,6 +102,7 @@
 </div>
 </div>
 </div>
+{{if eq .User.SubscriptionTier "pro"}}
 <div class="mt-12 lg:mt-16">
 <h2 class="font-display text-2xl font-bold mb-8 pb-4 border-b border-black/5 dark:border-white/5">Reviews</h2>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -134,7 +135,6 @@
 <div class="lg:col-span-1">
 <div class="sticky top-24 p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5 shadow-sm">
 <h3 class="font-bold text-lg mb-4">Add a Review</h3>
-{{if eq .User.SubscriptionTier "pro"}}
 <form action="/add-review" method="POST" class="space-y-4">
 <input type="hidden" name="id" value="{{.Wine.ID}}">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -144,17 +144,55 @@
 <textarea name="content" placeholder="Review Content" rows="3" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
 <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
 </form>
+</div>
+</div>
+</div>
+</div>
+
+<div class="mt-12 lg:mt-16">
+    <h2 class="font-display text-2xl font-bold mb-8 pb-4 border-b border-black/5 dark:border-white/5">Tasting Notes</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div class="lg:col-span-2 space-y-6">
+            {{range .Wine.TastingNotes}}
+                <div class="p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
+                    <p class="text-xs text-prose-light/50 dark:text-prose-dark/50 mb-2">{{.Date}}</p>
+                    <p class="text-prose-light/80 dark:text-prose-dark/80 leading-relaxed">{{.Note}}</p>
+                </div>
+            {{else}}
+                <div class="text-center py-12 bg-black/5 dark:bg-white/5 rounded-xl border border-dashed border-black/10 dark:border-white/10">
+                    <p class="text-prose-light/50 dark:text-prose-dark/50">No tasting notes yet.</p>
+                </div>
+            {{end}}
+        </div>
+        <div class="lg:col-span-1">
+            <div class="sticky top-24 p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5 shadow-sm">
+                <h3 class="font-bold text-lg mb-4">Add Tasting Note</h3>
+                <form action="/add-tasting-note" method="POST" class="space-y-4">
+                    <input type="hidden" name="id" value="{{.Wine.ID}}">
+                    <textarea name="note" placeholder="Your tasting notes..." rows="5" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
+                    <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Save Note</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {{else}}
-<div class="text-center py-6">
-    <span class="material-symbols-outlined text-4xl text-primary mb-2">lock</span>
-    <p class="text-prose-light dark:text-prose-dark mb-4">Reviews are available for Connoisseur members only.</p>
-    <a href="/#pricing" class="inline-block bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Upgrade to Connoisseur</a>
+<div class="mt-12 lg:mt-16">
+    <div class="relative overflow-hidden rounded-lg bg-zinc-900 p-12 text-center ring-1 ring-primary/20 dark:ring-champagne-gold/20">
+        <div class="absolute inset-0 z-0">
+            <img src="/static/images/background2.png" alt="" class="w-full h-full object-cover opacity-30 mix-blend-overlay">
+            <div class="absolute inset-0 bg-gradient-to-b from-zinc-900/80 to-zinc-900/90"></div>
+        </div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+            <span class="material-symbols-outlined text-5xl text-primary dark:text-champagne-gold mb-4">workspace_premium</span>
+            <h2 class="font-serif text-3xl text-white mb-4">Unlock Reviews & Tasting Notes</h2>
+            <p class="text-lg text-zinc-400 mb-8">Upgrade to Connoisseur to access professional reviews, community ratings, and keep detailed tasting notes for your collection.</p>
+            <a href="/#pricing" class="inline-block py-3 px-8 border border-primary dark:border-champagne-gold text-primary dark:text-champagne-gold font-bold text-sm uppercase tracking-widest hover:bg-primary hover:text-white dark:hover:bg-champagne-gold dark:hover:text-black transition-all rounded">Upgrade to Connoisseur</a>
+        </div>
+    </div>
 </div>
 {{end}}
-</div>
-</div>
-</div>
-</div>
+
 </main>
 </div>
 {{template "footer" .}}

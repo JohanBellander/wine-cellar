@@ -36,6 +36,7 @@ type Wine struct {
 	Category       string  `json:"category"`
 	SubCategory    string  `json:"sub_category"`
 	Reviews        []Review
+	TastingNotes   []TastingNote
 }
 
 type Review struct {
@@ -45,4 +46,11 @@ type Review struct {
 	Date     string
 	Rating   string
 	Content  string
+}
+
+type TastingNote struct {
+	gorm.Model
+	WineID uint
+	Date   string
+	Note   string
 }
