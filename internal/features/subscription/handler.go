@@ -114,44 +114,51 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch event.Type {
 	case "checkout.session.completed":
-		var session stripe.CheckoutSession
+		var session struct {
+			ClientReferenceID string `json:"client_reference_id"`
+			Customer          string `json:"customer"`
+			Subscription      string `json:"subscription"`
+		}
 		err := json.Unmarshal(event.Data.Raw, &session)
 		if err != nil {
 			log.Printf("Error parsing webhook JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		handleCheckoutSessionCompleted(&session)
+		handleCheckoutSessionCompleted(session.ClientReferenceID, session.Customer, session.Subscription)
 
 	case "customer.subscription.updated":
-		var subscription stripe.Subscription
+		var subscription struct {
+			Customer string `json:"customer"`
+			Status   string `json:"status"`
+		}
 		err := json.Unmarshal(event.Data.Raw, &subscription)
 		if err != nil {
 			log.Printf("Error parsing webhook JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		handleSubscriptionUpdated(&subscription)
+		handleSubscriptionUpdated(subscription.Customer, subscription.Status)
 
 	case "customer.subscription.deleted":
-		var subscription stripe.Subscription
+		var subscription struct {
+			Customer string `json:"customer"`
+			Status   string `json:"status"`
+		}
 		err := json.Unmarshal(event.Data.Raw, &subscription)
 		if err != nil {
 			log.Printf("Error parsing webhook JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		handleSubscriptionDeleted(&subscription)
+		handleSubscriptionDeleted(subscription.Customer)
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-func handleCheckoutSessionCompleted(session *stripe.CheckoutSession) {
-	userIDStr := session.ClientReferenceID
-	userID, _ := strconv.Atoi(userIDStr)
-	customerID := session.Customer.ID
-	subscriptionID := session.Subscription.ID
+func handleCheckoutSessionCompleted(clientReferenceID, customerID, subscriptionID string) {
+	userID, _ := strconv.Atoi(clientReferenceID)
 
 	var user domain.User
 	if result := database.DB.First(&user, userID); result.Error != nil {
@@ -168,10 +175,7 @@ func handleCheckoutSessionCompleted(session *stripe.CheckoutSession) {
 	log.Printf("User %d upgraded to Pro", userID)
 }
 
-func handleSubscriptionUpdated(subscription *stripe.Subscription) {
-	customerID := subscription.Customer.ID
-	status := string(subscription.Status)
-
+func handleSubscriptionUpdated(customerID, status string) {
 	var user domain.User
 	if result := database.DB.Where("stripe_customer_id = ?", customerID).First(&user); result.Error != nil {
 		log.Printf("User not found for customer ID %s: %v", customerID, result.Error)
@@ -191,9 +195,7 @@ func handleSubscriptionUpdated(subscription *stripe.Subscription) {
 	database.DB.Save(&user)
 }
 
-func handleSubscriptionDeleted(subscription *stripe.Subscription) {
-	customerID := subscription.Customer.ID
-
+func handleSubscriptionDeleted(customerID string) {
 	var user domain.User
 	if result := database.DB.Where("stripe_customer_id = ?", customerID).First(&user); result.Error != nil {
 		log.Printf("User not found for customer ID %s: %v", customerID, result.Error)

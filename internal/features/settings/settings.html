@@ -24,7 +24,7 @@
                             <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Subscription</h2>
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-base font-medium text-prose-light dark:text-prose-dark">Current Plan: <span class="font-bold uppercase">{{if eq .User.SubscriptionTier ""}}Free{{else}}{{.User.SubscriptionTier}}{{end}}</span></p>
+                                    <p class="text-base font-medium text-prose-light dark:text-prose-dark">Current Plan: <span class="font-bold uppercase">{{if eq .User.SubscriptionTier "pro"}}Connoisseur{{else if eq .User.SubscriptionTier ""}}Free{{else}}{{.User.SubscriptionTier}}{{end}}</span></p>
                                     <p class="mt-1 text-sm text-prose-light/70 dark:text-prose-dark/70">
                                         {{if eq .User.SubscriptionTier "pro"}}
                                         You have unlimited access to all features.
@@ -43,7 +43,7 @@
                                     {{else}}
                                     <form action="/create-checkout-session" method="POST">
                                         <button type="submit" class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">
-                                            Upgrade to Pro
+                                            Upgrade to Connoisseur
                                         </button>
                                     </form>
                                     {{end}}
