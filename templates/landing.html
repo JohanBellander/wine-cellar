@@ -117,81 +117,104 @@
             <p class="text-xl text-zinc-600 dark:text-zinc-400 font-serif italic">Choose the perfect plan for your collection.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto items-stretch">
             <!-- Free Plan -->
-            <div class="bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-700 flex flex-col">
-                <h3 class="text-2xl font-bold mb-2">Taster</h3>
-                <div class="flex items-baseline gap-1 mb-6">
-                    <span class="text-4xl font-bold">$0</span>
-                    <span class="text-zinc-500 dark:text-zinc-400">/month</span>
+            <div class="bg-white dark:bg-zinc-900/50 p-6 border border-zinc-200 dark:border-zinc-800 flex flex-col backdrop-blur-sm lg:aspect-square justify-between transition-all hover:border-zinc-300 dark:hover:border-zinc-700">
+                <div>
+                    <div class="flex justify-between items-start h-12">
+                        <div>
+                            <h3 class="font-serif text-2xl text-zinc-900 dark:text-zinc-100">Enthusiast</h3>
+                            <p class="text-xs text-zinc-500 uppercase tracking-widest mt-1">For the Beginner</p>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-4 mt-4">
+                        <span class="text-3xl font-bold text-zinc-900 dark:text-white">$0</span>
+                        <span class="text-zinc-500 dark:text-zinc-500 text-sm uppercase tracking-wide">/month</span>
+                    </div>
+                    <div class="w-full h-px bg-zinc-100 dark:bg-zinc-800 mb-5"></div>
                 </div>
-                <ul class="space-y-4 mb-8 flex-1">
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
+                <ul class="space-y-2 flex-1 flex flex-col justify-start mb-6">
+                    <li class="flex items-center gap-3 text-zinc-600 dark:text-zinc-400">
+                        <span class="material-symbols-outlined text-zinc-400 text-sm">check</span>
                         <span>Up to 10 bottles</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
+                    <li class="flex items-center gap-3 text-zinc-600 dark:text-zinc-400">
+                        <span class="material-symbols-outlined text-zinc-400 text-sm">check</span>
                         <span>Basic inventory tracking</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
-                        <span>Tasting notes</span>
-                    </li>
                 </ul>
-                <a href="/signup" class="w-full block text-center py-3 px-6 rounded-full border-2 border-primary text-primary dark:border-champagne-gold dark:text-champagne-gold font-bold hover:bg-primary hover:text-white dark:hover:bg-champagne-gold dark:hover:text-champagne-dark transition-colors">Get Started</a>
+                <a href="/signup" class="w-full block text-center py-3 px-6 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors uppercase tracking-widest text-xs">Get Started</a>
             </div>
 
             <!-- Collector Plan -->
-            <div class="bg-primary dark:bg-champagne-dark rounded-2xl p-8 shadow-xl border border-primary dark:border-champagne-dark flex flex-col relative overflow-hidden text-white transform md:-translate-y-4">
-                <div class="absolute top-0 right-0 bg-white/20 px-3 py-1 rounded-bl-lg text-xs font-bold uppercase tracking-wider">Popular</div>
-                <h3 class="text-2xl font-bold mb-2">Collector</h3>
-                <div class="flex items-baseline gap-1 mb-6">
-                    <span class="text-4xl font-bold">$5</span>
-                    <span class="text-zinc-200">/month</span>
+            <div class="relative bg-zinc-900 p-6 border border-primary/50 dark:border-champagne-gold/50 flex flex-col shadow-2xl overflow-hidden group lg:aspect-square justify-between ring-1 ring-primary/20 dark:ring-champagne-gold/20">
+                <!-- Subtle Background Texture -->
+                <div class="absolute inset-0 z-0">
+                    <img src="/static/images/background2.png" alt="" class="w-full h-full object-cover opacity-60 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-b from-zinc-900/80 to-zinc-900/90"></div>
                 </div>
-                <ul class="space-y-4 mb-8 flex-1">
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-white text-sm">check</span>
-                        <span>Up to 50 bottles</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-white text-sm">check</span>
-                        <span>Advanced analytics</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-white text-sm">check</span>
-                        <span>Priority support</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-white text-sm">check</span>
-                        <span>Export data</span>
-                    </li>
-                </ul>
-                <a href="/signup" class="w-full block text-center py-3 px-6 rounded-full bg-white text-primary dark:text-champagne-dark font-bold hover:bg-zinc-100 transition-colors">Start Collecting</a>
+                
+                <div class="relative z-10 flex flex-col h-full justify-between">
+                    <div>
+                        <div class="flex justify-between items-start h-12">
+                            <div>
+                                <h3 class="font-serif text-2xl text-primary dark:text-champagne-gold">Connoisseur</h3>
+                                <p class="text-zinc-400 text-xs uppercase tracking-widest mt-1">For the Collector</p>
+                            </div>
+                            <span class="bg-primary dark:bg-champagne-gold text-white dark:text-champagne-dark text-[10px] font-bold px-2 py-1 rounded uppercase tracking-widest">Popular</span>
+                        </div>
+                        
+                        <div class="flex items-baseline gap-1 mb-4 mt-4">
+                            <span class="text-4xl font-bold text-white">$5</span>
+                            <span class="text-zinc-400 text-sm uppercase tracking-wide">/month</span>
+                        </div>
+
+                        <div class="w-full h-px bg-gradient-to-r from-transparent via-primary/50 dark:via-champagne-gold/50 to-transparent mb-5"></div>
+                    </div>
+                    
+                    <ul class="space-y-2 flex-1 flex flex-col justify-start mb-6">
+                        <li class="flex items-center gap-3 text-zinc-200">
+                            <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">wine_bar</span>
+                            <span>Up to 50 bottles</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-zinc-200">
+                            <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">search</span>
+                            <span>Advanced search & filtering</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-zinc-200">
+                            <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">star</span>
+                            <span>Store professional reviews</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-zinc-200">
+                            <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">edit_note</span>
+                            <span>Detailed tasting notes</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="/signup" class="w-full block text-center py-3 px-6 border border-primary dark:border-champagne-gold text-primary dark:text-champagne-gold font-bold hover:bg-primary hover:text-white dark:hover:bg-champagne-gold dark:hover:text-black transition-all uppercase tracking-widest text-xs">Start Collecting</a>
+                </div>
             </div>
 
             <!-- Sommelier Plan -->
-            <div class="bg-white dark:bg-zinc-800 rounded-2xl p-8 shadow-sm border border-zinc-200 dark:border-zinc-700 flex flex-col opacity-75">
-                <h3 class="text-2xl font-bold mb-2">Sommelier</h3>
-                <div class="flex items-baseline gap-1 mb-6">
-                    <span class="text-2xl font-bold">Coming Soon</span>
+            <div class="bg-white dark:bg-zinc-900/30 p-6 border border-zinc-200 dark:border-zinc-800 flex flex-col opacity-60 hover:opacity-100 transition-opacity duration-300 lg:aspect-square justify-between">
+                <div>
+                    <div class="flex justify-between items-start h-12">
+                        <div>
+                            <h3 class="font-serif text-2xl text-zinc-500 dark:text-zinc-400">Sommelier</h3>
+                            <p class="text-xs text-zinc-500 uppercase tracking-widest mt-1">For the Expert</p>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1 mb-4 mt-4">
+                        <span class="text-2xl font-bold text-zinc-400">Coming Soon</span>
+                    </div>
+                    <div class="w-full h-px bg-zinc-100 dark:bg-zinc-800 mb-5"></div>
                 </div>
-                <ul class="space-y-4 mb-8 flex-1">
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
-                        <span>Unlimited bottles</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
-                        <span>Cellar valuation</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <span class="material-symbols-outlined text-primary dark:text-champagne-gold text-sm">check</span>
-                        <span>Concierge service</span>
+                <ul class="space-y-2 flex-1 flex flex-col justify-start mb-6">
+                    <li class="flex items-center gap-3 text-zinc-500 dark:text-zinc-500">
+                        <span class="material-symbols-outlined text-zinc-600 dark:text-zinc-600 text-sm">check</span>
+                        <span>Unlimited bottle storage</span>
                     </li>
                 </ul>
-                <button disabled class="w-full block text-center py-3 px-6 rounded-full border-2 border-zinc-200 text-zinc-400 dark:border-zinc-600 dark:text-zinc-500 font-bold cursor-not-allowed">Join Waitlist</button>
             </div>
         </div>
     </div>
@@ -203,7 +226,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="relative">
                 <div class="absolute -inset-4 bg-primary/20 dark:bg-champagne-gold/20 rounded-2xl rotate-3"></div>
-                <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=2070&auto=format&fit=crop" alt="Wine tasting" class="relative rounded-2xl shadow-xl w-full object-cover aspect-[4/3]">
+                <img src="/static/images/champagne.png" alt="Wine tasting" class="relative rounded-2xl shadow-xl w-full object-cover aspect-[4/3]">
             </div>
             <div>
                 <h2 class="font-script text-4xl sm:text-5xl text-primary dark:text-champagne-gold mb-6">Our Philosophy</h2>
