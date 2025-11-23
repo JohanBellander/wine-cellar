@@ -79,12 +79,6 @@ func main() {
 	})
 
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/contact.html", "templates/header.html", "templates/footer.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
 		_, email, authenticated := auth.GetSessionUser(r)
 		data := struct {
 			LoggedIn  bool
@@ -92,6 +86,12 @@ func main() {
 		}{
 			LoggedIn:  authenticated,
 			UserEmail: email,
+		}
+
+		tmpl, err := template.ParseFiles("templates/contact.html", "templates/header.html", "templates/footer.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
 		tmpl.Execute(w, data)

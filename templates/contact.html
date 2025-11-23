@@ -7,34 +7,33 @@
 <script src="/static/js/tailwind-config.js"></script>
 <link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body class="bg-background-light dark:bg-background-dark font-body text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
+<body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
     {{template "header" .}}
 
-    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto">
-            <h1 class="font-serif text-4xl mb-8 text-center">Contact Us</h1>
-            <p class="text-lg mb-12 text-center text-zinc-600 dark:text-zinc-400">Have questions or feedback? We'd love to hear from you.</p>
-            
-            <div class="bg-white dark:bg-white/5 p-8 rounded-xl shadow-sm border border-zinc-200 dark:border-white/10">
-                <form class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Name</label>
-                        <input type="text" id="name" name="name" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="Your name">
+    <div class="layout-container flex h-full grow flex-col">
+        <main class="flex-1">
+            <div class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-8">
+                <div class="layout-content-container flex flex-col w-full max-w-3xl">
+                    <h1 class="font-display text-3xl font-bold leading-tight tracking-tight pb-8 text-gray-900 dark:text-white text-center">Contact Us</h1>
+                    <p class="text-lg mb-12 text-center text-prose-light/70 dark:text-prose-dark/70">Have questions or feedback? We'd love to hear from you.</p>
+                    
+                    <div class="bg-white dark:bg-white/5 p-12 rounded-xl shadow-sm border border-black/5 dark:border-white/5 text-center">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h2>
+                        <p class="text-lg text-prose-light dark:text-prose-dark mb-8">
+                            We'd love to hear from you! Whether you have a question about features, pricing, or just want to say hello, feel free to drop us an email.
+                        </p>
+                        <a href="mailto:contact@winetrackr.app" class="inline-flex items-center justify-center gap-2 text-xl font-medium text-primary hover:text-primary/80 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            contact@winetrackr.app
+                        </a>
                     </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Email</label>
-                        <input type="email" id="email" name="email" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="you@example.com">
-                    </div>
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Message</label>
-                        <textarea id="message" name="message" rows="4" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="How can we help?"></textarea>
-                    </div>
-                    <button type="submit" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Send Message</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     {{template "footer" .}}
+</div>
 </body>
 </html>
