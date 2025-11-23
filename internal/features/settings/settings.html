@@ -36,6 +36,15 @@
     <style>
       body { font-family: 'Manrope', sans-serif; }
       .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24 }
+      /* Fix for dropdown contrast in dark mode */
+      option {
+        background-color: #fdfcf7;
+        color: #4a4137;
+      }
+      .dark option {
+        background-color: #2a2621;
+        color: #d1c7b8;
+      }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">

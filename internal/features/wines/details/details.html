@@ -137,10 +137,10 @@
 <form action="/add-review" method="POST" class="space-y-4">
 <input type="hidden" name="id" value="{{.Wine.ID}}">
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<input type="text" name="reviewer" placeholder="Reviewer Name" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
-<input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required>
+<input type="text" name="reviewer" placeholder="Reviewer Name" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
+<input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
 </div>
-<textarea name="content" placeholder="Review Content" rows="3" class="rounded-md border-black/20 dark:border-white/20 bg-transparent" required></textarea>
+<textarea name="content" placeholder="Review Content" rows="3" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
 <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
 </form>
 </div>
