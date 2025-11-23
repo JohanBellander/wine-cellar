@@ -4,43 +4,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Wine Detail Page</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#bfa884",
-              "background-light": "#fdfcf7",
-              "background-dark": "#2a2621",
-              "champagne-light": "#f5eadd",
-              "champagne-dark": "#3c352a",
-              "prose-light": "#4a4137",
-              "prose-dark": "#d1c7b8",
-            },
-            fontFamily: {
-              "display": ["Playfair Display", "serif"],
-              "body": ["Manrope", "sans-serif"],
-              "script": ["Great Vibes", "cursive"]
-            },
-            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
-<style type="text/tailwindcss">
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24
-        }
-    </style>
+<script src="/static/js/tailwind-config.js"></script>
+<link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">
 <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
@@ -142,7 +107,7 @@
 <input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
 </div>
 <textarea name="content" placeholder="Review Content" rows="3" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
-<button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Submit Review</button>
+<button type="submit" class="self-end flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Submit Review</button>
 </form>
 </div>
 </div>
@@ -170,7 +135,7 @@
                 <form action="/add-tasting-note" method="POST" class="space-y-4">
                     <input type="hidden" name="id" value="{{.Wine.ID}}">
                     <textarea name="note" placeholder="Your tasting notes..." rows="5" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
-                    <button type="submit" class="self-end bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/90 transition-colors">Save Note</button>
+                    <button type="submit" class="self-end flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Save Note</button>
                 </form>
             </div>
         </div>

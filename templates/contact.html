@@ -4,34 +4,10 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Contact Us - Winetrackr</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Dancing+Script:wght@400..700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#8B6F4E",
-              "background-light": "#F9F6F2",
-              "background-dark": "#2C2823",
-              "champagne-gold": "#C0A88F",
-              "champagne-dark": "#4A3F35",
-            },
-            fontFamily: {
-              "display": ["Manrope", "sans-serif"],
-              "serif": ["Playfair Display", "serif"],
-              "script": ["Dancing Script", "cursive"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
+<script src="/static/js/tailwind-config.js"></script>
+<link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
+<body class="bg-background-light dark:bg-background-dark font-body text-zinc-900 dark:text-zinc-200 flex flex-col min-h-screen">
     <header class="w-full z-10 px-4 sm:px-6 lg:px-8 py-4 border-b border-zinc-200 dark:border-white/10">
         <div class="flex items-center justify-between max-w-7xl mx-auto">
             <a class="text-2xl font-script text-zinc-900 dark:text-white" href="/">Winetrackr</a>
@@ -60,7 +36,7 @@
                         <label for="message" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Message</label>
                         <textarea id="message" name="message" rows="4" class="w-full rounded-lg border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:ring-primary focus:border-primary" placeholder="How can we help?"></textarea>
                     </div>
-                    <button type="submit" class="w-full py-3 px-6 rounded-lg bg-primary text-white font-bold hover:bg-primary/90 transition-colors">Send Message</button>
+                    <button type="submit" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Send Message</button>
                 </form>
             </div>
         </div>

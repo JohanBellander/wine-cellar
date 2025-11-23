@@ -4,55 +4,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Winetrackr - My Wine Cellar</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#bfa884",
-              "background-light": "#fdfcf7",
-              "background-dark": "#2a2621",
-              "champagne-light": "#f5eadd",
-              "champagne-dark": "#3c352a",
-              "prose-light": "#4a4137",
-              "prose-dark": "#d1c7b8",
-            },
-            fontFamily: {
-              "display": ["Playfair Display", "serif"],
-              "body": ["Manrope", "sans-serif"],
-              "script": ["Great Vibes", "cursive"]
-            },
-            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
-<style>
-      body {
-        font-family: 'Manrope', sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-        'FILL' 0,
-        'wght' 300,
-        'GRAD' 0,
-        'opsz' 24
-      }
-      /* Fix for dropdown contrast in dark mode */
-      option {
-        background-color: #fdfcf7;
-        color: #4a4137;
-      }
-      .dark option {
-        background-color: #2a2621;
-        color: #d1c7b8;
-      }
-    </style>
+<script src="/static/js/tailwind-config.js"></script>
+<link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark">
 <div class="relative flex h-auto min-h-screen w-full flex-col">
@@ -153,13 +106,10 @@
     </form>
     {{else}}
     <div class="flex justify-between items-center gap-4">
-        <a href="/add" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+        <a href="/add" class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">
             <span class="material-symbols-outlined !text-xl">add</span>
-            <span class="truncate">Add New Wine</span>
+            <span>Add Wine</span>
         </a>
-        <div class="text-sm text-prose-light/60 dark:text-prose-dark/60 bg-black/5 dark:bg-white/5 px-3 py-2 rounded-lg">
-            <span class="font-medium">Pro tip:</span> Upgrade to search & filter your collection
-        </div>
     </div>
     {{end}}
 </div>

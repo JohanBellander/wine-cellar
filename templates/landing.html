@@ -4,43 +4,10 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Winetrackr - Your Digital Wine Cellar</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Dancing+Script:wght@400..700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#8B6F4E",
-              "background-light": "#F9F6F2",
-              "background-dark": "#2C2823",
-              "champagne-gold": "#C0A88F",
-              "champagne-dark": "#4A3F35",
-            },
-            fontFamily: {
-              "display": ["Manrope", "sans-serif"],
-              "serif": ["Playfair Display", "serif"],
-              "script": ["Dancing Script", "cursive"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
-    </script>
-<style type="text/tailwindcss">
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24
-        }
-    </style>
+<script src="/static/js/tailwind-config.js"></script>
+<link rel="stylesheet" href="/static/css/styles.css">
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-200">
+<body class="bg-background-light dark:bg-background-dark font-body text-zinc-900 dark:text-zinc-200">
 <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
 <header class="absolute top-0 left-0 w-full z-10 px-4 sm:px-6 lg:px-8 py-4">
 <div class="flex items-center justify-between max-w-7xl mx-auto">
@@ -61,7 +28,7 @@
 <div class="absolute inset-0 bg-black/50 dark:bg-black/60 z-0"></div>
 <img alt="An elegant and modern wine cellar with neatly stacked bottles." class="absolute inset-0 h-full w-full object-cover -z-10" src="/static/images/background.png"/>
 <div class="relative z-10 text-center text-white px-4">
-<h1 class="font-script text-5xl sm:text-7xl lg:text-8xl leading-tight">Your Digital Cellar Awaits</h1>
+<h1 class="font-script text-6xl sm:text-7xl lg:text-8xl leading-tight">Your Digital <br class="sm:hidden" /> Cellar Awaits</h1>
 <p class="mt-4 max-w-2xl mx-auto text-lg sm:text-xl text-zinc-200 dark:text-zinc-300 font-serif italic">Rediscover your collection. Manage, explore, and savor every bottle with elegance and ease.</p>
 <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
 <a class="w-full sm:w-auto bg-primary text-white dark:bg-champagne-gold dark:text-champagne-dark px-8 py-3 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all transform hover:scale-105 shadow-lg" href="/signup">Start Your Collection</a>

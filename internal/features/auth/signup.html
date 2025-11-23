@@ -5,30 +5,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Sign Up - Winetrackr</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Dancing+Script:wght@400..700&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#bfa884",
-              "background-light": "#fdfcf7",
-              "background-dark": "#2a2621",
-              "prose-light": "#4a4137",
-              "prose-dark": "#d1c7b8",
-            },
-            fontFamily: {
-              "display": ["Playfair Display", "serif"],
-              "body": ["Manrope", "sans-serif"],
-              "script": ["Dancing Script", "cursive"]
-            },
-          },
-        },
-      }
-    </script>
+    <script src="/static/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body class="bg-background-light dark:bg-background-dark font-body text-prose-light dark:text-prose-dark flex flex-col min-h-screen">
     <div class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -54,7 +32,7 @@
                 </div>
 
                 <div>
-                    <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors">Sign up</button>
+                    <button type="submit" class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Sign up</button>
                 </div>
             </form>
 
