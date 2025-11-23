@@ -113,6 +113,8 @@
     </div>
     {{end}}
 </div>
+
+{{if .Wines}}
 <div class="bg-background-light dark:bg-background-dark border border-black/5 dark:border-white/5 rounded-xl overflow-hidden">
 <table class="w-full text-left">
 <thead class="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
@@ -169,6 +171,21 @@
 </a>
 {{end}}
 </div>
+{{else}}
+<div class="flex flex-col items-center justify-center py-24 px-4 text-center">
+    <div class="w-24 h-24 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mb-8 ring-8 ring-primary/5 dark:ring-primary/10">
+        <span class="material-symbols-outlined !text-5xl text-primary">wine_bar</span>
+    </div>
+    
+    <h3 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-3">Your Cellar is Empty</h3>
+    <p class="text-3xl font-script text-primary mb-10">Begin your collection today</p>
+    
+    <a href="/add" class="group flex min-w-[180px] cursor-pointer items-center justify-center gap-3 rounded-xl h-12 px-8 bg-primary text-white text-sm font-bold shadow-lg hover:bg-primary/90 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
+        <span class="material-symbols-outlined !text-xl group-hover:rotate-90 transition-transform duration-300">add</span>
+        <span>Add First Wine</span>
+    </a>
+</div>
+{{end}}
 </main>
 </div>
 {{template "footer" .}}
