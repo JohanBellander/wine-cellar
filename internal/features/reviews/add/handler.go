@@ -28,6 +28,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check subscription tier
+	userID := r.Context().Value("user_id").(uint)
+	var user domain.User
+	if result := database.DB.First(&user, userID); result.Error != nil {
+		http.Error(w, "User not found", http.StatusInternalServerError)
+		return
+	}
+
+	if user.SubscriptionTier != "pro" {
+		http.Error(w, "Reviews are only available for Pro users", http.StatusForbidden)
+		return
+	}
+
 	reviewer := r.FormValue("reviewer")
 	rating := r.FormValue("rating")
 	content := r.FormValue("content")
