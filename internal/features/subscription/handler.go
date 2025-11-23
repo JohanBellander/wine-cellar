@@ -100,9 +100,13 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Verify the signature
 	endpointSecret := os.Getenv("STRIPE_WEBHOOK_SECRET")
+	if endpointSecret == "" {
+		log.Println("STRIPE_WEBHOOK_SECRET is not set")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	
 	// Use ConstructEventWithOptions to ignore API version mismatch
-	// This is necessary because the Stripe Go SDK version might lag behind the API version used by the webhook
 	event, err := webhook.ConstructEventWithOptions(payload, r.Header.Get("Stripe-Signature"), endpointSecret, webhook.ConstructEventOptions{
 		IgnoreAPIVersionMismatch: true,
 	})
@@ -112,6 +116,8 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("Webhook received: %s", event.Type)
+
 	switch event.Type {
 	case "checkout.session.completed":
 		var session struct {
@@ -119,12 +125,12 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			Customer          string `json:"customer"`
 			Subscription      string `json:"subscription"`
 		}
-		err := json.Unmarshal(event.Data.Raw, &session)
-		if err != nil {
-			log.Printf("Error parsing webhook JSON: %v\n", err)
+		if err := json.Unmarshal(event.Data.Raw, &session); err != nil {
+			log.Printf("Error parsing checkout.session.completed JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		log.Printf("Processing checkout session: Ref=%s, Cus=%s, Sub=%s", session.ClientReferenceID, session.Customer, session.Subscription)
 		handleCheckoutSessionCompleted(session.ClientReferenceID, session.Customer, session.Subscription)
 
 	case "customer.subscription.updated":
@@ -132,12 +138,12 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			Customer string `json:"customer"`
 			Status   string `json:"status"`
 		}
-		err := json.Unmarshal(event.Data.Raw, &subscription)
-		if err != nil {
-			log.Printf("Error parsing webhook JSON: %v\n", err)
+		if err := json.Unmarshal(event.Data.Raw, &subscription); err != nil {
+			log.Printf("Error parsing customer.subscription.updated JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		log.Printf("Processing subscription update: Cus=%s, Status=%s", subscription.Customer, subscription.Status)
 		handleSubscriptionUpdated(subscription.Customer, subscription.Status)
 
 	case "customer.subscription.deleted":
@@ -145,12 +151,12 @@ func WebhookHandler(w http.ResponseWriter, r *http.Request) {
 			Customer string `json:"customer"`
 			Status   string `json:"status"`
 		}
-		err := json.Unmarshal(event.Data.Raw, &subscription)
-		if err != nil {
-			log.Printf("Error parsing webhook JSON: %v\n", err)
+		if err := json.Unmarshal(event.Data.Raw, &subscription); err != nil {
+			log.Printf("Error parsing customer.subscription.deleted JSON: %v\n", err)
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		log.Printf("Processing subscription deletion: Cus=%s", subscription.Customer)
 		handleSubscriptionDeleted(subscription.Customer)
 	}
 
