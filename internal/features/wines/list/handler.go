@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
@@ -43,8 +44,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	if isPro {
 		if searchQuery != "" {
-			likeQuery := "%" + searchQuery + "%"
-			query = query.Where("name LIKE ? OR producer LIKE ? OR region LIKE ? OR category LIKE ?", likeQuery, likeQuery, likeQuery, likeQuery)
+			lowerSearchQuery := strings.ToLower(searchQuery)
+			likeQuery := "%" + lowerSearchQuery + "%"
+			query = query.Where("LOWER(name) LIKE ? OR LOWER(producer) LIKE ? OR LOWER(region) LIKE ? OR LOWER(category) LIKE ?", likeQuery, likeQuery, likeQuery, likeQuery)
 		}
 		if filterCategory != "" {
 			query = query.Where("category = ?", filterCategory)
