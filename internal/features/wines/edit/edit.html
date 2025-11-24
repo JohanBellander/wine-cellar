@@ -186,14 +186,12 @@ function toggleVintageInput(checkbox) {
 <input name="sub_category" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal" placeholder="e.g., Dry, Sweet, Brut" value="{{.Wine.SubCategory}}"/>
 </label>
 <label class="flex flex-col w-full">
-<div class="flex justify-between items-center pb-2">
-    <p class="text-base font-semibold leading-normal">Vintage</p>
-    <label class="flex items-center gap-2 cursor-pointer">
+    <p class="text-base font-semibold leading-normal pb-2">Vintage</p>
+    <input id="vintage_input" name="vintage" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal disabled:opacity-50 disabled:cursor-not-allowed" placeholder="e.g., 2018" type="number" value="{{if .Wine.Vintage}}{{.Wine.Vintage}}{{end}}" {{if .Wine.IsNonVintage}}disabled{{end}}/>
+    <label class="flex items-center gap-2 cursor-pointer mt-2">
         <input type="checkbox" name="is_non_vintage" id="is_non_vintage" class="form-checkbox rounded text-primary focus:ring-primary/50 border-black/10 dark:border-white/10 bg-transparent" {{if .Wine.IsNonVintage}}checked{{end}} onchange="toggleVintageInput(this)">
         <span class="text-sm text-prose-light/70 dark:text-prose-dark/70">Non Vintage (NV)</span>
     </label>
-</div>
-<input id="vintage_input" name="vintage" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal disabled:opacity-50 disabled:cursor-not-allowed" placeholder="e.g., 2018" type="number" value="{{if .Wine.Vintage}}{{.Wine.Vintage}}{{end}}" {{if .Wine.IsNonVintage}}disabled{{end}}/>
 </label>
 <label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Grape</p>
