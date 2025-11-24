@@ -122,12 +122,54 @@
 <table class="w-full text-left">
 <thead class="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/5">
 <tr>
-<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Wine</th>
-<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Type</th>
-<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Producer</th>
-<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">Region</th>
-<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Vintage</th>
-<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">Qty</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">
+    <a href="{{sortURL .QueryParams "name" .Sort .Direction}}" class="flex items-center gap-1 hover:text-primary transition-colors">
+        Wine
+        {{if eq .Sort "name"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
+<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">
+    <a href="{{sortURL .QueryParams "category" .Sort .Direction}}" class="flex items-center gap-1 hover:text-primary transition-colors">
+        Type
+        {{if eq .Sort "category"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
+<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">
+    <a href="{{sortURL .QueryParams "producer" .Sort .Direction}}" class="flex items-center gap-1 hover:text-primary transition-colors">
+        Producer
+        {{if eq .Sort "producer"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
+<th class="hidden md:table-cell p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60">
+    <a href="{{sortURL .QueryParams "region" .Sort .Direction}}" class="flex items-center gap-1 hover:text-primary transition-colors">
+        Region
+        {{if eq .Sort "region"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">
+    <a href="{{sortURL .QueryParams "vintage" .Sort .Direction}}" class="flex items-center justify-center gap-1 hover:text-primary transition-colors">
+        Vintage
+        {{if eq .Sort "vintage"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-prose-light/60 dark:text-prose-dark/60 text-center">
+    <a href="{{sortURL .QueryParams "quantity" .Sort .Direction}}" class="flex items-center justify-center gap-1 hover:text-primary transition-colors">
+        Qty
+        {{if eq .Sort "quantity"}}
+            <span class="material-symbols-outlined !text-sm">{{if eq .Direction "asc"}}arrow_upward{{else}}arrow_downward{{end}}</span>
+        {{end}}
+    </a>
+</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-black/5 dark:divide-white/5">

@@ -3,6 +3,7 @@ package list
 import (
 	"html/template"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"wine-cellar/internal/domain"
@@ -63,6 +64,36 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			query = query.Where("vintage = ?", filterVintage)
 		}
 	}
+
+	// Sorting logic
+	sortField := r.FormValue("sort")
+	sortDirection := r.FormValue("direction")
+
+	if sortField == "" {
+		sortField = "created_at" // Default sort
+		sortDirection = "desc"
+	}
+
+	// Validate sort field to prevent SQL injection
+	allowedSortFields := map[string]bool{
+		"name":       true,
+		"category":   true,
+		"producer":   true,
+		"region":     true,
+		"vintage":    true,
+		"quantity":   true,
+		"created_at": true,
+	}
+
+	if !allowedSortFields[sortField] {
+		sortField = "created_at"
+	}
+
+	if sortDirection != "asc" && sortDirection != "desc" {
+		sortDirection = "desc"
+	}
+
+	query = query.Order(sortField + " " + sortDirection)
 
 	// Pagination logic
 	pageStr := r.FormValue("page")
@@ -138,6 +169,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterVintages   []int
 		HasNV            bool
 		BaseQueryString  string
+		Sort             string
+		Direction        string
+		QueryParams      url.Values
 	}{
 		Wines:            paginatedWines,
 		CurrentPage:      page,
@@ -163,6 +197,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterVintages:   vintages,
 		HasNV:            hasNV > 0,
 		BaseQueryString:  baseQueryString,
+		Sort:             sortField,
+		Direction:        sortDirection,
+		QueryParams:      r.URL.Query(),
 	}
 
 	tmpl.Execute(w, data)
