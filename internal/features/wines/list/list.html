@@ -132,7 +132,7 @@
 <tr class="hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer" onclick="window.location.href='/details/{{.ID}}'">
 <td class="p-4 align-middle">
 <div class="flex items-center gap-4">
-<img alt="Bottle of {{.Name}}" class="h-16 w-16 object-cover rounded-lg" src="{{if .ImageURL}}{{.ImageURL | safeURL}}{{else}}/static/images/bottle.png{{end}}" onerror="this.onerror=null;this.src='/static/images/bottle.png';"/>
+<img alt="Bottle of {{.Name}}" class="h-16 w-16 aspect-square object-cover rounded-lg flex-shrink-0" src="{{if .ImageURL}}{{.ImageURL | safeURL}}{{else}}/static/images/bottle.png{{end}}" onerror="this.onerror=null;this.src='/static/images/bottle.png';"/>
 <div>
 <div class="font-display font-semibold text-gray-900 dark:text-white">{{.Name}}</div>
 <div class="md:hidden text-sm text-prose-light/70 dark:text-prose-dark/70">{{.Producer}}</div>
