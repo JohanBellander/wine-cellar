@@ -84,14 +84,23 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		vintage, _ := strconv.Atoi(r.FormValue("vintage"))
+		vintageStr := r.FormValue("vintage")
+		vintage, _ := strconv.Atoi(vintageStr)
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
+
+		isNonVintage := r.FormValue("is_non_vintage") == "on"
+		if vintageStr == "" || vintage == 0 {
+			isNonVintage = true
+		}
+		if isNonVintage {
+			vintage = 0
+		}
 
 		wine.Name = r.FormValue("name")
 		wine.Producer = r.FormValue("producer")
 		wine.Vintage = vintage
-		wine.IsNonVintage = r.FormValue("is_non_vintage") == "on"
+		wine.IsNonVintage = isNonVintage
 		wine.Grape = r.FormValue("grape")
 		wine.Country = r.FormValue("country")
 		wine.Region = r.FormValue("region")

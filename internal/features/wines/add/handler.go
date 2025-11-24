@@ -66,9 +66,18 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		vintage, _ := strconv.Atoi(r.FormValue("vintage"))
+		vintageStr := r.FormValue("vintage")
+		vintage, _ := strconv.Atoi(vintageStr)
 		quantity, _ := strconv.Atoi(r.FormValue("quantity"))
 		price, _ := strconv.ParseFloat(r.FormValue("price"), 64)
+
+		isNonVintage := r.FormValue("is_non_vintage") == "on"
+		if vintageStr == "" || vintage == 0 {
+			isNonVintage = true
+		}
+		if isNonVintage {
+			vintage = 0
+		}
 
 		imageURL := "https://via.placeholder.com/150"
 		
@@ -91,7 +100,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			Name:           r.FormValue("name"),
 			Producer:       r.FormValue("producer"),
 			Vintage:        vintage,
-			IsNonVintage:   r.FormValue("is_non_vintage") == "on",
+			IsNonVintage:   isNonVintage,
 			Grape:          r.FormValue("grape"),
 			Country:        r.FormValue("country"),
 			Region:         r.FormValue("region"),
