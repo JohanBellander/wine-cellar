@@ -101,7 +101,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if page < 1 {
 		page = 1
 	}
-	limit := 5 // Items per page
+	limit := 10 // Items per page
 
 	var totalWines int64
 	query.Count(&totalWines)
