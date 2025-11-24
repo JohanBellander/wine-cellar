@@ -47,9 +47,14 @@
     <div class="relative w-full max-w-lg bg-background-light dark:bg-background-dark rounded-xl overflow-hidden shadow-2xl">
         <div class="p-4 flex justify-between items-center border-b border-black/10 dark:border-white/10">
             <h3 class="text-lg font-bold">Take Photo</h3>
-            <button type="button" onclick="closeCamera()" class="text-prose-light dark:text-prose-dark hover:opacity-70">
-                <span class="material-symbols-outlined">close</span>
-            </button>
+            <div class="flex items-center gap-2">
+                <button type="button" id="flash-toggle" onclick="toggleFlash()" class="hidden text-prose-light dark:text-prose-dark hover:opacity-70">
+                    <span class="material-symbols-outlined">flash_off</span>
+                </button>
+                <button type="button" onclick="closeCamera()" class="text-prose-light dark:text-prose-dark hover:opacity-70">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
         </div>
         <div class="relative aspect-[3/4] bg-black">
             <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
@@ -65,6 +70,8 @@
 
 <script>
 let stream = null;
+let videoTrack = null;
+let flashEnabled = false;
 
 async function openCamera() {
     try {
@@ -73,6 +80,28 @@ async function openCamera() {
         });
         const video = document.getElementById('camera-video');
         video.srcObject = stream;
+
+        // Check for flash capability
+        videoTrack = stream.getVideoTracks()[0];
+        const flashBtn = document.getElementById('flash-toggle');
+        
+        // Reset flash state
+        flashEnabled = false;
+        flashBtn.innerHTML = '<span class="material-symbols-outlined">flash_off</span>';
+        
+        try {
+            const capabilities = videoTrack.getCapabilities();
+            // Only show flash button if the device supports torch (flash)
+            if (capabilities.torch) {
+                flashBtn.classList.remove('hidden');
+            } else {
+                flashBtn.classList.add('hidden');
+            }
+        } catch (e) {
+            console.log("Capabilities check failed, hiding flash button", e);
+            flashBtn.classList.add('hidden');
+        }
+
         const modal = document.getElementById('camera-modal');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -82,14 +111,41 @@ async function openCamera() {
     }
 }
 
+async function toggleFlash() {
+    if (!videoTrack) return;
+    
+    flashEnabled = !flashEnabled;
+    const flashBtn = document.getElementById('flash-toggle');
+    
+    try {
+        await videoTrack.applyConstraints({
+            advanced: [{ torch: flashEnabled }]
+        });
+        
+        flashBtn.innerHTML = `<span class="material-symbols-outlined">${flashEnabled ? 'flash_on' : 'flash_off'}</span>`;
+    } catch (err) {
+        console.error("Error toggling flash:", err);
+        flashEnabled = !flashEnabled; // Revert state on error
+        alert("Failed to toggle flash");
+    }
+}
+
 function closeCamera() {
     const modal = document.getElementById('camera-modal');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     
     if (stream) {
+        // Turn off flash before stopping
+        if (flashEnabled && videoTrack) {
+            videoTrack.applyConstraints({
+                advanced: [{ torch: false }]
+            }).catch(e => console.log(e));
+        }
+        
         stream.getTracks().forEach(track => track.stop());
         stream = null;
+        videoTrack = null;
     }
 }
 
