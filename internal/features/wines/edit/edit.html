@@ -153,7 +153,7 @@ function toggleVintageInput(checkbox) {
 <div class="lg:col-span-2">
 <div class="flex flex-col gap-8">
 <div>
-<h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Core Identity</h3>
+<h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Wine Details</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
 <label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Wine Name</p>
@@ -167,10 +167,10 @@ function toggleVintageInput(checkbox) {
 </div>
 <div>
 <h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Origin &amp; Type</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
 <label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Category</p>
-<select name="category" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal">
+<select name="category" class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal">
     <option value="" {{if eq .Wine.Category ""}}selected{{end}}>Select Category</option>
     <option value="Red" {{if eq .Wine.Category "Red"}}selected{{end}}>Red</option>
     <option value="White" {{if eq .Wine.Category "White"}}selected{{end}}>White</option>
@@ -187,11 +187,13 @@ function toggleVintageInput(checkbox) {
 </label>
 <label class="flex flex-col w-full">
     <p class="text-base font-semibold leading-normal pb-2">Vintage</p>
-    <input id="vintage_input" name="vintage" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal disabled:opacity-50 disabled:cursor-not-allowed" placeholder="e.g., 2018" type="number" value="{{if .Wine.Vintage}}{{.Wine.Vintage}}{{end}}" {{if .Wine.IsNonVintage}}disabled{{end}}/>
-    <label class="flex items-center gap-2 cursor-pointer mt-2">
-        <input type="checkbox" name="is_non_vintage" id="is_non_vintage" class="form-checkbox rounded text-primary focus:ring-primary/50 border-black/10 dark:border-white/10 bg-transparent" {{if .Wine.IsNonVintage}}checked{{end}} onchange="toggleVintageInput(this)">
-        <span class="text-sm text-prose-light/70 dark:text-prose-dark/70">Non Vintage (NV)</span>
-    </label>
+    <div class="flex gap-2 items-center">
+        <input id="vintage_input" name="vintage" class="form-input flex-1 min-w-0 resize-none overflow-hidden rounded-lg text-prose-light dark:text-prose-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 focus:border-primary dark:focus:border-primary h-12 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50 p-3 text-base font-normal leading-normal disabled:opacity-50 disabled:cursor-not-allowed" placeholder="e.g., 2018" type="number" value="{{if .Wine.Vintage}}{{.Wine.Vintage}}{{end}}" {{if .Wine.IsNonVintage}}disabled{{end}}/>
+        <label class="flex items-center gap-2 cursor-pointer h-12 px-3 rounded-lg border border-black/5 dark:border-white/5 bg-transparent dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+            <input type="checkbox" name="is_non_vintage" id="is_non_vintage" class="form-checkbox rounded text-primary focus:ring-primary/50 border-black/10 dark:border-white/10 bg-transparent" {{if .Wine.IsNonVintage}}checked{{end}} onchange="toggleVintageInput(this)">
+            <span class="text-sm font-medium text-prose-light dark:text-prose-dark whitespace-nowrap">NV</span>
+        </label>
+    </div>
 </label>
 <label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Grape</p>
@@ -221,7 +223,7 @@ function toggleVintageInput(checkbox) {
 </div>
 </div>
 <div>
-<h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Personal Rating &amp; Notes</h3>
+<h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4 border-b border-black/5 dark:border-white/5 mb-4">Tasting Notes</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
 <label class="flex flex-col w-full">
 <p class="text-base font-semibold leading-normal pb-2">Drinking Window</p>
