@@ -93,8 +93,9 @@
             </div>
         </div>
         <div class="relative aspect-[3/4] bg-black">
-            <video id="camera-video" autoplay playsinline class="w-full h-full object-cover"></video>
+            <video id="camera-video" onclick="focusCamera(event)" autoplay playsinline class="w-full h-full object-cover"></video>
             <canvas id="camera-canvas" class="hidden"></canvas>
+            <div id="focus-ring" class="absolute w-16 h-16 border-2 border-yellow-400 rounded-full hidden pointer-events-none transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-500"></div>
         </div>
         <div class="p-6 flex justify-center gap-4">
             <button type="button" onclick="capturePhoto()" class="flex items-center justify-center w-16 h-16 rounded-full bg-white border-4 border-primary hover:bg-gray-100 transition-colors">
@@ -163,6 +164,54 @@ async function toggleFlash() {
         console.error("Error toggling flash:", err);
         flashEnabled = !flashEnabled; // Revert state on error
         alert("Failed to toggle flash");
+    }
+}
+
+async function focusCamera(event) {
+    if (!videoTrack) return;
+    
+    // Visual feedback
+    const ring = document.getElementById('focus-ring');
+    const rect = event.target.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
+    ring.style.left = `${x}px`;
+    ring.style.top = `${y}px`;
+    ring.classList.remove('hidden');
+    ring.classList.remove('opacity-0');
+    
+    // Animate hide
+    setTimeout(() => {
+        ring.classList.add('opacity-0');
+        setTimeout(() => {
+            ring.classList.add('hidden');
+        }, 500);
+    }, 1000);
+
+    // Camera logic
+    try {
+        const capabilities = videoTrack.getCapabilities();
+        
+        // Try pointsOfInterest (experimental)
+        // Note: This is not widely supported but works on some Chrome/Android versions
+        const constraints = { advanced: [] };
+        
+        if (capabilities.pointsOfInterest) {
+             const nx = x / rect.width;
+             const ny = y / rect.height;
+             constraints.advanced.push({ pointsOfInterest: [{ x: nx, y: ny }] });
+        }
+        
+        if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
+            constraints.advanced.push({ focusMode: 'continuous' });
+        }
+        
+        if (constraints.advanced.length > 0) {
+            await videoTrack.applyConstraints(constraints);
+        }
+    } catch (err) {
+        console.log("Focus adjustment failed", err);
     }
 }
 
