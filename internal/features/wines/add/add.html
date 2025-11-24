@@ -154,17 +154,8 @@ async function toggleFlash() {
     flashEnabled = !flashEnabled;
     const flashBtn = document.getElementById('flash-toggle');
     
-    try {
-        await videoTrack.applyConstraints({
-            advanced: [{ torch: flashEnabled }]
-        });
-        
-        flashBtn.innerHTML = `<span class="material-symbols-outlined">${flashEnabled ? 'flash_on' : 'flash_off'}</span>`;
-    } catch (err) {
-        console.error("Error toggling flash:", err);
-        flashEnabled = !flashEnabled; // Revert state on error
-        alert("Failed to toggle flash");
-    }
+    // Just toggle the UI state, don't turn on the torch yet
+    flashBtn.innerHTML = `<span class="material-symbols-outlined">${flashEnabled ? 'flash_on' : 'flash_off'}</span>`;
 }
 
 async function focusCamera(event) {
@@ -234,10 +225,23 @@ function closeCamera() {
     }
 }
 
-function capturePhoto() {
+async function capturePhoto() {
     const video = document.getElementById('camera-video');
     const canvas = document.getElementById('camera-canvas');
     const context = canvas.getContext('2d');
+
+    // If flash is enabled, turn it on briefly before capturing
+    if (flashEnabled && videoTrack) {
+        try {
+            await videoTrack.applyConstraints({
+                advanced: [{ torch: true }]
+            });
+            // Give the camera a moment to adjust exposure with the flash on
+            await new Promise(r => setTimeout(r, 500));
+        } catch (err) {
+            console.error("Error enabling flash for capture:", err);
+        }
+    }
 
     // Set canvas dimensions to match video
     canvas.width = video.videoWidth;
@@ -245,6 +249,17 @@ function capturePhoto() {
 
     // Draw video frame to canvas
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Turn off flash immediately after capture
+    if (flashEnabled && videoTrack) {
+        try {
+            await videoTrack.applyConstraints({
+                advanced: [{ torch: false }]
+            });
+        } catch (err) {
+            console.error("Error disabling flash after capture:", err);
+        }
+    }
 
     // Convert to blob/file
     canvas.toBlob(blob => {
