@@ -91,6 +91,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		wine.Name = r.FormValue("name")
 		wine.Producer = r.FormValue("producer")
 		wine.Vintage = vintage
+		wine.IsNonVintage = r.FormValue("is_non_vintage") == "on"
 		wine.Grape = r.FormValue("grape")
 		wine.Country = r.FormValue("country")
 		wine.Region = r.FormValue("region")

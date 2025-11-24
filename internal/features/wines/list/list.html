@@ -88,6 +88,9 @@
                         <label class="text-xs font-bold uppercase tracking-wider text-prose-light/40 dark:text-prose-dark/40 ml-1">Vintage</label>
                         <select name="vintage" onchange="this.form.submit()" class="w-full px-3 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-prose-light dark:text-prose-dark">
                             <option value="">All Vintages</option>
+                            {{if .HasNV}}
+                            <option value="NV" {{if eq "NV" $.FilterVintage}}selected{{end}}>Non Vintage (NV)</option>
+                            {{end}}
                             {{range .FilterVintages}}
                             <option value="{{.}}" {{if eq (printf "%d" .) $.FilterVintage}}selected{{end}}>{{.}}</option>
                             {{end}}
@@ -143,7 +146,7 @@
 <td class="hidden md:table-cell p-4 align-middle text-sm">{{.Category}}{{if .SubCategory}} <span class="text-xs opacity-70">({{.SubCategory}})</span>{{end}}</td>
 <td class="hidden md:table-cell p-4 align-middle text-sm">{{.Producer}}</td>
 <td class="hidden md:table-cell p-4 align-middle text-sm">{{.Region}}</td>
-<td class="p-4 align-middle text-sm text-center">{{.Vintage}}</td>
+<td class="p-4 align-middle text-sm text-center">{{if .IsNonVintage}}NV{{else}}{{.Vintage}}{{end}}</td>
 <td class="p-4 align-middle text-sm text-center">{{.Quantity}}</td>
 </tr>
 {{end}}

@@ -57,7 +57,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		if filterProducer != "" {
 			query = query.Where("producer = ?", filterProducer)
 		}
-		if filterVintage != "" {
+		if filterVintage == "NV" {
+			query = query.Where("is_non_vintage = ?", true)
+		} else if filterVintage != "" {
 			query = query.Where("vintage = ?", filterVintage)
 		}
 	}
@@ -100,13 +102,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	var regions []string
 	var producers []string
 	var vintages []int
+	var hasNV int64
 
 	if isPro {
 		database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Distinct("category").Pluck("category", &categories)
 		database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Distinct("country").Pluck("country", &countries)
 		database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Distinct("region").Pluck("region", &regions)
 		database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Distinct("producer").Pluck("producer", &producers)
-		database.DB.Model(&domain.Wine{}).Where("user_id = ?", userID).Distinct("vintage").Order("vintage desc").Pluck("vintage", &vintages)
+		database.DB.Model(&domain.Wine{}).Where("user_id = ? AND vintage > 0", userID).Distinct("vintage").Order("vintage desc").Pluck("vintage", &vintages)
+		database.DB.Model(&domain.Wine{}).Where("user_id = ? AND is_non_vintage = ?", userID, true).Count(&hasNV)
 	}
 
 	data := struct {
@@ -132,6 +136,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterRegions    []string
 		FilterProducers  []string
 		FilterVintages   []int
+		HasNV            bool
 		BaseQueryString  string
 	}{
 		Wines:            paginatedWines,
@@ -156,6 +161,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterRegions:    regions,
 		FilterProducers:  producers,
 		FilterVintages:   vintages,
+		HasNV:            hasNV > 0,
 		BaseQueryString:  baseQueryString,
 	}
 

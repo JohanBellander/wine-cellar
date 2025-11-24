@@ -91,6 +91,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			Name:           r.FormValue("name"),
 			Producer:       r.FormValue("producer"),
 			Vintage:        vintage,
+			IsNonVintage:   r.FormValue("is_non_vintage") == "on",
 			Grape:          r.FormValue("grape"),
 			Country:        r.FormValue("country"),
 			Region:         r.FormValue("region"),

@@ -21,6 +21,7 @@ type Wine struct {
 	Name           string
 	Producer       string
 	Vintage        int
+	IsNonVintage   bool    `gorm:"default:false"`
 	Grape          string  `json:"grape"`
 	Country        string
 	Region         string
