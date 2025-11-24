@@ -69,11 +69,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	sortField := r.FormValue("sort")
 	sortDirection := r.FormValue("direction")
 
-	if sortField == "" {
-		sortField = "created_at" // Default sort
-		sortDirection = "desc"
-	}
-
 	// Validate sort field to prevent SQL injection
 	allowedSortFields := map[string]bool{
 		"name":       true,
@@ -86,11 +81,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !allowedSortFields[sortField] {
-		sortField = "created_at"
+		sortField = "name"
 	}
 
 	if sortDirection != "asc" && sortDirection != "desc" {
-		sortDirection = "desc"
+		if sortField == "created_at" || sortField == "quantity" || sortField == "vintage" {
+			sortDirection = "desc"
+		} else {
+			sortDirection = "asc"
+		}
 	}
 
 	query = query.Order(sortField + " " + sortDirection)
