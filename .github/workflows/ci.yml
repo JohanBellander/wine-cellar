@@ -46,6 +46,7 @@ jobs:
           DOMAIN: ${{ secrets.DOMAIN }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CSRF_AUTH_KEY: ${{ secrets.CSRF_AUTH_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         run: |
           echo "Checking for Render credentials..."
           if [ -n "$RENDER_API_KEY" ]; then echo "RENDER_API_KEY is set"; else echo "RENDER_API_KEY is NOT set"; fi
@@ -63,6 +64,7 @@ jobs:
               --arg dom "$DOMAIN" \
               --arg db "$DATABASE_URL" \
               --arg csrf "$CSRF_AUTH_KEY" \
+              --arg sess "$SESSION_SECRET" \
               '[
                 {key: "STRIPE_SECRET_KEY", value: $sk},
                 {key: "STRIPE_PUBLISHABLE_KEY", value: $pk},
@@ -70,7 +72,8 @@ jobs:
                 {key: "STRIPE_WEBHOOK_SECRET", value: $wh},
                 {key: "DOMAIN", value: $dom},
                 {key: "DATABASE_URL", value: $db},
-                {key: "CSRF_AUTH_KEY", value: $csrf}
+                {key: "CSRF_AUTH_KEY", value: $csrf},
+                {key: "SESSION_SECRET", value: $sess}
               ]' > env_vars.json
 
             curl -X PUT "https://api.render.com/v1/services/$RENDER_SERVICE_ID/env-vars" \

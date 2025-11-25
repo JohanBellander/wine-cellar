@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"os"
 
@@ -9,13 +10,27 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var store = sessions.NewCookieStore([]byte(getEnv("SESSION_SECRET", "super-secret-key")))
+var store *sessions.CookieStore
 
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
+func Init() {
+	secret := os.Getenv("SESSION_SECRET")
+	if secret == "" {
+		if os.Getenv("GO_ENV") == "production" {
+			log.Fatal("SESSION_SECRET environment variable is required in production")
+		}
+		log.Println("Warning: SESSION_SECRET not set, using default for development")
+		secret = "super-secret-key"
 	}
-	return fallback
+
+	store = sessions.NewCookieStore([]byte(secret))
+
+	store.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+		Secure:   os.Getenv("GO_ENV") == "production",
+		SameSite: http.SameSiteLaxMode,
+	}
 }
 
 // HashPassword hashes the password using bcrypt

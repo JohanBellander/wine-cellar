@@ -38,6 +38,9 @@ func main() {
 	// Initialize Stripe
 	subscription.Init()
 
+	// Initialize Auth (Session Store)
+	auth.Init()
+
 	database.InitDB()
 	database.Seed(database.DB)
 

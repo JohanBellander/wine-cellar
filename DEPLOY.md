@@ -18,6 +18,8 @@
     *   Value: *(Paste your Neon connection string here)*
     *   Key: `CSRF_AUTH_KEY`
     *   Value: *(A 32-byte random string, e.g., `01234567890123456789012345678901`)*
+    *   Key: `SESSION_SECRET`
+    *   Value: *(A random string for session encryption)*
 9.  Click **Create Web Service**.
 
 ## 3. Continuous Deployment
