@@ -25,6 +25,7 @@ import (
 	"wine-cellar/internal/features/wines/update"
 	"wine-cellar/internal/shared/database"
 
+	"github.com/gorilla/csrf"
 	"github.com/joho/godotenv"
 )
 
@@ -40,11 +41,13 @@ func main() {
 	database.InitDB()
 	database.Seed(database.DB)
 
-	http.HandleFunc("/signup", auth.SignupHandler)
-	http.HandleFunc("/login", auth.LoginHandler)
-	http.HandleFunc("/logout", auth.LogoutHandler)
+	mux := http.NewServeMux()
 
-	http.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/signup", auth.SignupHandler)
+	mux.HandleFunc("/login", auth.LoginHandler)
+	mux.HandleFunc("/logout", auth.LogoutHandler)
+
+	mux.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -63,7 +66,7 @@ func main() {
 		tmpl.Execute(w, data)
 	})
 
-	http.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.ParseFiles("templates/terms.html", "templates/header.html", "templates/footer.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -82,7 +85,7 @@ func main() {
 		tmpl.Execute(w, data)
 	})
 
-	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		_, email, authenticated := auth.GetSessionUser(r)
 		data := struct {
 			LoggedIn  bool
@@ -101,37 +104,44 @@ func main() {
 		tmpl.Execute(w, data)
 	})
 
-	http.HandleFunc("/", rootHandler)
-	http.HandleFunc("/add", auth.Middleware(addWine.Handler))
-	http.HandleFunc("/details/", auth.Middleware(details.Handler))
-	http.HandleFunc("/edit/", auth.Middleware(edit.Handler))
-	http.HandleFunc("/update-quantity", auth.Middleware(update.QuantityHandler))
-	http.HandleFunc("/add-review", auth.Middleware(add.Handler))
-	http.HandleFunc("/delete-review", auth.Middleware(deleteReview.Handler))
-	http.HandleFunc("/edit-review", auth.Middleware(editReview.Handler))
-	http.HandleFunc("/add-tasting-note", auth.Middleware(addTastingNote.Handler))
-	http.HandleFunc("/delete-tasting-note", auth.Middleware(deleteTastingNote.Handler))
-	http.HandleFunc("/edit-tasting-note", auth.Middleware(editTastingNote.Handler))
-	http.HandleFunc("/settings", auth.Middleware(settings.Handler))
-	http.HandleFunc("/export", auth.Middleware(settings.ExportHandler))
-	http.HandleFunc("/delete-account", auth.Middleware(settings.DeleteAccountHandler))
-	http.HandleFunc("/delete", auth.Middleware(deleteWine.Handler))
-	http.HandleFunc("/create-checkout-session", auth.Middleware(subscription.CreateCheckoutSession))
-	http.HandleFunc("/create-portal-session", auth.Middleware(subscription.CreatePortalSession))
-	http.HandleFunc("/webhook/stripe", subscription.WebhookHandler)
-	http.HandleFunc("/health", healthHandler)
+	mux.HandleFunc("/", rootHandler)
+	mux.HandleFunc("/add", auth.Middleware(addWine.Handler))
+	mux.HandleFunc("/details/", auth.Middleware(details.Handler))
+	mux.HandleFunc("/edit/", auth.Middleware(edit.Handler))
+	mux.HandleFunc("/update-quantity", auth.Middleware(update.QuantityHandler))
+	mux.HandleFunc("/add-review", auth.Middleware(add.Handler))
+	mux.HandleFunc("/delete-review", auth.Middleware(deleteReview.Handler))
+	mux.HandleFunc("/edit-review", auth.Middleware(editReview.Handler))
+	mux.HandleFunc("/add-tasting-note", auth.Middleware(addTastingNote.Handler))
+	mux.HandleFunc("/delete-tasting-note", auth.Middleware(deleteTastingNote.Handler))
+	mux.HandleFunc("/edit-tasting-note", auth.Middleware(editTastingNote.Handler))
+	mux.HandleFunc("/settings", auth.Middleware(settings.Handler))
+	mux.HandleFunc("/export", auth.Middleware(settings.ExportHandler))
+	mux.HandleFunc("/delete-account", auth.Middleware(settings.DeleteAccountHandler))
+	mux.HandleFunc("/delete", auth.Middleware(deleteWine.Handler))
+	mux.HandleFunc("/create-checkout-session", auth.Middleware(subscription.CreateCheckoutSession))
+	mux.HandleFunc("/create-portal-session", auth.Middleware(subscription.CreatePortalSession))
+	mux.HandleFunc("/webhook/stripe", subscription.WebhookHandler)
+	mux.HandleFunc("/health", healthHandler)
 
 	// Serve static files
 	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
+	// CSRF Protection
+	csrfMiddleware := csrf.Protect(
+		[]byte(os.Getenv("CSRF_AUTH_KEY")),
+		csrf.Secure(os.Getenv("GO_ENV") == "production"), // Secure only in production
+		csrf.TrustedOrigins([]string{"localhost:8080", "127.0.0.1:8080"}),
+	)
+
 	fmt.Printf("Server started at http://localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, csrfMiddleware(mux)))
 }
 
 // Define a FuncMap with the safeURL function

@@ -10,6 +10,8 @@ import (
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
 	"wine-cellar/internal/shared/ui"
+
+	"github.com/gorilla/csrf"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -40,11 +42,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			LoggedIn  bool
 			UserEmail string
 			IsDev     bool
+			CSRFField template.HTML
 		}{
 			User:      user,
 			LoggedIn:  true,
 			UserEmail: userEmail,
 			IsDev:     isDev,
+			CSRFField: csrf.TemplateField(r),
 		}
 
 		tmpl.Execute(w, data)

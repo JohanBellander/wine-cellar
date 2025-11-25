@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
+
+	"github.com/gorilla/csrf"
 )
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
@@ -14,7 +16,12 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, nil)
+		
+		data := map[string]interface{}{
+			"CSRFField": csrf.TemplateField(r),
+		}
+		
+		tmpl.Execute(w, data)
 		return
 	}
 
@@ -46,7 +53,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl.Execute(w, nil)
+		
+		data := map[string]interface{}{
+			"CSRFField": csrf.TemplateField(r),
+		}
+
+		tmpl.Execute(w, data)
 		return
 	}
 

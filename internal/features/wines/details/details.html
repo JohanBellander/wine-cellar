@@ -67,6 +67,7 @@
 </div>
 <div class="flex items-center gap-3">
 <form action="/update-quantity" method="POST" class="contents">
+{{.CSRFField}}
 <input type="hidden" name="id" value="{{.Wine.ID}}">
 <button name="action" value="decrement" class="w-10 h-10 flex items-center justify-center rounded-full bg-white dark:bg-white/10 shadow-sm hover:bg-gray-50 dark:hover:bg-white/20 transition-colors text-xl font-bold">-</button>
 <button name="action" value="increment" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white shadow-sm hover:bg-primary/90 transition-colors text-xl font-bold">+</button>
@@ -199,6 +200,7 @@
                 </div>
                 <div class="bg-gray-50 dark:bg-white/5 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-black/5 dark:border-white/5">
                     <form action="/delete-review" method="POST" id="deleteForm">
+                        {{.CSRFField}}
                         <input type="hidden" name="id" id="deleteReviewId">
                         <button type="submit" class="inline-flex w-full justify-center rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-primary/90 sm:ml-3 sm:w-auto transition-colors">Delete</button>
                     </form>
@@ -227,6 +229,7 @@
                             <h3 class="text-lg font-display font-bold leading-6 text-gray-900 dark:text-white" id="reviewModalTitle">Add Review</h3>
                             <div class="mt-4">
                                 <form action="/add-review" method="POST" id="reviewForm" class="space-y-4">
+                                    {{.CSRFField}}
                                     <input type="hidden" name="id" id="reviewId">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <input type="text" name="reviewer" id="reviewReviewer" placeholder="Reviewer Name" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
@@ -266,6 +269,7 @@
                             <h3 class="text-lg font-display font-bold leading-6 text-gray-900 dark:text-white" id="tastingNoteModalTitle">Add Tasting Note</h3>
                             <div class="mt-4">
                                 <form action="/add-tasting-note" method="POST" id="tastingNoteForm" class="space-y-4">
+                                    {{.CSRFField}}
                                     <input type="hidden" name="id" id="tastingNoteId">
                                     <textarea name="note" id="tastingNoteContent" placeholder="Your tasting notes..." rows="5" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
                                 </form>

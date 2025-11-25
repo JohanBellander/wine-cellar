@@ -11,6 +11,8 @@ import (
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
 	"wine-cellar/internal/shared/ui"
+
+	"github.com/gorilla/csrf"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +42,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			WineCount    int64
 			IsFreeTier   bool
 			LimitReached bool
+			CSRFField    template.HTML
 		}{
 			Wine:         domain.Wine{},
 			User:         user,
@@ -48,6 +51,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			WineCount:    wineCount,
 			IsFreeTier:   user.SubscriptionTier == "free",
 			LimitReached: user.SubscriptionTier == "free" && wineCount >= 10,
+			CSRFField:    csrf.TemplateField(r),
 		}
 		tmpl.Execute(w, data)
 		return
