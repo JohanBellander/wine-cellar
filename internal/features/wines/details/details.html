@@ -31,15 +31,21 @@
 <div class="grid grid-cols-2 gap-6 py-6 border-y border-black/5 dark:border-white/5">
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Category</p>
-<p class="text-lg font-medium">{{.Wine.Category}}{{if .Wine.SubCategory}} - {{.Wine.SubCategory}}{{end}}</p>
+<p class="text-lg font-medium {{if not .Wine.Category}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
+    {{if .Wine.Category}}{{.Wine.Category}}{{if .Wine.SubCategory}} - {{.Wine.SubCategory}}{{end}}{{else}}&mdash;{{end}}
+</p>
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Region</p>
-<p class="text-lg font-medium">{{.Wine.Region}}{{if and .Wine.Region .Wine.Country}}, {{end}}{{.Wine.Country}}</p>
+<p class="text-lg font-medium {{if and (not .Wine.Region) (not .Wine.Country)}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
+    {{if or .Wine.Region .Wine.Country}}{{.Wine.Region}}{{if and .Wine.Region .Wine.Country}}, {{end}}{{.Wine.Country}}{{else}}&mdash;{{end}}
+</p>
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Grape</p>
-<p class="text-lg font-medium">{{.Wine.Grape}}</p>
+<p class="text-lg font-medium {{if not .Wine.Grape}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
+    {{if .Wine.Grape}}{{.Wine.Grape}}{{else}}&mdash;{{end}}
+</p>
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Price</p>
@@ -49,7 +55,9 @@
 </div>
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Drinking Window</p>
-<p class="text-lg font-medium">{{.Wine.DrinkingWindow}}</p>
+<p class="text-lg font-medium {{if not .Wine.DrinkingWindow}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
+    {{if .Wine.DrinkingWindow}}{{.Wine.DrinkingWindow}}{{else}}&mdash;{{end}}
+</p>
 </div>
 </div>
 <div class="flex items-center justify-between p-6 bg-champagne-light/30 dark:bg-champagne-dark/30 rounded-xl border border-primary/10">
