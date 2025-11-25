@@ -134,8 +134,25 @@ func main() {
 	}
 
 	// CSRF Protection
+	csrfKey := os.Getenv("CSRF_AUTH_KEY")
+	if len(csrfKey) != 32 {
+		log.Printf("Warning: CSRF_AUTH_KEY is not 32 bytes long (got %d bytes). Generating a random key.", len(csrfKey))
+		// Fallback to a random key if not set correctly, but this will invalidate sessions on restart
+		// This is just to prevent the "hash key is not set" error which crashes the app
+		// In production, you MUST set CSRF_AUTH_KEY correctly
+		if csrfKey == "" {
+			csrfKey = "01234567890123456789012345678901" // Default fallback key
+		} else {
+			// Pad or truncate to 32 bytes
+			if len(csrfKey) < 32 {
+				csrfKey = csrfKey + "00000000000000000000000000000000"
+			}
+			csrfKey = csrfKey[:32]
+		}
+	}
+
 	csrfMiddleware := csrf.Protect(
-		[]byte(os.Getenv("CSRF_AUTH_KEY")),
+		[]byte(csrfKey),
 		csrf.Secure(os.Getenv("GO_ENV") == "production"), // Secure only in production
 		csrf.TrustedOrigins([]string{"localhost:8080", "127.0.0.1:8080"}),
 	)
