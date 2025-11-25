@@ -127,11 +127,29 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	var paginatedWines []domain.Wine
 	if searchQuery != "" {
-		var ids []uint
+		type Result struct {
+			ID uint
+		}
+		var results []Result
+
 		// Fetch IDs first to avoid GORM struct population issues with Joins/Group
-		if err := query.Session(&gorm.Session{}).Select("wines.id").Group("wines.id").Limit(limit).Offset(offset).Scan(&ids).Error; err != nil {
+		// We must include the sort field in Select and Group to satisfy "SELECT DISTINCT" rules when ordering
+		selectQuery := "wines.id"
+		groupQuery := "wines.id"
+
+		if sortField != "id" {
+			selectQuery += ", wines." + sortField
+			groupQuery += ", wines." + sortField
+		}
+
+		if err := query.Session(&gorm.Session{}).Select(selectQuery).Group(groupQuery).Limit(limit).Offset(offset).Scan(&results).Error; err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+
+		var ids []uint
+		for _, r := range results {
+			ids = append(ids, r.ID)
 		}
 
 		if len(ids) > 0 {
