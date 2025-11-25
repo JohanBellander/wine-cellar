@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
@@ -44,6 +45,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	reviewer := r.FormValue("reviewer")
 	rating := r.FormValue("rating")
 	content := r.FormValue("content")
+	link := r.FormValue("link")
+
+	if link != "" && !strings.HasPrefix(link, "http://") && !strings.HasPrefix(link, "https://") {
+		link = "https://" + link
+	}
 
 	// Simple validation
 	if reviewer == "" || content == "" {
@@ -57,6 +63,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Date:     "Just now", // In a real app, use time.Now().Format(...)
 		Rating:   rating,
 		Content:  content,
+		Link:     link,
 	}
 
 	database.DB.Create(&newReview)

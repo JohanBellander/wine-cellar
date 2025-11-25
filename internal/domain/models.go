@@ -47,6 +47,7 @@ type Review struct {
 	Date     string
 	Rating   string
 	Content  string
+	Link     string
 }
 
 type TastingNote struct {
