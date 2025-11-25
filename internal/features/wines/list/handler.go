@@ -99,8 +99,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	query = query.Order(sortField + " " + sortDirection)
-
 	// Pagination logic
 	pageStr := r.FormValue("page")
 	page, _ := strconv.Atoi(pageStr)
@@ -115,6 +113,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		query.Count(&totalWines)
 	}
+
+	// Apply sorting after count to avoid "ORDER BY expressions must appear in select list" error with DISTINCT
+	query = query.Order("wines." + sortField + " " + sortDirection)
+
 	totalPages := int((totalWines + int64(limit) - 1) / int64(limit))
 
 	if page > totalPages && totalPages > 0 {
