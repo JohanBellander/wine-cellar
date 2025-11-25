@@ -16,6 +16,8 @@
 8.  **Environment Variables**:
     *   Key: `DATABASE_URL`
     *   Value: *(Paste your Neon connection string here)*
+    *   Key: `CSRF_AUTH_KEY`
+    *   Value: *(A 32-byte random string, e.g., `01234567890123456789012345678901`)*
 9.  Click **Create Web Service**.
 
 ## 3. Continuous Deployment
