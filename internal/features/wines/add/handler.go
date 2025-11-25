@@ -100,6 +100,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		bottleSize := r.FormValue("bottle_size")
+		if bottleSize == "" {
+			bottleSize = "75cl"
+		}
+
 		newWine := domain.Wine{
 			Name:           r.FormValue("name"),
 			Producer:       r.FormValue("producer"),
@@ -110,6 +115,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			Region:         r.FormValue("region"),
 			Category:       r.FormValue("category"),
 			SubCategory:    r.FormValue("sub_category"),
+			BottleSize:     bottleSize,
 			Quantity:       quantity,
 			Price:          price,
 			DrinkingWindow: r.FormValue("drinking_window"),

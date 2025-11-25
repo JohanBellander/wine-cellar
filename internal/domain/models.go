@@ -36,6 +36,7 @@ type Wine struct {
 	Type           string  `json:"type"`
 	Category       string  `json:"category"`
 	SubCategory    string  `json:"sub_category"`
+	BottleSize     string  `gorm:"default:'75cl'"`
 	Reviews        []Review
 	TastingNotes   []TastingNote
 }

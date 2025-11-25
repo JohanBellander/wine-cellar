@@ -59,6 +59,12 @@
     {{if .Wine.DrinkingWindow}}{{.Wine.DrinkingWindow}}{{else}}&mdash;{{end}}
 </p>
 </div>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Bottle Size</p>
+<p class="text-lg font-medium {{if not .Wine.BottleSize}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
+    {{if .Wine.BottleSize}}{{.Wine.BottleSize}}{{else}}&mdash;{{end}}
+</p>
+</div>
 </div>
 <div class="flex items-center justify-between p-6 bg-champagne-light/30 dark:bg-champagne-dark/30 rounded-xl border border-primary/10">
 <div>
