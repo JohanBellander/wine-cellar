@@ -9,6 +9,8 @@ import (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -32,9 +34,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Perform the delete
-	if result := database.DB.Delete(&domain.Wine{}, id); result.Error != nil {
+	// Perform the delete with ownership check
+	result := database.DB.Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Wine{})
+	if result.Error != nil {
 		http.Error(w, "Database error: "+result.Error.Error(), http.StatusInternalServerError)
+		return
+	}
+	if result.RowsAffected == 0 {
+		http.Error(w, "Wine not found or unauthorized", http.StatusNotFound)
 		return
 	}
 

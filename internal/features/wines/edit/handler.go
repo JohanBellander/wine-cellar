@@ -32,7 +32,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var wine domain.Wine
-		if result := database.DB.First(&wine, id); result.Error != nil {
+		if result := database.DB.Where("user_id = ?", userID).First(&wine, id); result.Error != nil {
 			http.NotFound(w, r)
 			return
 		}
@@ -79,7 +79,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var wine domain.Wine
-		if result := database.DB.First(&wine, id); result.Error != nil {
+		if result := database.DB.Where("user_id = ?", userID).First(&wine, id); result.Error != nil {
 			http.NotFound(w, r)
 			return
 		}

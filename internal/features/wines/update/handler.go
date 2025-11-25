@@ -10,6 +10,8 @@ import (
 )
 
 func QuantityHandler(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value("user_id").(uint)
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -31,7 +33,7 @@ func QuantityHandler(w http.ResponseWriter, r *http.Request) {
 	action := r.FormValue("action")
 
 	var wine domain.Wine
-	result := database.DB.First(&wine, id)
+	result := database.DB.Where("user_id = ?", userID).First(&wine, id)
 	if result.Error != nil {
 		http.NotFound(w, r)
 		return
