@@ -69,9 +69,14 @@
 </div>
 {{if eq .User.SubscriptionTier "pro"}}
 <div class="mt-12 lg:mt-16">
-<h2 class="font-display text-2xl font-bold mb-8 pb-4 border-b border-black/5 dark:border-white/5">Reviews</h2>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-<div class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between mb-8 pb-4 border-b border-black/5 dark:border-white/5">
+    <h2 class="font-display text-2xl font-bold">Reviews</h2>
+    <button type="button" onclick="openReviewModal('add', {{.Wine.ID}})" class="flex items-center gap-2 rounded-lg px-4 py-2 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 transition-all">
+        <span class="material-symbols-outlined text-lg">rate_review</span>
+        Add a review
+    </button>
+</div>
+<div class="space-y-6">
 {{range .Wine.Reviews}}
 <div class="p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5">
 <div class="flex items-center justify-between mb-4">
@@ -93,7 +98,10 @@
 {{if .Link}}
 <a href="{{.Link}}" target="_blank" rel="noopener noreferrer" class="inline-block mt-2 text-sm font-medium text-primary hover:underline">Read full review &rarr;</a>
 {{end}}
-<div class="flex justify-end mt-2">
+<div class="flex justify-end mt-2 gap-2">
+<button type="button" onclick="openReviewModal('edit', {{.ID}}, this)" data-reviewer="{{.Reviewer}}" data-rating="{{.Rating}}" data-content="{{.Content}}" data-link="{{.Link}}" class="text-prose-light/50 hover:text-primary dark:text-prose-dark/50 dark:hover:text-primary transition-colors" title="Edit Review">
+<span class="material-symbols-outlined text-2xl">edit</span>
+</button>
 <button type="button" onclick="openDeleteModal({{.ID}})" class="text-prose-light/50 hover:text-red-500 dark:text-prose-dark/50 dark:hover:text-red-400 transition-colors" title="Delete Review">
 <span class="material-symbols-outlined text-2xl">delete</span>
 </button>
@@ -104,22 +112,6 @@
 <p class="text-prose-light/50 dark:text-prose-dark/50">No reviews yet. Be the first to review this wine!</p>
 </div>
 {{end}}
-</div>
-<div class="lg:col-span-1">
-<div class="sticky top-24 p-6 bg-white dark:bg-white/5 rounded-xl border border-black/5 dark:border-white/5 shadow-sm">
-<h3 class="font-bold text-lg mb-4">Add a Review</h3>
-<form action="/add-review" method="POST" class="space-y-4">
-<input type="hidden" name="id" value="{{.Wine.ID}}">
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<input type="text" name="reviewer" placeholder="Reviewer Name" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
-<input type="text" name="rating" placeholder="Rating (e.g. 95p or 92p-94p)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
-</div>
-<input type="text" name="link" placeholder="Link to Review (optional)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50">
-<textarea name="content" placeholder="Review Content" rows="3" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
-<button type="submit" class="self-end flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">Submit Review</button>
-</form>
-</div>
-</div>
 </div>
 </div>
 
@@ -205,6 +197,45 @@
     </div>
 </div>
 
+<!-- Review Modal -->
+<div id="reviewModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity opacity-0" id="reviewModalBackdrop"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <!-- Modal Panel -->
+            <div class="relative transform overflow-hidden rounded-xl bg-white dark:bg-background-dark border border-black/5 dark:border-white/5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" id="reviewModalPanel">
+                <div class="bg-white dark:bg-background-dark px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 sm:mx-0 sm:h-10 sm:w-10">
+                            <span class="material-symbols-outlined text-primary" id="reviewModalIcon">rate_review</span>
+                        </div>
+                        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                            <h3 class="text-lg font-display font-bold leading-6 text-gray-900 dark:text-white" id="reviewModalTitle">Add Review</h3>
+                            <div class="mt-4">
+                                <form action="/add-review" method="POST" id="reviewForm" class="space-y-4">
+                                    <input type="hidden" name="id" id="reviewId">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <input type="text" name="reviewer" id="reviewReviewer" placeholder="Reviewer Name" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
+                                        <input type="text" name="rating" id="reviewRating" placeholder="Rating (e.g. 95p)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required>
+                                    </div>
+                                    <input type="text" name="link" id="reviewLink" placeholder="Link to Review (optional)" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50">
+                                    <textarea name="content" id="reviewContent" placeholder="Review Content" rows="3" class="w-full rounded-lg border border-black/10 dark:border-white/10 bg-transparent dark:bg-white/5 text-prose-light dark:text-prose-dark focus:outline-none focus:ring-2 focus:ring-primary/50 p-3 placeholder:text-prose-light/50 dark:placeholder:text-prose-dark/50" required></textarea>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-white/5 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-black/5 dark:border-white/5">
+                    <button type="submit" form="reviewForm" class="inline-flex w-full justify-center rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-primary/90 sm:ml-3 sm:w-auto transition-colors" id="reviewSubmitBtn">Submit Review</button>
+                    <button type="button" onclick="closeReviewModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white dark:bg-white/5 px-3 py-2 text-sm font-bold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10 hover:bg-gray-50 dark:hover:bg-white/10 sm:mt-0 sm:w-auto transition-colors">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const modal = document.getElementById('deleteModal');
     const backdrop = document.getElementById('deleteModalBackdrop');
@@ -234,6 +265,65 @@
 
     // Close on backdrop click
     backdrop.addEventListener('click', closeDeleteModal);
+
+    const reviewModal = document.getElementById('reviewModal');
+    const reviewBackdrop = document.getElementById('reviewModalBackdrop');
+    const reviewPanel = document.getElementById('reviewModalPanel');
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewTitle = document.getElementById('reviewModalTitle');
+    const reviewIcon = document.getElementById('reviewModalIcon');
+    const reviewSubmitBtn = document.getElementById('reviewSubmitBtn');
+
+    function openReviewModal(mode, id, button = null) {
+        document.getElementById('reviewId').value = id;
+
+        if (mode === 'edit' && button) {
+            // Edit Mode
+            const reviewer = button.dataset.reviewer;
+            const rating = button.dataset.rating;
+            const content = button.dataset.content;
+            const link = button.dataset.link;
+
+            document.getElementById('reviewReviewer').value = reviewer;
+            document.getElementById('reviewRating').value = rating;
+            document.getElementById('reviewContent').value = content;
+            document.getElementById('reviewLink').value = link;
+
+            reviewForm.action = '/edit-review';
+            reviewTitle.textContent = 'Edit Review';
+            reviewIcon.textContent = 'edit';
+            reviewSubmitBtn.textContent = 'Save Changes';
+        } else {
+            // Add Mode
+            document.getElementById('reviewReviewer').value = '';
+            document.getElementById('reviewRating').value = '';
+            document.getElementById('reviewContent').value = '';
+            document.getElementById('reviewLink').value = '';
+
+            reviewForm.action = '/add-review';
+            reviewTitle.textContent = 'Add Review';
+            reviewIcon.textContent = 'rate_review';
+            reviewSubmitBtn.textContent = 'Submit Review';
+        }
+
+        reviewModal.classList.remove('hidden');
+        
+        requestAnimationFrame(() => {
+            reviewBackdrop.classList.remove('opacity-0');
+            reviewPanel.classList.remove('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
+        });
+    }
+
+    function closeReviewModal() {
+        reviewBackdrop.classList.add('opacity-0');
+        reviewPanel.classList.add('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
+
+        setTimeout(() => {
+            reviewModal.classList.add('hidden');
+        }, 300);
+    }
+
+    reviewBackdrop.addEventListener('click', closeReviewModal);
 </script>
 
 </div>
