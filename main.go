@@ -154,7 +154,11 @@ func main() {
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
 		csrf.Secure(os.Getenv("GO_ENV") == "production"), // Secure only in production
-		csrf.TrustedOrigins([]string{"localhost:8080", "127.0.0.1:8080"}),
+		csrf.TrustedOrigins([]string{
+			"localhost:8080",
+			"127.0.0.1:8080",
+			os.Getenv("DOMAIN"), // Trust the configured production domain
+		}),
 	)
 
 	fmt.Printf("Server started at http://localhost:%s\n", port)
