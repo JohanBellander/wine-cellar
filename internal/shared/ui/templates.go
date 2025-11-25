@@ -3,12 +3,16 @@ package ui
 import (
 	"html/template"
 	"net/url"
+	"strings"
 )
 
 // FuncMap contains shared template functions
 var FuncMap = template.FuncMap{
 	"safeURL": func(s string) template.URL {
-		return template.URL(s)
+		if strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "mailto:") || strings.HasPrefix(s, "/") || strings.HasPrefix(s, "data:") {
+			return template.URL(s)
+		}
+		return template.URL("")
 	},
 	"sortURL": func(base url.Values, field, currentSort, currentDirection string) string {
 		v := url.Values{}

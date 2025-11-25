@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"wine-cellar/internal/features/auth"
 	"wine-cellar/internal/features/reviews/add"
@@ -171,7 +172,10 @@ func main() {
 // Define a FuncMap with the safeURL function
 var funcMap = template.FuncMap{
 	"safeURL": func(s string) template.URL {
-		return template.URL(s)
+		if strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "mailto:") || strings.HasPrefix(s, "/") || strings.HasPrefix(s, "data:") {
+			return template.URL(s)
+		}
+		return template.URL("")
 	},
 }
 
