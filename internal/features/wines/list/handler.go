@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"gorm.io/gorm"
+
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
 	"wine-cellar/internal/shared/ui"
@@ -46,7 +48,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		if searchQuery != "" {
 			lowerSearchQuery := strings.ToLower(searchQuery)
 			likeQuery := "%" + lowerSearchQuery + "%"
-			query = query.Where("LOWER(name) LIKE ? OR LOWER(producer) LIKE ? OR LOWER(region) LIKE ? OR LOWER(category) LIKE ?", likeQuery, likeQuery, likeQuery, likeQuery)
+			query = query.
+				Joins("LEFT JOIN reviews ON reviews.wine_id = wines.id").
+				Joins("LEFT JOIN tasting_notes ON tasting_notes.wine_id = wines.id").
+				Where("LOWER(wines.name) LIKE ? OR LOWER(wines.producer) LIKE ? OR LOWER(wines.region) LIKE ? OR LOWER(wines.category) LIKE ? OR LOWER(reviews.content) LIKE ? OR LOWER(reviews.reviewer) LIKE ? OR LOWER(tasting_notes.note) LIKE ?", likeQuery, likeQuery, likeQuery, likeQuery, likeQuery, likeQuery, likeQuery)
 		}
 		if filterCategory != "" {
 			query = query.Where("category = ?", filterCategory)
@@ -105,7 +110,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	limit := 10 // Items per page
 
 	var totalWines int64
-	query.Count(&totalWines)
+	if searchQuery != "" {
+		query.Distinct("wines.id").Count(&totalWines)
+	} else {
+		query.Count(&totalWines)
+	}
 	totalPages := int((totalWines + int64(limit) - 1) / int64(limit))
 
 	if page > totalPages && totalPages > 0 {
@@ -115,7 +124,35 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	offset := (page - 1) * limit
 
 	var paginatedWines []domain.Wine
-	query.Limit(limit).Offset(offset).Find(&paginatedWines)
+	if searchQuery != "" {
+		var ids []uint
+		// Fetch IDs first to avoid GORM struct population issues with Joins/Group
+		if err := query.Session(&gorm.Session{}).Select("wines.id").Group("wines.id").Limit(limit).Offset(offset).Scan(&ids).Error; err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if len(ids) > 0 {
+			var wines []domain.Wine
+			if err := database.DB.Where("id IN ?", ids).Find(&wines).Error; err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			// Reorder to match ID list
+			wineMap := make(map[uint]domain.Wine)
+			for _, w := range wines {
+				wineMap[w.ID] = w
+			}
+			for _, id := range ids {
+				if w, ok := wineMap[id]; ok {
+					paginatedWines = append(paginatedWines, w)
+				}
+			}
+		}
+	} else {
+		query.Limit(limit).Offset(offset).Find(&paginatedWines)
+	}
 
 	// Generate page numbers
 	var pages []int
