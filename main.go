@@ -160,14 +160,24 @@ func main() {
 		}
 	}
 
+	domain := os.Getenv("DOMAIN")
+	trustedOrigins := []string{
+		"localhost:8080",
+		"127.0.0.1:8080",
+		domain,
+	}
+	if domain != "" {
+		trustedOrigins = append(trustedOrigins, "www."+domain)
+	}
+
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
 		csrf.Secure(os.Getenv("GO_ENV") == "production"), // Secure only in production
-		csrf.TrustedOrigins([]string{
-			"localhost:8080",
-			"127.0.0.1:8080",
-			os.Getenv("DOMAIN"), // Trust the configured production domain
-		}),
+		csrf.TrustedOrigins(trustedOrigins),
+		csrf.ErrorHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			log.Printf("CSRF Error: %v", csrf.FailureReason(r))
+			http.Error(w, "Forbidden - CSRF token invalid", http.StatusForbidden)
+		})),
 	)
 
 	fmt.Printf("Server started at http://localhost:%s\n", port)
