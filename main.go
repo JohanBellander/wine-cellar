@@ -168,6 +168,11 @@ func main() {
 	}
 	if domain != "" {
 		trustedOrigins = append(trustedOrigins, "www."+domain)
+		// Add protocol-prefixed versions just in case strict matching is used
+		trustedOrigins = append(trustedOrigins, "https://"+domain)
+		trustedOrigins = append(trustedOrigins, "https://www."+domain)
+		trustedOrigins = append(trustedOrigins, "http://"+domain)
+		trustedOrigins = append(trustedOrigins, "http://www."+domain)
 	}
 
 	isProd := os.Getenv("GO_ENV") == "production"
@@ -175,7 +180,10 @@ func main() {
 
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
-		csrf.Secure(isProd),
+		// Temporarily disable Secure flag to rule out proxy/protocol mismatch issues
+		// If the app runs behind a proxy (like Cloudflare) that terminates SSL, 
+		// the app sees HTTP, and strict Secure checks might fail.
+		csrf.Secure(false), 
 		csrf.Path("/"),
 		csrf.SameSite(csrf.SameSiteLaxMode),
 		csrf.TrustedOrigins(trustedOrigins),
