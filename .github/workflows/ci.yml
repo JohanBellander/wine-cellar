@@ -102,7 +102,8 @@ jobs:
 
           if [ -n "$RENDER_DEPLOY_HOOK" ]; then
             echo "Triggering deployment via Hook..."
-            curl -X POST "$RENDER_DEPLOY_HOOK" --fail
+            # Render deploy hooks should be called with GET, not POST
+            curl "$RENDER_DEPLOY_HOOK" --fail
           elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
              echo "Triggering deployment via API..."
              curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
