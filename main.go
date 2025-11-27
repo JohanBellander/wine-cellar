@@ -184,10 +184,10 @@ func main() {
 
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
-		// Temporarily disable Secure flag to rule out proxy/protocol mismatch issues
-		csrf.Secure(false), 
+		csrf.Secure(isProd),
 		csrf.Path("/"),
 		csrf.SameSite(csrf.SameSiteLaxMode),
+		csrf.CookieName("winetrackr_csrf"), // Force a new cookie name to invalidate old/stuck cookies
 		csrf.TrustedOrigins(trustedOrigins),
 		csrf.ErrorHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log.Printf("CSRF Error: %v", csrf.FailureReason(r))
