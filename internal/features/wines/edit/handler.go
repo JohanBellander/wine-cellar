@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"wine-cellar/internal/domain"
 	"wine-cellar/internal/shared/database"
+	"wine-cellar/internal/shared/storage"
 	"wine-cellar/internal/shared/ui"
 
 	"github.com/gorilla/csrf"
@@ -127,11 +129,29 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			// Read file content
 			fileBytes, err := io.ReadAll(file)
 			if err == nil {
-				// Convert to base64
-				base64Str := base64.StdEncoding.EncodeToString(fileBytes)
-				// Determine mime type (simple check)
 				mimeType := http.DetectContentType(fileBytes)
-				wine.ImageURL = fmt.Sprintf("data:%s;base64,%s", mimeType, base64Str)
+				
+				// Delete old image from R2 if it exists
+				if wine.ImageURL != "" && storage.IsConfigured() {
+					storage.DeleteImage(wine.ImageURL)
+				}
+				
+				// Try to upload to R2 first
+				if storage.IsConfigured() {
+					url, err := storage.UploadImage(fileBytes, mimeType, userID)
+					if err != nil {
+						log.Printf("R2 upload failed, falling back to base64: %v", err)
+						// Fallback to base64
+						base64Str := base64.StdEncoding.EncodeToString(fileBytes)
+						wine.ImageURL = fmt.Sprintf("data:%s;base64,%s", mimeType, base64Str)
+					} else {
+						wine.ImageURL = url
+					}
+				} else {
+					// R2 not configured, use base64
+					base64Str := base64.StdEncoding.EncodeToString(fileBytes)
+					wine.ImageURL = fmt.Sprintf("data:%s;base64,%s", mimeType, base64Str)
+				}
 			}
 		}
 

@@ -25,6 +25,7 @@ import (
 	"wine-cellar/internal/features/wines/list"
 	"wine-cellar/internal/features/wines/update"
 	"wine-cellar/internal/shared/database"
+	"wine-cellar/internal/shared/storage"
 
 	"github.com/gorilla/csrf"
 	"github.com/joho/godotenv"
@@ -41,6 +42,9 @@ func main() {
 
 	// Initialize Auth (Session Store)
 	auth.Init()
+
+	// Initialize R2 Storage
+	storage.Init()
 
 	database.InitDB()
 	database.Seed(database.DB)

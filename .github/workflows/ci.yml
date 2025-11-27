@@ -47,6 +47,11 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CSRF_AUTH_KEY: ${{ secrets.CSRF_AUTH_KEY }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
         run: |
           echo "Checking for Render credentials..."
           if [ -n "$RENDER_API_KEY" ]; then echo "RENDER_API_KEY is set"; else echo "RENDER_API_KEY is NOT set"; fi
@@ -65,6 +70,11 @@ jobs:
               --arg db "$DATABASE_URL" \
               --arg csrf "$CSRF_AUTH_KEY" \
               --arg sess "$SESSION_SECRET" \
+              --arg r2_acc "$R2_ACCOUNT_ID" \
+              --arg r2_key "$R2_ACCESS_KEY_ID" \
+              --arg r2_sec "$R2_SECRET_ACCESS_KEY" \
+              --arg r2_bucket "$R2_BUCKET_NAME" \
+              --arg r2_url "$R2_PUBLIC_URL" \
               '[
                 {key: "STRIPE_SECRET_KEY", value: $sk},
                 {key: "STRIPE_PUBLISHABLE_KEY", value: $pk},
@@ -73,7 +83,12 @@ jobs:
                 {key: "DOMAIN", value: $dom},
                 {key: "DATABASE_URL", value: $db},
                 {key: "CSRF_AUTH_KEY", value: $csrf},
-                {key: "SESSION_SECRET", value: $sess}
+                {key: "SESSION_SECRET", value: $sess},
+                {key: "R2_ACCOUNT_ID", value: $r2_acc},
+                {key: "R2_ACCESS_KEY_ID", value: $r2_key},
+                {key: "R2_SECRET_ACCESS_KEY", value: $r2_sec},
+                {key: "R2_BUCKET_NAME", value: $r2_bucket},
+                {key: "R2_PUBLIC_URL", value: $r2_url}
               ]' > env_vars.json
 
             curl -X PUT "https://api.render.com/v1/services/$RENDER_SERVICE_ID/env-vars" \
