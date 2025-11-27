@@ -110,17 +110,17 @@ jobs:
             echo "Skipping env var sync because RENDER_API_KEY or RENDER_SERVICE_ID is missing."
           fi
 
-          if [ -n "$RENDER_DEPLOY_HOOK" ]; then
-            echo "Triggering deployment via Hook..."
-            # Render deploy hooks should be called with GET, not POST
-            curl "$RENDER_DEPLOY_HOOK" --fail
-          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
+          # Prefer API method since it's more reliable
+          if [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
              echo "Triggering deployment via API..."
              curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
                -H "Authorization: Bearer $RENDER_API_KEY" \
                -H "Content-Type: application/json" \
                -d '{}' \
                --fail
+          elif [ -n "$RENDER_DEPLOY_HOOK" ]; then
+            echo "Triggering deployment via Hook..."
+            curl "$RENDER_DEPLOY_HOOK" --fail
           else
             echo "No deployment method available."
             echo "RENDER_DEPLOY_HOOK is set: $([ -n \"$RENDER_DEPLOY_HOOK\" ] && echo 'yes' || echo 'no')"
