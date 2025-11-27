@@ -17,8 +17,12 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		
+		// Check if tier parameter is passed (for Connoisseur signup flow)
+		tier := r.URL.Query().Get("tier")
+		
 		data := map[string]interface{}{
 			"CSRFField": csrf.TemplateField(r),
+			"Tier":      tier,
 		}
 		
 		tmpl.Execute(w, data)
@@ -28,6 +32,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
+		tier := r.FormValue("tier")
 
 		hashedPassword, err := HashPassword(password)
 		if err != nil {
@@ -39,6 +44,20 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		result := database.DB.Create(&user)
 		if result.Error != nil {
 			http.Error(w, "Could not create user", http.StatusInternalServerError)
+			return
+		}
+
+		// If signing up for pro tier, auto-login and redirect to Stripe checkout
+		if tier == "pro" {
+			// Auto-login the user
+			session, _ := store.Get(r, "session-name")
+			session.Values["authenticated"] = true
+			session.Values["user_id"] = user.ID
+			session.Values["email"] = user.Email
+			session.Save(r, w)
+
+			// Redirect to checkout
+			http.Redirect(w, r, "/create-checkout-session", http.StatusSeeOther)
 			return
 		}
 

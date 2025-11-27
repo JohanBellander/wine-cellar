@@ -35,8 +35,8 @@ func CreateCheckoutSession(w http.ResponseWriter, r *http.Request) {
 		CustomerEmail:      stripe.String(userEmail),
 		ClientReferenceID:  stripe.String(strconv.Itoa(int(userID))),
 		Mode:               stripe.String(string(stripe.CheckoutSessionModeSubscription)),
-		SuccessURL:         stripe.String(domainURL + "/settings?success=true"),
-		CancelURL:          stripe.String(domainURL + "/settings?canceled=true"),
+		SuccessURL:         stripe.String(domainURL + "/?success=true"),
+		CancelURL:          stripe.String(domainURL + "/?canceled=true"),
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
 				Price:    stripe.String(priceID),
