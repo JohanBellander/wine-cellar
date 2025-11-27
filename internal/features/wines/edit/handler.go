@@ -160,3 +160,35 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, fmt.Sprintf("/details/%d", id), http.StatusSeeOther)
 	}
 }
+
+func DeletePhotoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	userID := r.Context().Value("user_id").(uint)
+	idStr := r.FormValue("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var wine domain.Wine
+	if result := database.DB.Where("user_id = ?", userID).First(&wine, id); result.Error != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Delete image from R2 if it exists
+	if wine.ImageURL != "" && storage.IsConfigured() {
+		storage.DeleteImage(wine.ImageURL)
+	}
+
+	// Clear image URL in database
+	wine.ImageURL = ""
+	database.DB.Save(&wine)
+
+	http.Redirect(w, r, fmt.Sprintf("/edit/%d", id), http.StatusSeeOther)
+}

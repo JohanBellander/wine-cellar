@@ -127,6 +127,7 @@ func main() {
 	mux.HandleFunc("/export", auth.Middleware(settings.ExportHandler))
 	mux.HandleFunc("/delete-account", auth.Middleware(settings.DeleteAccountHandler))
 	mux.HandleFunc("/delete", auth.Middleware(deleteWine.Handler))
+	mux.HandleFunc("/delete-photo", auth.Middleware(edit.DeletePhotoHandler))
 	mux.HandleFunc("/create-checkout-session", auth.Middleware(subscription.CreateCheckoutSession))
 	mux.HandleFunc("/create-portal-session", auth.Middleware(subscription.CreatePortalSession))
 	mux.HandleFunc("/webhook/stripe", subscription.WebhookHandler)
