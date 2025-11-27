@@ -83,7 +83,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			vintage = 0
 		}
 
-		imageURL := "https://via.placeholder.com/150"
+		imageURL := ""
 		
 		// Handle image upload
 		file, _, err := r.FormFile("image")
