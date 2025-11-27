@@ -53,6 +53,11 @@ func Middleware(next http.HandlerFunc) http.HandlerFunc {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
+
+		// Prevent caching of authenticated pages to avoid CSRF token mismatch
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		w.Header().Set("Pragma", "no-cache")
+		w.Header().Set("Expires", "0")
 		
 		// Add user ID to context for easy access in handlers
 		userID := session.Values["user_id"].(uint)
