@@ -102,13 +102,17 @@ jobs:
 
           if [ -n "$RENDER_DEPLOY_HOOK" ]; then
             echo "Triggering deployment via Hook..."
-            curl -X POST $RENDER_DEPLOY_HOOK
+            curl -X POST "$RENDER_DEPLOY_HOOK" --fail -v
           elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
              echo "Triggering deployment via API..."
              curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
                -H "Authorization: Bearer $RENDER_API_KEY" \
-               --fail
+               -H "Content-Type: application/json" \
+               --fail -v
           else
             echo "No deployment method available."
+            echo "RENDER_DEPLOY_HOOK is set: $([ -n \"$RENDER_DEPLOY_HOOK\" ] && echo 'yes' || echo 'no')"
+            echo "RENDER_API_KEY is set: $([ -n \"$RENDER_API_KEY\" ] && echo 'yes' || echo 'no')"
+            echo "RENDER_SERVICE_ID is set: $([ -n \"$RENDER_SERVICE_ID\" ] && echo 'yes' || echo 'no')"
             exit 1
           fi
