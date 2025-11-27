@@ -161,6 +161,11 @@ func main() {
 	log.Printf("CSRF Key Fingerprint: %s...%s", csrfKey[:4], csrfKey[28:])
 
 	domain := os.Getenv("DOMAIN")
+	// Clean domain to ensure we build valid origins
+	domain = strings.TrimPrefix(domain, "http://")
+	domain = strings.TrimPrefix(domain, "https://")
+	domain = strings.TrimRight(domain, "/")
+
 	trustedOrigins := []string{
 		"localhost:8080",
 		"127.0.0.1:8080",
@@ -168,7 +173,6 @@ func main() {
 	}
 	if domain != "" {
 		trustedOrigins = append(trustedOrigins, "www."+domain)
-		// Add protocol-prefixed versions just in case strict matching is used
 		trustedOrigins = append(trustedOrigins, "https://"+domain)
 		trustedOrigins = append(trustedOrigins, "https://www."+domain)
 		trustedOrigins = append(trustedOrigins, "http://"+domain)
@@ -181,8 +185,6 @@ func main() {
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
 		// Temporarily disable Secure flag to rule out proxy/protocol mismatch issues
-		// If the app runs behind a proxy (like Cloudflare) that terminates SSL, 
-		// the app sees HTTP, and strict Secure checks might fail.
 		csrf.Secure(false), 
 		csrf.Path("/"),
 		csrf.SameSite(csrf.SameSiteLaxMode),
