@@ -114,11 +114,18 @@ jobs:
           if [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_SERVICE_ID" ]; then
              echo "Triggering deployment via API..."
              echo "Service ID: $RENDER_SERVICE_ID"
-             curl -X POST "https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys" \
+             RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" -X POST "https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys" \
                -H "Authorization: Bearer $RENDER_API_KEY" \
                -H "Accept: application/json" \
-               -H "Content-Type: application/json" \
-               --fail -v
+               -H "Content-Type: application/json")
+             HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_CODE:" | cut -d: -f2)
+             BODY=$(echo "$RESPONSE" | grep -v "HTTP_CODE:")
+             echo "Response: $BODY"
+             echo "HTTP Code: $HTTP_CODE"
+             if [ "$HTTP_CODE" != "201" ] && [ "$HTTP_CODE" != "200" ]; then
+               echo "Deploy API call failed"
+               exit 1
+             fi
           elif [ -n "$RENDER_DEPLOY_HOOK" ]; then
             echo "Triggering deployment via Hook..."
             curl "$RENDER_DEPLOY_HOOK" --fail
