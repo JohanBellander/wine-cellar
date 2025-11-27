@@ -145,20 +145,20 @@ func main() {
 	// CSRF Protection
 	csrfKey := os.Getenv("CSRF_AUTH_KEY")
 	if len(csrfKey) != 32 {
-		log.Printf("Warning: CSRF_AUTH_KEY is not 32 bytes long (got %d bytes). Generating a random key.", len(csrfKey))
-		// Fallback to a random key if not set correctly, but this will invalidate sessions on restart
-		// This is just to prevent the "hash key is not set" error which crashes the app
-		// In production, you MUST set CSRF_AUTH_KEY correctly
 		if csrfKey == "" {
-			csrfKey = "01234567890123456789012345678901" // Default fallback key
+			log.Println("Warning: CSRF_AUTH_KEY is not set. Using default static key (NOT SAFE FOR PRODUCTION if multiple instances).")
+			csrfKey = "01234567890123456789012345678901"
 		} else {
-			// Pad or truncate to 32 bytes
+			log.Printf("Warning: CSRF_AUTH_KEY is not 32 bytes long (got %d bytes). Padding/Truncating to 32 bytes.", len(csrfKey))
 			if len(csrfKey) < 32 {
 				csrfKey = csrfKey + "00000000000000000000000000000000"
 			}
 			csrfKey = csrfKey[:32]
 		}
 	}
+	
+	// Log the key fingerprint to verify consistency across restarts
+	log.Printf("CSRF Key Fingerprint: %s...%s", csrfKey[:4], csrfKey[28:])
 
 	domain := os.Getenv("DOMAIN")
 	trustedOrigins := []string{
@@ -170,12 +170,24 @@ func main() {
 		trustedOrigins = append(trustedOrigins, "www."+domain)
 	}
 
+	isProd := os.Getenv("GO_ENV") == "production"
+	log.Printf("CSRF Config: Secure=%v, TrustedOrigins=%v", isProd, trustedOrigins)
+
 	csrfMiddleware := csrf.Protect(
 		[]byte(csrfKey),
-		csrf.Secure(os.Getenv("GO_ENV") == "production"), // Secure only in production
+		csrf.Secure(isProd),
+		csrf.Path("/"),
+		csrf.SameSite(csrf.SameSiteLaxMode),
 		csrf.TrustedOrigins(trustedOrigins),
 		csrf.ErrorHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			log.Printf("CSRF Error: %v", csrf.FailureReason(r))
+			log.Printf("Request Info: Protocol=%s, Host=%s, Method=%s, URL=%s", r.Proto, r.Host, r.Method, r.URL.String())
+			// Check for CSRF cookie
+			if cookie, err := r.Cookie("_gorilla_csrf"); err == nil {
+				log.Printf("CSRF Cookie present: len=%d", len(cookie.Value))
+			} else {
+				log.Printf("CSRF Cookie missing: %v", err)
+			}
 			http.Error(w, "Forbidden - CSRF token invalid", http.StatusForbidden)
 		})),
 	)
