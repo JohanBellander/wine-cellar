@@ -39,7 +39,7 @@
 <div>
 <p class="text-xs font-bold uppercase tracking-wider text-prose-light/50 dark:text-prose-dark/50 mb-1">Region</p>
 <p class="text-lg font-medium {{if and (not .Wine.Region) (not .Wine.Country)}}text-prose-light/40 dark:text-prose-dark/40{{end}}">
-    {{if or .Wine.Region .Wine.Country}}{{.Wine.Region}}{{if and .Wine.Region .Wine.Country}}, {{end}}{{.Wine.Country}}{{else}}&mdash;{{end}}
+    {{$r := .Wine.Region | trim}}{{$c := .Wine.Country | trim}}{{if or $r $c}}{{$r}}{{if and $r $c}}, {{end}}{{$c}}{{else}}&mdash;{{end}}
 </p>
 </div>
 <div>

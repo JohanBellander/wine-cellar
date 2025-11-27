@@ -59,8 +59,8 @@
 <h3 class="font-display text-xl font-bold leading-tight tracking-tight pb-4">Bottle Image</h3>
 <div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-black/5 dark:border-white/5 p-6 text-center">
     <!-- Preview Area -->
-    <div id="image-preview-container" class="{{if .Wine.ImageURL}}block{{else}}hidden{{end}}">
-        <img id="image-preview" src="{{if .Wine.ImageURL}}{{.Wine.ImageURL | safeURL}}{{end}}" class="max-h-64 object-contain rounded-lg shadow-sm mx-auto">
+    <div id="image-preview-container" class="{{if (.Wine.ImageURL | trim)}}block{{else}}hidden{{end}}">
+        <img id="image-preview" src="{{if .Wine.ImageURL}}{{.Wine.ImageURL | safeURL}}{{end}}" class="max-h-64 object-contain rounded-lg shadow-sm mx-auto" onerror="this.parentElement.classList.add('hidden')">
     </div>
 
     <div class="flex max-w-[480px] flex-col items-center gap-2">

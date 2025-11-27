@@ -29,4 +29,5 @@ var FuncMap = template.FuncMap{
 		v.Del("page") // Reset page when sorting changes
 		return "?" + v.Encode()
 	},
+	"trim": strings.TrimSpace,
 }
