@@ -358,19 +358,19 @@ function toggleVintageInput(checkbox) {
 </div>
 </div>
 </div>
-<div class="flex flex-wrap items-center gap-4 mt-8 lg:col-span-3 justify-between">
+<div class="flex flex-col-reverse sm:flex-row items-center gap-4 mt-8 lg:col-span-3 justify-between w-full">
     {{if .Wine.ID}}
-    <button type="button" onclick="openDeleteModal()" class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-bold hover:bg-red-500/20 transition-all">
+    <button type="button" onclick="openDeleteModal()" class="flex w-full sm:w-auto min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-bold hover:bg-red-500/20 transition-all">
         <span class="truncate">Delete Wine</span>
     </button>
     {{else}}
-    <div></div>
+    <div class="hidden sm:block"></div>
     {{end}}
-    <div class="flex items-center gap-2">
-        <a href="{{if .Wine.ID}}/details/{{.Wine.ID}}{{else}}/{{end}}" class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-transparent text-prose-light dark:text-prose-dark text-sm font-bold hover:bg-black/5 dark:hover:bg-white/5 transition-all">
+    <div class="flex w-full sm:w-auto items-center gap-2">
+        <a href="{{if .Wine.ID}}/details/{{.Wine.ID}}{{else}}/{{end}}" class="flex flex-1 sm:flex-none min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-transparent text-prose-light dark:text-prose-dark text-sm font-bold hover:bg-black/5 dark:hover:bg-white/5 transition-all">
             <span class="truncate">Cancel</span>
         </a>
-        <button type="submit" class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">
+        <button type="submit" class="flex flex-1 sm:flex-none min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 px-5 bg-primary text-white text-sm font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all">
             <span class="truncate">{{if .Wine.ID}}Update Wine{{else}}Save Wine{{end}}</span>
         </button>
     </div>
