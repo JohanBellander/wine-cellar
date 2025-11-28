@@ -97,6 +97,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// Check if password needs re-hashing (migration from cost 14 to 10)
+		// This ensures existing users get faster logins next time
+		if NeedsRehash(user.PasswordHash) {
+			newHash, err := HashPassword(password)
+			if err == nil {
+				user.PasswordHash = newHash
+				database.DB.Save(&user)
+			}
+		}
+
 		session, _ := store.Get(r, "session-name")
 		session.Values["authenticated"] = true
 		session.Values["user_id"] = user.ID

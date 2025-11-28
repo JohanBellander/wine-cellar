@@ -35,7 +35,7 @@ func Init() {
 
 // HashPassword hashes the password using bcrypt
 func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(bytes), err
 }
 
@@ -43,6 +43,15 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+// NeedsRehash checks if the password hash uses a cost higher than the default
+func NeedsRehash(hash string) bool {
+	cost, err := bcrypt.Cost([]byte(hash))
+	if err != nil {
+		return false
+	}
+	return cost > bcrypt.DefaultCost
 }
 
 // Middleware checks if the user is logged in
