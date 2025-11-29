@@ -247,7 +247,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterProducers  []string
 		FilterVintages   []int
 		HasNV            bool
-		BaseQueryString  string
+		BaseQueryString  template.URL
 		Sort             string
 		Direction        string
 		QueryParams      url.Values
@@ -275,7 +275,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		FilterProducers:  producers,
 		FilterVintages:   vintages,
 		HasNV:            hasNV > 0,
-		BaseQueryString:  baseQueryString,
+		BaseQueryString:  template.URL(baseQueryString),
 		Sort:             sortField,
 		Direction:        sortDirection,
 		QueryParams:      v,
