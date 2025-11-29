@@ -88,7 +88,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !allowedSortFields[sortField] {
-		sortField = "name"
+		sortField = "producer"
 	}
 
 	if sortDirection != "asc" && sortDirection != "desc" {
@@ -200,7 +200,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if filterVintage != "" {
 		v.Set("vintage", filterVintage)
 	}
-	if sortField != "name" || sortDirection != "asc" {
+	if sortField != "producer" || sortDirection != "asc" {
 		v.Set("sort", sortField)
 		v.Set("direction", sortDirection)
 	}
