@@ -180,9 +180,30 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		pages = append(pages, i)
 	}
 
-	// Build base query string for pagination
-	v := r.URL.Query()
-	v.Del("page")
+	// Build base query string for pagination and sorting
+	v := url.Values{}
+	if searchQuery != "" {
+		v.Set("q", searchQuery)
+	}
+	if filterCategory != "" {
+		v.Set("category", filterCategory)
+	}
+	if filterCountry != "" {
+		v.Set("country", filterCountry)
+	}
+	if filterRegion != "" {
+		v.Set("region", filterRegion)
+	}
+	if filterProducer != "" {
+		v.Set("producer", filterProducer)
+	}
+	if filterVintage != "" {
+		v.Set("vintage", filterVintage)
+	}
+	if sortField != "name" || sortDirection != "asc" {
+		v.Set("sort", sortField)
+		v.Set("direction", sortDirection)
+	}
 	baseQueryString := v.Encode()
 
 	// Fetch filter options if Pro
@@ -257,7 +278,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		BaseQueryString:  baseQueryString,
 		Sort:             sortField,
 		Direction:        sortDirection,
-		QueryParams:      r.URL.Query(),
+		QueryParams:      v,
 	}
 
 	tmpl.Execute(w, data)
