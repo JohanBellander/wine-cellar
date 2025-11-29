@@ -56,7 +56,7 @@ func main() {
 	mux.HandleFunc("/logout", auth.LogoutHandler)
 
 	mux.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/header.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/privacy.html", "templates/header.html", "templates/footer.html", "templates/analytics.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -75,7 +75,7 @@ func main() {
 	})
 
 	mux.HandleFunc("/terms", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("templates/terms.html", "templates/header.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/terms.html", "templates/header.html", "templates/footer.html", "templates/analytics.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -103,7 +103,7 @@ func main() {
 			UserEmail: email,
 		}
 
-		tmpl, err := template.ParseFiles("templates/contact.html", "templates/header.html", "templates/footer.html")
+		tmpl, err := template.ParseFiles("templates/contact.html", "templates/header.html", "templates/footer.html", "templates/analytics.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -225,7 +225,7 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func landingHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.New("landing.html").Funcs(funcMap).ParseFiles("templates/landing.html", "templates/header.html", "templates/footer.html")
+	tmpl, err := template.New("landing.html").Funcs(funcMap).ParseFiles("templates/landing.html", "templates/header.html", "templates/footer.html", "templates/analytics.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

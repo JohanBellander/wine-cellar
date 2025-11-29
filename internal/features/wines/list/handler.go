@@ -16,7 +16,7 @@ import (
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	// Note: We are using paths relative to the project root
-	tmpl, err := template.New("list.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/list/list.html", "templates/header.html", "templates/footer.html")
+	tmpl, err := template.New("list.html").Funcs(ui.FuncMap).ParseFiles("internal/features/wines/list/list.html", "templates/header.html", "templates/footer.html", "templates/analytics.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

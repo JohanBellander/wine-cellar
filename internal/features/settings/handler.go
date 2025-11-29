@@ -31,6 +31,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 			"internal/features/settings/settings.html",
 			"templates/header.html",
 			"templates/footer.html",
+			"templates/analytics.html",
 		)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
