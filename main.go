@@ -182,8 +182,19 @@ func main() {
 		})),
 	)
 
+	// Create a handler that skips CSRF protection for the Stripe webhook
+	protectedMux := csrfMiddleware(mux)
+	finalHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Skip CSRF for Stripe webhooks
+		if r.URL.Path == "/webhook/stripe" {
+			mux.ServeHTTP(w, r)
+			return
+		}
+		protectedMux.ServeHTTP(w, r)
+	})
+
 	fmt.Printf("Server started at http://localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, csrfMiddleware(mux)))
+	log.Fatal(http.ListenAndServe(":"+port, finalHandler))
 }
 
 // Define a FuncMap with the safeURL function
