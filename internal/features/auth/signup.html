@@ -58,5 +58,18 @@
         </div>
     </div>
     {{template "footer" .}}
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = this.querySelector('button[type="submit"]');
+            if (btn.disabled) {
+                e.preventDefault();
+                return;
+            }
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            const originalText = btn.innerText;
+            btn.innerText = 'Creating Account...';
+        });
+    </script>
 </body>
 </html>

@@ -34,6 +34,13 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		tier := r.FormValue("tier")
 
+		// Check if user already exists
+		var existingUser domain.User
+		if result := database.DB.Where("email = ?", email).First(&existingUser); result.Error == nil {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
 		hashedPassword, err := HashPassword(password)
 		if err != nil {
 			http.Error(w, "Server error", http.StatusInternalServerError)
