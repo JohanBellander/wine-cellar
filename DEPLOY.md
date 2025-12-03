@@ -23,7 +23,9 @@
 4.  **Name**: `wine-cellar` (or whatever you like).
 5.  **Runtime**: `Docker`.
 6.  **Region**: Choose one close to you (e.g., Frankfurt or Oregon).
-7.  **Free Tier**: Select "Free".
+7.  **Instance Type**:
+    *   Select **"Free"** for hobby projects (spins down after inactivity).
+    *   Select **"Starter"** or higher for production (stays online 24/7).
 8.  **Environment Variables**:
     *   Key: `DATABASE_URL`
     *   Value: *(Paste your Neon connection string here)*
